@@ -8,7 +8,7 @@ export function addCopyToClipboardButtons(rootRef: MutableRefObject<HTMLDivEleme
 
     const allPres = rootRef.current?.querySelectorAll<HTMLPreElement>('pre');
     if (allPres) {
-        allPres.forEach((pre) => {
+        allPres.forEach((pre: HTMLPreElement) => {
 
             const code = pre.firstElementChild;
             if (code && /code/i.test(code.tagName)) {

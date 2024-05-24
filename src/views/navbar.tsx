@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 /*
- * The navbar is rendered to the top right in wide views or after other content in mobile views
+ * The client side navbar is rendered to the top right in wide views or after other content in mobile views
  */
 export default function Navbar(): JSX.Element {
   

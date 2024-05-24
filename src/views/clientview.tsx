@@ -3,13 +3,14 @@ import Head from 'next/head';
 import Link from 'next/link';
 import {useRouter} from 'next/router'
 import {useEffect, useRef, useState} from 'react';
-import {addCopyToClipboardButtons} from './codeProcessor';
+import {addCopyToClipboardButtons} from '../utilities/codeProcessor';
+import {PostProps} from '../utilities/postProps';
 import Navbar from './navbar';
 
 /*
- * Process the layout for a filename that points to an MDX file
+ * The main client side view
  */
-export default function Layout({filename}: any): JSX.Element {
+export function ClientView(props: PostProps): JSX.Element {
 
     const rootRef = useRef<HTMLDivElement>(null);
     const scrollPositions = useRef<{[file: string]: number}>({});
@@ -19,12 +20,12 @@ export default function Layout({filename}: any): JSX.Element {
     useEffect(() => {
         startup();
         return () => cleanup();
-    }, [filename]);
+    }, [props.filename]);
 
     /*
-     * Initialize the loaded state and subscribe for events
+     * Set initial state and subscribe to events
      */
-    function startup() {
+    async function startup() {
         setShowNavBar(false);
         router.events.on('routeChangeStart', storeScrollPos);
     }
@@ -36,11 +37,12 @@ export default function Layout({filename}: any): JSX.Element {
         router.events.off('routeChangeStart', storeScrollPos);
     }
 
+
     /*
      * Store the scroll position when moving to a new page
      */
     function storeScrollPos() {
-        scrollPositions.current[filename] = window.scrollY;
+        scrollPositions.current[props.filename] = window.scrollY;
     };
 
     /*
@@ -48,9 +50,9 @@ export default function Layout({filename}: any): JSX.Element {
      */
     function restoreScrollPos() {
 
-        if (scrollPositions.current[filename]) {
+        if (scrollPositions.current[props.filename]) {
             window.scroll({
-                top: scrollPositions.current[filename],
+                top: scrollPositions.current[props.filename],
                 behavior: 'auto',
             });
         }
@@ -60,11 +62,11 @@ export default function Layout({filename}: any): JSX.Element {
      * Run some operations once a page has rendered
      */
     function onRendered() {
-        
+
         // Show the navbar 
         setShowNavBar(true);
 
-        // Render copy buttons for prism text
+        // Render copy buttons for prism code snippets
         addCopyToClipboardButtons(rootRef);
 
         // Restore the previous scroll position
@@ -72,9 +74,9 @@ export default function Layout({filename}: any): JSX.Element {
     }
 
     /*
-     * Load MDX, allow 50 milliseconds for it to render, then run some logic
-    */
-    const MdxContent = dynamic(() => import(`../posts/${filename}.mdx`).then((result) => {
+     * Load MDX, allow 50 milliseconds for it to render, then run post rendering logic
+     */
+    const MdxContent = dynamic(() => import(`../../posts/${props.filename}.mdx`).then((result) => {
         setTimeout(onRendered, 50);
         return result;
     }));
