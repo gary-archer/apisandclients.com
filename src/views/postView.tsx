@@ -1,16 +1,17 @@
+import {MDXProvider} from '@mdx-js/react';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Link from 'next/link';
 import {useRouter} from 'next/router'
 import {useEffect, useRef, useState} from 'react';
 import {addCopyToClipboardButtons} from '../utilities/codeProcessor';
-import {PostProps} from '../utilities/postProps';
-import Navbar from './navbar';
+import {PostViewProps} from './postViewProps';
+import {NavBar} from './navBar';
 
 /*
  * The main client side view
  */
-export function ClientView(props: PostProps): JSX.Element {
+export function PostView(props: PostViewProps): JSX.Element {
 
     const rootRef = useRef<HTMLDivElement>(null);
     const scrollPositions = useRef<{[file: string]: number}>({});
@@ -100,8 +101,10 @@ export function ClientView(props: PostProps): JSX.Element {
             </header>
             <main>
                 <article className='article'>
-                    <MdxContent />
-                    {showNavBar && <Navbar />}
+                    <MDXProvider components={{Link}}>
+                        <MdxContent />
+                    </MDXProvider>
+                    {showNavBar && <NavBar />}
                 </article>
             </main>
         </div>

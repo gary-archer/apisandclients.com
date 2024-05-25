@@ -3,7 +3,7 @@ import Link from 'next/link';
 /*
  * The client side navbar is rendered to the top right in wide views or after other content in mobile views
  */
-export default function Navbar(): JSX.Element {
+export function NavBar(): JSX.Element {
   
     return (
         <div className='navbar'> 

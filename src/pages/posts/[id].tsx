@@ -1,8 +1,9 @@
 import fs from 'fs-extra';
 import {GetStaticPathsResult, GetStaticPropsContext, GetStaticPropsResult} from 'next';
 import path from 'path';
-import {ClientView} from '../../views/clientview';
-import {PostProps} from '../../utilities/postProps';
+import {PostView} from '../../views/postView';
+import {PostViewProps} from '../../views/postViewProps';
+
 
 /*
  * Return the IDs of all blog posts when 'next build' is run
@@ -26,7 +27,7 @@ export async function getStaticPaths(): Promise<GetStaticPathsResult> {
 /*
  * Return details for the current page when 'next build' is run
  */
-export async function getStaticProps(context: GetStaticPropsContext): Promise<GetStaticPropsResult<PostProps>> {
+export async function getStaticProps(context: GetStaticPropsContext): Promise<GetStaticPropsResult<PostViewProps>> {
   
     const id = context.params.id as string;
     return {
@@ -39,9 +40,9 @@ export async function getStaticProps(context: GetStaticPropsContext): Promise<Ge
 /*
  * Run the client view for the current page
  */
-export default function Post(props: PostProps): JSX.Element {
+export default function Post(props: PostViewProps): JSX.Element {
 
     return (
-        <ClientView {...props} />
+        <PostView {...props} />
     );
 }

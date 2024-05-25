@@ -1,11 +1,11 @@
 import {GetStaticPropsResult} from 'next';
-import {PostProps} from '../utilities/postProps';
-import {ClientView} from '../views/clientview';
+import {PostView} from '../views/postView';
+import {PostViewProps} from '../views/postViewProps';
 
 /*
  * Return details for the blog's home page when 'next build' is run
  */
-export async function getStaticProps(): Promise<GetStaticPropsResult<PostProps>> {
+export async function getStaticProps(): Promise<GetStaticPropsResult<PostViewProps>> {
 
     return {
         props: {
@@ -17,9 +17,9 @@ export async function getStaticProps(): Promise<GetStaticPropsResult<PostProps>>
 /*
  * Run the client view when requested
  */
-export default function Home(props: PostProps): JSX.Element {
+export default function Home(props: PostViewProps): JSX.Element {
 
     return (
-        <ClientView {...props} />
+        <PostView {...props} />
     );
 }
