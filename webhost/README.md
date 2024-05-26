@@ -1,10 +1,12 @@
 # Web Host
 
-I use Express to simulate HTTP server behaviour locally.
+The blog is deployed as web static content, for the most portable hosting.\
+I use Express locally, as a web static content host for testing.
 
 ## AWS CloudFront
 
-My real deployment uses AWS CloudFront with the same behaviours as Express:
+The blog's real deployment is to the AWS CloudFront content delivery network.\
+CloudFront  uses the same web host logic as Express:
 
 - Compression is enabled for HTTP responses
 - A `Response Header Policy` sets security headers including a Content Security Policy
