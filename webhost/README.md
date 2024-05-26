@@ -6,38 +6,41 @@ I use Express to simulate HTTP server behaviour locally.
 
 My real deployment uses AWS CloudFront with the same behaviours as Express:
 
-- HTTP Compression
-- A `Response Header Policy` that sets security headers including a Content Security Policy
-- A Custom Error Page for invalid paths typed into the browser that renders the root path
-- A CloudFront viewer response function to set cache-control headers for images
+- Compression is enabled for HTTP responses
+- A `Response Header Policy` sets security headers including a Content Security Policy
+- A Custom Error Page is used for invalid routes, which renders the root path
+- A CloudFront viewer request function adds HTML suffixes for NEXT.js routes
+- A CloudFront viewer response function sets cache-control headers for images
 
-### Viewer Response Function
+### Viewer Request Function
 
 ```javascript
 function handler(event) {
     
     const request = event.request;
+    const requestUri = request.uri.toLowerCase();
+
+    const isPageRequest = !requestUri.match(/^.*(\.jpg|\.ico|\.js|\.json)$/);
+    if (isPageRequest && requestUri.startsWith('/posts/')) {
+        request.uri = `${requestUri}.html`;
+    }
+
+    return request;
+}
+```
+
+### Viewer Response Function
+
+```javascript
+function handler(event) {
+
+    const request = event.request;
+    const requestUri = request.uri.toLowerCase();
     const response = event.response;
     const headers = response.headers;
 
-    const classifyFile = () => {
-
-        if (request.uri.match(/^.*(\.jpg|\.ico)$/)) {
-
-            return 'cacheable';
-
-        } else if (request.uri.match(/^.*(\.js|\.json)$/)) {
-            
-            return 'noncacheable';
-
-        } else {
-
-            return 'page';
-        }
-    }
-    
-    const type = classifyFile();
-    if (type === 'cacheable') {
+    const isCacheable = requestUri.match(/^.*(\.jpg|\.ico)$/);
+    if (isCacheable) {
         
         headers["cache-control"] = {
             value: "public, max-age=31536000, immutable",
