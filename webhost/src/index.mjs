@@ -1,16 +1,52 @@
 import compression from 'compression';
 import express from 'express';
+import fs from 'fs';
 
-// Create the express app
+/*
+ * Create the express app
+ */
 const expressApp = express();
 expressApp.use(compression())
 
 const port = 3001;
 const physicalRoot = '../dist';
 
+/*
+ * Classify requests based on the file type
+ */
+function classifyFile(request, response) {
+
+    const path = request.originalUrl.toLowerCase();
+
+    const cacheableExtension = ['.jpg', '.ico'].find((ext) => {
+        return path.indexOf(`${ext}`) !== -1;
+    });
+
+    const noncacheableExtension = ['.js', '.json'].find((ext) => {
+        return path.indexOf(`${ext}`) !== -1;
+    });
+    
+    if (cacheableExtension) {
+
+        response.locals.type = 'cacheable';
+
+    } else if (noncacheableExtension) {
+
+        response.locals.type = 'noncacheable';
+
+    } else {
+
+        response.locals.type = 'page';
+    }
+}
+
+/*
+ * Add response headers for security and caching
+ */
 expressApp.use('/*', (request, response, next) => {
 
-    // Add security headers
+    classifyFile(request, response);
+
     let policy = "default-src 'none';";
     policy += " script-src 'self';";
     policy += " connect-src 'self';";
@@ -29,38 +65,40 @@ expressApp.use('/*', (request, response, next) => {
     response.setHeader('x-content-type-options', 'nosniff');
     response.setHeader('referrer-policy', 'same-origin');
 
-    // Add performance headers
-    const fullUrl = `${request.protocol}://${request.hostname}${request.originalUrl.toLowerCase()}`;
-    const path = new URL(fullUrl).pathname;
-    const extensions = [
-        '.jpg',
-        '.ico',
-        '.js',
-        '.css',
-    ];
-
-    const cacheableExtension = extensions.find((ext) => {
-        return path.endsWith(`${ext}`);
-    });
-
-    if (cacheableExtension) {
+    if (response.locals.type === 'cacheable') {
         response.setHeader('cache-control', 'public, max-age=31536000, immutable');
-    } else {
-        response.setHeader('cache-control', 'no-cache, must-revalidate');
     }
 
     next();
 });
 
-// Serve static content
+/*
+ * Serve static content
+ */
 expressApp.use('/', express.static(physicalRoot));
 
-// Handle not found routes
+/*
+ * Tell Express how to handle requests for HTML files, where a .html extension is not specified
+ */
 expressApp.get('*', (request, response) => {
-    response.sendFile(`${request.path}.html`, {root: physicalRoot});
+    
+    if (response.locals.type === 'page') {
+
+        const path = request.originalUrl.toLowerCase();
+        if (fs.existsSync(`${physicalRoot}/${path}.html`)) {
+
+            response.sendFile(`${path}.html`, {root: physicalRoot});
+
+        } else {
+
+            response.redirect('/');
+        }
+    }
 });
 
-// Start listening
+/*
+ * Start listening
+ */
 expressApp.listen(port, () => {
     console.log(`Web Host is listening on HTTP port ${port}`);
 });
