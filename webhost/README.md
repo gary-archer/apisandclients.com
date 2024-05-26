@@ -8,7 +8,10 @@ My real deployment uses AWS CloudFront with the same behaviours as Express:
 
 - HTTP Compression
 - A `Response Header Policy` that sets security headers including a Content Security Policy
-- A [CloudFront function](https://lucvandonkersgoed.com/2021/12/26/cache-control-with-cloudfront-functions) to handle `Not Found` paths and set cache-control headers for images
+- A Custom Error Page for invalid paths typed into the browser that renders the root path
+- A CloudFront viewer response function to set cache-control headers for images
+
+### Viewer Response Function
 
 ```javascript
 function handler(event) {
@@ -34,19 +37,6 @@ function handler(event) {
     }
     
     const type = classifyFile();
-    if (type === 'page' && response.statusCode === 403) {
-
-        return {
-            statusCode: 302,
-            statusDescription: "Found",
-            headers: {
-                'location': {
-                    value: '/',
-                },
-            },
-        };
-    }
-
     if (type === 'cacheable') {
         
         headers["cache-control"] = {
