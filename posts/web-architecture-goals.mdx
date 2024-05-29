@@ -16,7 +16,7 @@ OAuth also enables web apps to externalize their security to the authorization s
 
 ### Goal: Good Global Performance
 
-Most companies want good global performance for their Internet web applications. A *Content Delivery Network (CDN)* is the simplest solution for managing latency. It is harder to enable for web back ends that execute code such as cookie issuing, leading to restricted hosting options.
+Most companies want good global performance for their Internet web applications. A *Content Delivery Network (CDN)* is the simplest solution for managing latency. It is harder to enable for web backends that execute code such as cookie issuing, leading to restricted hosting options.
 
 ![Content delivery network](/images/10/cdn.jpg)
 
@@ -28,7 +28,7 @@ Single page applications must be able to interact with APIs, so need an API mess
 
 ### Goal: Prevent Browser Threats
 
-By following web security best practices, vetted by experts, companies will avoid most vulnerabilities and perform better in PEN tests. For web apps, [Cross Site Scripting (XSS)](https://owasp.org/www-community/attacks/xss/a) is a particular concern that must be addressed, separately to the OAuth implementation.
+By following web security best practices, vetted by experts, companies will avoid most vulnerabilities and perform better in security reviews. For web apps, [Cross Site Scripting (XSS)](https://owasp.org/www-community/attacks/xss/a) is a particular concern that must be addressed, separately to the OAuth implementation.
 
 If an app has XSS vulnerabilities, then an attacker may be able to access secured data in exactly the same way as the real web app. Therefore, reducing the impact of XSS exploits is now a major consideration when designing web solutions.
 
@@ -47,7 +47,7 @@ For unsecured web apps, it is common to want to achieve good *Search Engine Opti
 
 It used to be common for web apps to show a mix of content. The host application imported JavaScript from various third parties, who provided widgets and mashups, accessed using iframe or div HTML elements.
 
-Yet this type of solution now has major security concerns for the host application, related to XSS and user privacy. It is now preferred to compose applications using APIs, and for each organization to code its own views.
+Yet this type of solution now has major security concerns for the host application, related to XSS and user privacy. Any partner integrations should now be designed to run only same-site views and call only same-site APIs.
 
 ### Goal: Scalable Code
 
