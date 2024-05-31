@@ -4,31 +4,27 @@ The <Link href='/'>Home Page</Link> described OAuth in terms of overall goals f
 
 ### Goal: Best User Experience
 
-Client-side web apps separate HTML and data concerns to deliver a fast experience for end users. A *Single Page Application (SPA)* visits the server less often, and modern technologies such as React provide an ecosystem with many tools and techniques for building modern apps.
+Client-side web apps separate HTML and data concerns to deliver a fast experience for end users. A *Single Page Application (SPA)* puts the frontend in control. Modern technologies such as React provide an ecosystem with many tools and techniques for building modern apps.
 
 ![React SPA framework](/images/10/react.jpg)
 
 ### Goal: Productive Front End Development
 
-Technologies such as React are generally simpler from a development viewpoint than older website solutions. Developers couldn't usually deliver a modern user interface when having to use mechanisms such as postbacks.
-
-OAuth also enables web apps to externalize their security to the authorization server, and to libraries written by experts. This results in simplified application code, due to the outsourced security.
+Technologies such as React are generally simpler from a development viewpoint than older website solutions. Developers no longer need to battle with a web backend that dictates frontend behavior. OAuth also enables web apps to externalize their security to the authorization server, and to libraries written by experts. This results in simplified application code, due to the outsourced security.
 
 ### Goal: Good Global Performance
 
-Most companies want good global performance for their Internet web applications. A *Content Delivery Network (CDN)* is the simplest solution for managing latency. It is harder to enable for web backends that execute code such as cookie issuing, leading to restricted hosting options.
+Most companies want good global performance for their Internet web applications. A *Content Delivery Network (CDN)* is the standard solution for managing web latency. It is harder to enable for web backends that execute code such as cookie issuing, leading to restricted hosting options.
 
 ![Content delivery network](/images/10/cdn.jpg)
 
 ### Goal: Best Security Capabilities
 
-Single page applications must be able to interact with APIs, so need an API message credential. APIs must return only correct and allowed data for each user, so the user must be authenticated first.
-
-*OAuth 2.0* and *OpenID Connect* are the standards that provide the most powerful options for issuing access tokens as API message credentials, and authenticating the user in many possible ways. [OAuth for Browser Based Apps](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps) provides some best practice recommendations.
+Single page applications must be able to interact with APIs, so need an API message credential. APIs must return only correct and allowed data for each user, so the user must be authenticated first. *OAuth 2.0* and *OpenID Connect* are the standards that provide the most powerful options for issuing access tokens as API message credentials, and authenticating the user in many possible ways.
 
 ### Goal: Prevent Browser Threats
 
-By following web security best practices, vetted by experts, companies will avoid most vulnerabilities and perform better in security reviews. For web apps, [Cross Site Scripting (XSS)](https://owasp.org/www-community/attacks/xss/a) is a particular concern that must be addressed, separately to the OAuth implementation.
+By following web security best practices, vetted by experts, companies will avoid most vulnerabilities and perform better in security reviews. For web apps, [Cross Site Scripting (XSS)](https://owasp.org/www-community/attacks/xss/a) is a particular concern that must be addressed, separate to the OAuth implementation.
 
 If an app has XSS vulnerabilities, then an attacker may be able to access secured data in exactly the same way as the real web app. Therefore, reducing the impact of XSS exploits is now a major consideration when designing web solutions.
 
@@ -36,12 +32,12 @@ If an app has XSS vulnerabilities, then an attacker may be able to access secure
 
 OpenID Connect can provide multiple ways for users to sign in to an SPA, and this can include options that are both user friendly and secure. In addition, an SPA should be in full control of its usability behaviour:
 
-- <span style={{color:'green'}}>**Session Behaviour**</span>: the UI should be in control of redirects and expiry events and be able to write any code before and after
+- <span style={{color:'green'}}>**Session Behaviour**</span>: the UI should be in control of navigation and expiry events rather than being abruptly redirected
 - <span style={{color:'green'}}>**Multi-Tab Browsing**</span>: the end user should be able to use multiple browser tabs for the same application
 
 ### Goal: Good Search Results
 
-For unsecured web apps, it is common to want to achieve good *Search Engine Optimization (SEO)* results by pre-rendering data. For secured web apps that get data from APIs, such as those used in this blog, it is not usually secure to pre-render data, and protected views cannot be reached by search bots. Therefore different web architectures should be used for unsecured and secured views.
+For unsecured web apps, it is common to want to achieve good *Search Engine Optimization (SEO)* results by pre-rendering data. For secured web apps that get data from APIs, such as those used in this blog, it is not usually secure to pre-render data, and protected views cannot be reached by search bots. Therefore different web architectures should be considered for unsecured and secured views.
 
 ### Goal: Partner Web Integrations
 
@@ -66,15 +62,13 @@ Portability is often overlooked, but it is common to want to keep your options o
 
 ### This Blog's SPA Code Samples
 
-This blog's posts and the accompanying code samples will explain OAuth features and design patterns gradually, while keeping code simple:
+This blog's posts and the accompanying code samples will explain OAuth features and design patterns gradually. We will aim to achieve all of the goals in this page, but it will be a tricky journey. Once complete though, the architecture will be in a great place.
 
 | Stage | Description |
 | ----- | ----------- |
 | <Link href='/posts/basicspa-overview'>Basics</Link> | Getting an SPA, API and authorization server working together, with a developer friendly setup |
-| <Link href='/posts/improved-spa-code-sample-overview'>Updated</Link> | SPA session management for a complete user experience, and flexible API authorization in the API, to protect data |
+| <Link href='/posts/improved-spa-code-sample-overview'>Updated</Link> | SPA session management for a complete user experience, and flexible API authorization to protect data |
 | <Link href='/posts/final-spa-overview'>Final</Link> | A security hardened SPA that runs from a content delivery network and interacts with cloud deployed APIs |
-
-We will aim to achieve all of the goals in this page, but it will be a tricky journey. Once complete though, the architecture will be in a great place.
 
 ### Where Are We?
 
