@@ -44,9 +44,10 @@ When a client is configured to use an external OpenID Connect identity provider,
 - AS redirects to IDP
 - User authenticates at the IDP
 - IDP returns an authorization code to the AS
+- AS returns its own authorization code to the client
+- Client posts the AS code back to the AS to get AS tokens
 - AS posts the IDP code back to the IDP to get IDP tokens
-- AS returns an authorization code to the client
--Client posts the AS code back to the AS to get AS tokens
+- AS validates IDPs tokens, then issues its own tokens to the client
 
 ### Consistent API User Identity
 
