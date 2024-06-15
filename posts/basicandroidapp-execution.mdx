@@ -215,7 +215,7 @@ Restarting the app after a login will just load OAuth tokens from secure storage
 While the app is running we can test deep linking on an emulator via a command such as the following. If required our app performs a login or token renewal before moving to the deep link destination:
 
 ```bash
-adb shell am start -a android.intent.action.VIEW -d https://mobile.authsamples.com/basicmobileapp/deeplink/company/2
+adb shell am start -a android.intent.action.VIEW -d https://mobile.authsamples.com/basicmobileapp/deeplink/companies/2
 ```
 
 Our app uses a special activity to manage *Deep Link Forwarding* in a controlled manner:

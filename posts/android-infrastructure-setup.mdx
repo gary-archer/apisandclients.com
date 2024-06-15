@@ -130,7 +130,7 @@ com.authsamples.basicmobileapp:
 We can then run a deep link to our app on an emulator, via a command such as this:
 
 ```bash
-adb shell am start -a android.intent.action.VIEW -d https://mobile.authsamples.com/basicmobileapp/deeplink/company/2
+adb shell am start -a android.intent.action.VIEW -d https://mobile.authsamples.com/basicmobileapp/deeplink/companies/2
 ```
 
 This will result in the following undesired behaviour, where the system browser attempts to open the URL, rather than the mobile app:
