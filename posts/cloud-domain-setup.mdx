@@ -61,13 +61,14 @@ URL of the ICANN Whois Inaccuracy Complaint Form: https://www.icann.org/wicf/
 
 On this blog we use custom subdomains as follows, and getting each of these working is covered in subsequent posts:
 
-| Subdomain | Points To | Usage |
-| --------- | --------- | ----- |
-| <span style={{color:'green'}}>**login.authsamples.com**</span> | Cognito URL | Authorization Server |
-| <span style={{color:'green'}}>**www.authsamples.com**</span> | CloudFront URL | Web Content Delivery |
-| <span style={{color:'green'}}>**api.authsamples.com**</span> | API Gateway URL | API Hosting |
-| <span style={{color:'green'}}>**mobile.authsamples.com**</span> | CloudFront URL | Mobile Logins and Deep Linking |
-| <span style={{color:'green'}}>**authsamples.com**</span> | CloudFront URL | Parent Domain |
+| Subdomain | Points To |
+| --------- | --------- |
+| <span style={{color:'green'}}>**login.authsamples.com**</span> | Cognito URL |
+| <span style={{color:'green'}}>***www*.authsamples.com**</span> | CloudFront URL |
+| <span style={{color:'green'}}>**api.authsamples.com**</span> | API Gateway URL for APIs |
+| <span style={{color:'green'}}>**bff.authsamples.com**</span> | API Gateway URL for Backend for Frontend |
+| <span style={{color:'green'}}>**mobile.authsamples.com**</span> | CloudFront URL |
+| <span style={{color:'green'}}>**authsamples.com**</span> | CloudFront URL |
 
 ### Create a Wildcard SSL Certificate
 

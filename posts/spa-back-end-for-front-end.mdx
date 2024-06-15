@@ -55,47 +55,31 @@ The final SPA’s web content is deployed to an [AWS CloudFront](https://aws.ama
 
 ### API Driven Cookie Issuing
 
-Cookies issued use the following properties. They are API credentials associated to the API subdomain. They are not used on requests for web static content:
+The final SPA uses a dedicated *bff* subdomain where utility API components issue cookies with the following properties. These cookies are API credentials and are not used on requests for web static content:
 
 - HTTP-only
 - Secure
 - SameSite=strict
-- Domain=api.authsamples-dev.com
- -Path=/
+- Domain=bff.authsamples-dev.com
+- Path=/
 
 When using this technique, it is recommended that you own the entire domain, as in this blog’s example deployments. The BFF must also restrict access to precise *Trusted Web Origins*.
 
-### Designed URLs
+### Cloud Environment
 
-These are the URLs I wanted to use for the deployed AWS environment. The use of a /spa path for the SPA indicates that additional micro-UIs for the same business area could be deployed alongside it and share the same cookies. Similarly, additional APIs could be deployed off the API base URL:
+These are the URLs I designed for the deployed AWS environment. The use of a */spa* path for the SPA indicates that additional micro-frontends for the same business area could be deployed alongside it and share the same cookies. Similarly, additional APIs could be deployed off the API base URL:
 
 | Component | Base URL |
 | --------- | -------- |
-| <span style={{color:'green'}}>**SPA**</span> | https`:`//www.authsamples.com/spa/ |
+| <span style={{color:'green'}}>**SPA**</span> | https`:`//*www*.authsamples.com/spa/ |
 | <span style={{color:'green'}}>**Investments API**</span> | https`:`//api.authsamples.com/investments |
-| <span style={{color:'green'}}>**Investments API Web Route**</span> | https`:`//api.authsamples.com/investments |
-| <span style={{color:'green'}}>**OAuth Agent**</span> | https`:`//api.authsamples.com/oauth-agent |
+| <span style={{color:'green'}}>**Investments API Web Route**</span> | https`:`//bff.authsamples.com/investments |
+| <span style={{color:'green'}}>**OAuth Agent**</span> | https`:`//bff.authsamples.com/oauth-agent |
 | <span style={{color:'green'}}>**Authorization Server**</span> | https`:`//login.authsamples.com |
-
-The API URL is the main public API gateway entry point for the API, which could be in any domain. The web route is the web entry point in the API gateway and must always be in the same site as the web origin.
-
-### AWS Deployed URLs
 
 In AWS I use <Link href='/posts/serverless-api-overview'>Serverless Lambda Functions</Link> for the investments API, which is deployed behind the AWS API gateway, to provide a low cost and low maintenance online API.
 
-A key requirement was to implement web security outside of the Serverless API project. The web security should execute in the API gateway, then route internally to the Serverless API.
-
-Since this is not supported by AWS lambda technology, I instead ran token handler components at a */tokenhandler* path, leading to these URLs:
-
-| Component | Base URL |
-| --------- | -------- |
-| <span style={{color:'green'}}>**SPA**</span> | https`:`//www.authsamples.com/spa/ |
-| <span style={{color:'green'}}>**Investments API**</span> | https`:`//api.authsamples.com/investments |
-| <span style={{color:'green'}}>**Investments API Web Route**</span> | https`:`//api.authsamples.com/tokenhandler/investments |
-| <span style={{color:'green'}}>**OAuth Agent**</span> | https`:`//api.authsamples.com/tokenhandler/oauth-agent | 
-| <span style={{color:'green'}}>**Authorization Server**</span> | https`:`//login.authsamples.com |
-
-This meets the main requirement of doing the cookie related work in the web route, after which a request with a JWT access token is forwarded to the API.
+The web route must always be in the same parent site as the web origin so that the browser can send it first-party cookies. During API requests, the route decrypts cookies and forwards a JWT access token to the API.
 
 ### Web Development Environment
 
@@ -103,65 +87,43 @@ The final SPA is developed in React, and developers will run a simple *Developme
 
 | Component | Base URL |
 | --------- | -------- |
-| <span style={{color:'green'}}>**SPA**</span> | https`:`//www.authsamples-dev.com/spa/ |
-| <span style={{color:'green'}}>**Investments API**</span> | https`:`//api.authsamples.com/tokenhandler/investments |
-| <span style={{color:'green'}}>**Investments API Web Route**</span> | https`:`//api.authsamples-dev.com/tokenhandler/investments |
-| <span style={{color:'green'}}>**OAuth Agent**</span> | https`:`//api.authsamples-dev.com/oauth-agent |
+| <span style={{color:'green'}}>**SPA**</span> | https`:`//*www*.authsamples-dev.com/spa/ |
+| <span style={{color:'green'}}>**Investments API**</span> | https`:`//api.authsamples.com/investments |
+| <span style={{color:'green'}}>**Investments API Web Route**</span> | https`:`//bff.authsamples-dev.com/investments |
+| <span style={{color:'green'}}>**OAuth Agent**</span> | https`:`//bff.authsamples-dev.com/oauth-agent |
 | <span style={{color:'green'}}>**Authorization Server**</span> | https`:`//login.authsamples.com |
 
-The *authsamples-dev.com* site is partly local and partly cloud deployed. For the web origin and API routes to work together, the web domain must be aliased to localhost in the local computer’s hosts file:
+The *authsamples-dev.com* site is primarily for components that run on the local computer. Yet the *bff* subdomain is deployed to AWS, to support SPA development. For the web origin and API routes to work together, the web domain must be aliased to localhost in the local computer’s hosts file:
 
 ```markdown
 127.0.0.1 www.authsamples-dev.com
 ```
 
-Developers then run the SPA in the browser using its domain name, https`:`//www.authsamples-dev.com. There is then a pure SPA development setup, where only the React code and a browser needs to be run locally, while development also uses the recommended cookie security.
+Developers then run the SPA in the browser using its domain name, https`:`//*www*.authsamples-dev.com. There is then a pure SPA development setup, where only the React code and a browser needs to be run locally, while development also uses the recommended cookie security.
 
 ![spa](/images/210/spa.jpg)
 
 ### Full Stack Development Environment
 
-It gets more complicated when you need to run both the SPA and APIs locally, which should be avoided most of the time. When required, a local token handler must also be run. I do so in docker containers on port 444. The API then runs on port 446 on the host computer:
+It gets more complicated when you need to run both the SPA and APIs locally, which should be avoided most of the time. When required, a local backend for frontend must also be run. I do so in docker containers where an API gateway runs on port 444. The API then runs on port 446 on the host computer:
 
 | Component | Base URL |
 | --------- | -------- |
-| <span style={{color:'green'}}>**SPA**</span> | https`:`//www.authsamples-dev.com/spa/ |
-| <span style={{color:'green'}}>**Investments API**</span> | https`:`//apilocal.authsamples-dev.com:446/investments |
-| <span style={{color:'green'}}>**Investments API Web Route**</span> | https`:`//apilocal.authsamples-dev.com:444/investments |
-| <span style={{color:'green'}}>**OAuth Agent**</span> | https`:`//apilocal.authsamples-dev.com:444/oauth-agent |
+| <span style={{color:'green'}}>**SPA**</span> | https`:`//*www*.authsamples-dev.com/spa/ |
+| <span style={{color:'green'}}>**Investments API**</span> | https`:`//api.authsamples-dev.com:446/investments |
+| <span style={{color:'green'}}>**Investments API Web Route**</span> | https`:`//bfflocal.authsamples-dev.com:444/investments |
+| <span style={{color:'green'}}>**OAuth Agent**</span> | https`:`//bfflocal.authsamples-dev.com:444/oauth-agent |
 | <span style={{color:'green'}}>**Authorization Server**</span> | https`:`//login.authsamples.com |
 
-Developers must then also add the apilocal subdomain to the hosts file. An end-to-end local setup can then be run, where the local SPA calls a local API.
+Developers must then also add the *bfflocal* subdomain to the hosts file. An end-to-end local setup can then be run, where the local SPA calls a local API.
 
 ![spa and api](/images/210/spa-and-api.jpg)
-
-### Cloud Native Environments
-
-All components could also be deployed to a local Kubernetes cluster, such as that provided by [Kubernetes in Docker (KIND)](https://kind.sigs.k8s.io/). Deployed URLs then match my designed URLs:
-
-| Component | Base URL |
-| --------- | -------- |
-| <span style={{color:'green'}}>**SPA**</span> | https`:`//web.mycluster.com/spa/ |
-| <span style={{color:'green'}}>**Investments API**</span> | https`:`//api.mycluster.com/investments |
-| <span style={{color:'green'}}>**Investments API Web Route**</span> | https`:`//api.mycluster.com/investments |
-| <span style={{color:'green'}}>**OAuth Agent**</span> | https`:`//api.mycluster.com/oauth-agent |
-| <span style={{color:'green'}}>**Authorization Server**</span> | https`:`//login.mycluster.com |
-
-A cloud native deployment to AWS could use the following API URLs, that run from a cloud Kubernetes cluster. In this case the web domain’s backend would continue to use AWS CloudFront:
-
-| Component | Base URL |
-| --------- | -------- |
-| <span style={{color:'green'}}>**SPA**</span> | https`:`//www.authsamples-k8s.com/spa/ |
-| <span style={{color:'green'}}>**Investments API**</span> | https`:`//api.authsamples-k8s.com/investments |
-| <span style={{color:'green'}}>**Investments API Web Route**</span> | https`:`//api.authsamples-k8s.com/investments |
-| <span style={{color:'green'}}>**OAuth Agent**</span> | https`:`//api.authsamples-k8s.com/oauth-agent |
-| <span style={{color:'green'}}>**Authorization Server**</span> | https`:`//login.authsamples-k8s.com |
 
 ### Cookie Limits
 
 This blog follows an approach of storing tokens in encrypted HTTP-only cookies. The backend OAuth and cookie components are then stateless and easy to manage. By default, the tokens are issued by AWS Cognito, which uses a JWT format, with an RS256 signature, for all tokens.
 
-For the final SPA, [cookie size limits of desktop and mobile browsers](https://datatracker.ietf.org/doc/html/rfc2109#section-6.3) are not exceeded, but the 4KB limit for a response HTTP header is exceeded in the cookie response after a user login. Some HTTP servers, such as NGINX, would therefore need default header size limits to be increased.
+For the final SPA, [cookie size limits of desktop and mobile browsers](https://datatracker.ietf.org/doc/html/rfc2109#section-6.3) are not exceeded, but the 4KB limit for a response HTTP header might be exceeded in the cookie response after a user login. Some HTTP servers, such as NGINX, would therefore need default header size limits to be increased.
 
 To resolve this in the best way, the authorization server should issue smaller tokens. A more efficient JWT algorithm such as ES256 will reduce cookie sizes by around 50%. Issuing access and refresh tokens in an opaque reference token format will reduce them even further.
 

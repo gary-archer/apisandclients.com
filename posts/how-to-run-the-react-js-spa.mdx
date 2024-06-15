@@ -95,7 +95,7 @@ To make the browser trust the certificate’s issuer you need to import the *aut
 
 ### Step 7: Run the App
 
-Next start a second terminal window and run the following command, which will start the web host, then invoke the default browser at https`:`//www.authsamples-dev.com:
+Next start a second terminal window and run the following command, which will start the web host, then invoke the default browser at https`:`//*www*.authsamples-dev.com:
 
 ```bash
 ./run.sh
@@ -119,7 +119,7 @@ The SPA no longer uses tokens in the browser and instead uses only the latest an
 - HTTP Only
 - Secure
 - SameSite=strict
-- Domain=api.authsamples-dev.com
+- Domain=bff.authsamples-dev.com
 - Path = /
 - AES256 Encrypted
 
@@ -133,8 +133,8 @@ In earlier samples, the SPA performed its own OpenID Connect work in JavaScript.
 
 ```json
 {
-    "apiBaseUrl": "https://api.authsamples-dev.com/tokenhandler/investments",
-    "oauthAgentBaseUrl": "https://api.authsamples-dev.com/tokenhandler/oauth-agent"
+    "apiBaseUrl": "https://bff.authsamples-dev.com/investments",
+    "oauthAgentBaseUrl": "https://bff.authsamples-dev.com/oauth-agent"
 }
 ```
 
@@ -146,7 +146,7 @@ The web host now writes a number of security headers, the most interesting of wh
 content-security-policy:
   default-src 'none';
   script-src 'self';
-  connect-src 'self' https://api.authsamples-dev.com;
+  connect-src 'self' https://bff.authsamples-dev.com;
   child-src 'self';
   img-src 'self';
   style-src 'self';
@@ -177,10 +177,10 @@ Select one of this blog’s final APIs from the below list, and follow its instr
 
 ### Step B: Update DNS
 
-Next, add the local API subdomain to your computer’s hosts file:
+Next, add the API subdomain and local backend for frontend domain to your computer’s hosts file:
 
 ```markdown
-127.0.0.1  localhost www.authsamples-dev.com apilocal.authsamples-dev.com
+127.0.0.1  localhost www.authsamples-dev.com api.authsamples-dev.com bfflocal.authsamples-dev.com
 ```
 
 ### Step C: Run the SPA against a Local API
@@ -196,8 +196,8 @@ This will run the utility token handler components in a small docker compose net
 
 ```json
 {
-    "apiBaseUrl": "https://apilocal.authsamples-dev.com:444/demobrand/investments",
-    "oauthAgentBaseUrl": "https://apilocal.authsamples-dev.com:444/demobrand/oauth-agent"
+    "apiBaseUrl": "https://bff.authsamples-dev.com:444/investments",
+    "oauthAgentBaseUrl": "https://bff.authsamples-dev.com:444/oauth-agent"
 }
 ```
 
@@ -219,42 +219,7 @@ services:
     image: custom_kong:latest
     hostname: apigateway-internal.authsamples-dev.com
     extra_hosts:
-     - apilocal.authsamples-dev.com:host-gateway
-    ports:
-      - 444:8000
-    volumes:
-      - ../environments/docker-local/gateway-routes.yml:/usr/local/kong/declarative/kong.yml
-      - ../../certs/authsamples-dev.ssl.pem:/usr/local/share/certs/authsamples-dev.ssl.pem
-      - ../../certs/authsamples-dev.ssl.key:/usr/local/share/certs/authsamples-dev.ssl.key
-      - ../../certs/authsamples-dev.ca.pem:/usr/local/share/certs/authsamples-dev.ca.pem
-    environment:
-      KONG_DATABASE: 'off'
-      KONG_DECLARATIVE_CONFIG: '/usr/local/kong/declarative/kong.yml'
-      KONG_PROXY_LISTEN: '0.0.0.0:8000 ssl'
-      KONG_SSL_CERT: '/usr/local/share/certs/authsamples-dev.ssl.pem'
-      KONG_SSL_CERT_KEY: './usr/local/share/certs/authsamples-dev.ssl.key'
-      KONG_LUA_SSL_TRUSTED_CERTIFICATE: './usr/local/share/certs/authsamples-dev.ca.pem'
-      KONG_LOG_LEVEL: 'info'
-      KONG_PLUGINS: 'bundled,oauth-proxy'
-      KONG_NGINX_PROXY_PROXY_BUFFERS: '16 64k'
-      KONG_NGINX_PROXY_PROXY_BUFFER_SIZE: '64k'
-      KONG_NGINX_PROXY_LARGE_CLIENT_HEADER_BUFFERS: '16 64k'
-
-  oauthagent:
-    image: oauthagent:latest
-    hostname: oauthagent-internal.authsamples-dev.com
-    volumes:
-      - ../../certs/authsamples-dev.ssl.p12:/usr/oauth-agent/certs/authsamples-dev.ssl.p12
-    env_file:
-      - ../environments/docker-local/.env
-version: '3.8'
-services:
-
-  apigateway:
-    image: custom_kong:latest
-    hostname: apigateway-internal.authsamples-dev.com
-    extra_hosts:
-     - apilocal.authsamples-dev.com:host-gateway
+     - api.authsamples-dev.com:host-gateway
     ports:
       - 444:8000
     volumes:
@@ -299,7 +264,7 @@ CLIENT_SECRET='1d18g4v05sesjkv161borl012j009l7ooktnfs10ph9p6nkbbfl9'
 REDIRECT_URI='https://www.authsamples-dev.com/spa/'
 POST_LOGOUT_REDIRECT_URI='https://www.authsamples-dev.com/spa/loggedout'
 SCOPE='openid profile https://api.authsamples.com/investments'
-COOKIE_DOMAIN='apilocal.authsamples-dev.com'
+COOKIE_DOMAIN='bff.authsamples-dev.com'
 COOKIE_NAME_PREFIX='mycompany'
 COOKIE_ENCRYPTION_KEY='33be02f1b76feccf2c30a4847b0ad68d01756d7a9fb7f9a533b12b5d249a9c66'
 CORS_ENABLED='true'

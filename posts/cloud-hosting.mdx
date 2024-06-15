@@ -8,7 +8,7 @@ I started by <Link href='/posts/oauth-infrastructure-setup'>Defining Base URLs</
 
 | Domain | Description |
 | ------ | ----------- |
-| https`:`//www.authsamples.com | The base URL for Single Page Apps |
+| https`:`//*www*.authsamples.com | The base URL for Single Page Apps |
 | https`:`//api.authsamples.com | The API gateway base URL |
 | https`:`//login.authsamples.com | The authorization server base URL |
 | https`:`//mobile.authsamples.com | Hosts assets for mobile apps |
@@ -45,13 +45,13 @@ The API base URL supports multiple microservices hosted behind the same API gate
 
 The web base URL supports hosting multiple micro-frontends for the same business area:
 
-- https`:`//www.authsamples.com/spa1
-- https`:`//www.authsamples.com/spa2
-- https`:`//www.authsamples.com/spa3
+- https`:`//*www*.authsamples.com/spa1
+- https`:`//*www*.authsamples.com/spa2
+- https`:`//*www*.authsamples.com/spa3
 
 ### SPA Deployment
 
-The SPA deployment model simply involves copying built web resources to a *www.authsamples.com* S3 bucket:
+The SPA deployment model simply involves copying built web resources to a **www*.authsamples.com* S3 bucket:
 
 ![s3 bucket](/images/580/s3-bucket.jpg)
 

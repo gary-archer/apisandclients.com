@@ -110,7 +110,7 @@ private async _performAccessTokenRenewalViaIframeRedirect(): Promise<void> {
 
 On success a response URL of the following form is received, containing the authorization code:
 
-- https`:`//www.mycompany.com/spa?code=xxx&state=yyy
+- https`:`//*www*.mycompany.com/spa?code=xxx&state=yyy
 
 The below code then runs in the minimal iframe app to send the response URL to the SPA’s main window, which then deals with exchanging the code for tokens and storing results:
 

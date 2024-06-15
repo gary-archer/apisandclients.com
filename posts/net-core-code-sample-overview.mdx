@@ -16,15 +16,15 @@ During development the API is run as a standalone component. Either XUnit tests 
 
 | Component | Base URL |
 | --------- | -------- |
-| <span style={{color:'green'}}>**API**</span> | https`:`//apilocal.authsamples-dev.com:446 |
+| <span style={{color:'green'}}>**API**</span> | https`:`//api.authsamples-dev.com:446 |
 | <span style={{color:'green'}}>**Mock Authorization Server**</span> | https`:`//login.authsamples-dev.com:447 |
 
 ### Prerequisite 1: Domain Setup
 
-First update the hosts file to create web and API domains for local development. Include the web domain if running the SPA and API together:
+First update the hosts file to create web and API domains for local development. Include the web domain and local backend for frontend domain if running the SPA and API together:
 
 ```markdown
-127.0.0.1 apilocal.authsamples-dev.com login.authsamples-dev.com www.authsamples-dev.com
+127.0.0.1 api.authsamples-dev.com login.authsamples-dev.com www.authsamples-dev.com bfflocal.authsamples-dev.com
 ```
 
 ### Prerequisite 2: Install .NET
@@ -119,7 +119,7 @@ cd oauth.websample.final
 ./run.sh LOCALAPI
 ```
 
-This will run a number of commands in child terminals, the last of which runs the default browser at https`:`//www.authsamples-dev.com/spa. You can then sign into the SPA using this blog’s test credential:
+This will run a number of commands in child terminals, the last of which runs the default browser at https`:`//*www*.authsamples-dev.com/spa. You can then sign into the SPA using this blog’s test credential:
 
 - User: *guestuser`@`mycompany.com*
 - Password: *GuestPassword1*

@@ -16,8 +16,8 @@ In total we will use the following domains for web content and will create S3 bu
 
 | Domain | Usage |
 | ------ | ----- |
-| <span style={{color:'green'}}>**www.authsamples.com**</span> | Serving web content for an online SPA that connects to Serverless APIs |
-| <span style={{color:'green'}}>**www.authsamples-k8s.com**</span> | Serving web content for an online SPA that connects to Kubernetes APIs |
+| <span style={{color:'green'}}>***www*.authsamples.com**</span> | Serving web content for an online SPA that connects to Serverless APIs |
+| <span style={{color:'green'}}>***www*.authsamples-k8s.com**</span> | Serving web content for an online SPA that connects to Kubernetes APIs |
 | <span style={{color:'green'}}>**mobile.authsamples.com**</span> | Assets for enabling mobile logins and deep linking |
 | <span style={{color:'green'}}>**authsamples.com**</span> | The root domain will host interstitial web pages used during native app logins |
 
@@ -78,8 +78,8 @@ In development, the SPA downloads an *spa.config.json* file, containing the foll
 
 ```json
 {
-    "apiBaseUrl": "https://api.authsamples-dev.com/tokenhandler/investments",
-    "oauthAgentBaseUrl": "https://api.authsamples-dev.com/tokenhandler/oauth-agent"
+    "apiBaseUrl": "https://bff.authsamples-dev.com/investments",
+    "oauthAgentBaseUrl": "https://bff.authsamples-dev.com/oauth-agent"
 }
 ```
 
@@ -99,14 +99,14 @@ If so then a hard coded configuration object is used instead:
 
 ```typescript
 export const productionConfiguration = {
-    apiBaseUrl: 'https://api.authsamples.com/tokenhandler/investments',
-    oauthAgentBaseUrl: 'https://api.authsamples.com/tokenhandler/oauth-agent' } 
-as Configuration; 
+    apiBaseUrl: 'https://bff.authsamples.com/investments',
+    oauthAgentBaseUrl: 'https://bff.authsamples.com/oauth-agent'
+} as Configuration; 
 ```
 
 ### Web Content Uploads
 
-Now that the app is built in the preferred way we can focus on the actual cloud deployment, which starts with creating an S3 bucket. I followed the AWS wizard and used a subdomain of *www.authsamples.com*:
+Now that the app is built in the preferred way we can focus on the actual cloud deployment, which starts with creating an S3 bucket. I followed the AWS wizard and used a subdomain of **www*.authsamples.com*:
 
 ![s3 bucket creation](/images/610/s3-bucket-creation.jpg)
 
@@ -132,7 +132,7 @@ Once the upload completes a number of files exist in the S3 bucket, where the SP
 
 Our SPA’s default URL has this generated HTTP URL:
 
-- http`:`//www.authsamples.com.s3-website.eu-west-2.amazonaws.com
+- http`:`//*www*.authsamples.com.s3-website.eu-west-2.amazonaws.com
 
 If we try to browse to the SPA we get an access denied error, since only AWS CloudFront will be authorized to access S3 resources directly:
 
@@ -154,7 +154,7 @@ I used the most standard and up to date options for the distribution:
 
 ![cloudfront distro options](/images/610/cloudfront-distro-options.jpg)
 
-I then added *www.authsamples.com* as an alternative name and assigned the certificate created earlier:
+I then added **www*.authsamples.com* as an alternative name and assigned the certificate created earlier:
 
 ![cloudfront dns](/images/610/cloudfront-dns.jpg)
 
@@ -201,7 +201,7 @@ To use the friendly domain named I returned to Route 53 and added an *A Record* 
 
 The deployed SPA is then available at this cloud URL:
 
-- https`:`//www.authsamples.com/
+- https`:`//*www*.authsamples.com/
 
 By default though, navigating to React paths will lead to *404 Not Found* errors. To resolve this, a small amount of *web back end code* needs to run in the CDN as one of its behaviours.
 
@@ -220,12 +220,12 @@ These are configured under the *Behaviours* settings of the CloudFront distribut
 
 ![csp](/images/610/csp.jpg)
 
-The most interesting setting is the [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) which I set to this string to protect against common threats and to only allow the SPA’s JavaScript to make remote calls for its web origin and API endpoints:
+The most interesting setting is the [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) which I set to this string to protect against common threats and to only allow the SPA’s JavaScript to make remote calls to its web host and backend for frontend:
 
 ```markdown
 default-src 'none';
 script-src 'self';
-connect-src 'self' https://api.authsamples.com;
+connect-src 'self' https://bff.authsamples.com;
 child-src 'self';
 img-src 'self';
 style-src 'self';

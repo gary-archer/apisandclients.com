@@ -16,15 +16,15 @@ During development the API is run as a standalone component. Either mocha tests 
 
 | Component | Base URL |
 | --------- | -------- |
-| <span style={{color:'green'}}>**API**</span> | https`:`//apilocal.authsamples-dev.com:446 |
+| <span style={{color:'green'}}>**API**</span> | https`:`//api.authsamples-dev.com:446 |
 | <span style={{color:'green'}}>**Mock Authorization Server**</span> | https`:`//login.authsamples-dev.com:447 |
 
 ### Prerequisite 1: Domain Setup
 
-First update the hosts file to create domains for local development. Include the web domain if running the SPA and API together:
+First update the hosts file to create domains for local development. Include the web domain and local backend for frontend domain if running the SPA and API together:
 
 ```markdown
-127.0.0.1 apilocal.authsamples-dev.com login.authsamples-dev.com www.authsamples-dev.com
+127.0.0.1 api.authsamples-dev.com login.authsamples-dev.com www.authsamples-dev.com bfflocal.authsamples-dev.com
 ```
 
 ### Prerequisite 2: Install Node.js
@@ -33,7 +33,7 @@ Download [Node.js](https://nodejs.org/en/download) for your operating system, wh
 
 ### Prerequisite 3: Install Docker
 
-To run API tests, or to run the full SPA and API solution, utility components are run in docker. Therefore ensure that a local docker engine such as [Docker Desktop](https://www.docker.com/products/docker-desktop) is installed.
+To run API tests, or to run the full SPA and API solution, utility components are run in docker. Therefore ensure that a local docker engine such as [Docker Desktop](https:/www/.docker.com/products/docker-desktop) is installed.
 
 ### Step 1: Build and Run the API
 
