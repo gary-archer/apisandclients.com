@@ -78,8 +78,7 @@ In development, the SPA downloads an *spa.config.json* file, containing the foll
 
 ```json
 {
-    "apiBaseUrl": "https://bff.authsamples-dev.com/investments",
-    "oauthAgentBaseUrl": "https://bff.authsamples-dev.com/oauth-agent"
+    "bffBaseUrl": "https://bff.authsamples-dev.com"
 }
 ```
 
@@ -99,8 +98,7 @@ If so then a hard coded configuration object is used instead:
 
 ```typescript
 export const productionConfiguration = {
-    apiBaseUrl: 'https://bff.authsamples.com/investments',
-    oauthAgentBaseUrl: 'https://bff.authsamples.com/oauth-agent'
+    bffBaseUrl: 'https://bff.authsamples.com',
 } as Configuration; 
 ```
 
@@ -201,7 +199,7 @@ To use the friendly domain named I returned to Route 53 and added an *A Record* 
 
 The deployed SPA is then available at this cloud URL:
 
-- https`:`//*www*.authsamples.com/
+- https://www.authsamples.com/
 
 By default though, navigating to React paths will lead to *404 Not Found* errors. To resolve this, a small amount of *web back end code* needs to run in the CDN as one of its behaviours.
 

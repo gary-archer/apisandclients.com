@@ -422,7 +422,7 @@ public async login(currentLocation: string): Promise<void> {
 
     try {
 
-        const response = await this._callOAuthAgent('POST', '/login/start');
+        const response = await this._callOAuthAgent('POST', 'login/start');
         HtmlStorageHelper.preLoginLocation = currentLocation;
         location.href = response.authorizationRequestUrl;
 
@@ -451,7 +451,7 @@ public async handlePageLoad(): Promise<string | null> {
                 };
                 const response = await this._callOAuthAgent(
                     'POST',
-                    '/login/end',
+                    'login/end',
                     request) as EndLoginResponse;
 
                 if (!response.handled || !response.csrf) {

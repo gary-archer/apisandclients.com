@@ -129,18 +129,17 @@ You can use browser tools to view secure cookies issued, which are for the API s
 
 ### Step 10: View Updated SPA Configuration
 
-In earlier samples, the SPA performed its own OpenID Connect work in JavaScript. This work is now done by remote token handler components, and the SPA code and configuration is therefore simplified:
+In earlier samples, the SPA performed its own OpenID Connect work in JavaScript. This work is now done by remote token handler components, and the SPA code and configuration is therefore reduced to a backend for frontend base URL:
 
 ```json
 {
-    "apiBaseUrl": "https://bff.authsamples-dev.com/investments",
-    "oauthAgentBaseUrl": "https://bff.authsamples-dev.com/oauth-agent"
+    "bffBaseUrl": "https://bff.authsamples-dev.com"
 }
 ```
 
 ### Step 11: Understand Web Security Headers
 
-The web host now writes a number of security headers, the most interesting of which is the *Content Security Policy*. This has the following values, since the SPA now only makes remote calls via its API domain:
+The web host now writes a number of security headers, the most interesting of which is the *Content Security Policy*. This has the following values, since the SPA now only makes remote calls via its backend for frontend:
 
 ```markdown
 content-security-policy:
@@ -192,12 +191,11 @@ To make the SPA connect to one of this blog’s final APIs, first ensure that th
 ./run.sh LOCALAPI
 ```
 
-This will run the utility token handler components in a small docker compose network. The SPA’s configuration will then be updated as follows, to route to the API via the local token handler rather than the cloud one:
+This will run the utility token handler components in a small docker compose network. The SPA’s configuration will then be updated as follows, to route to the API via the local backend for frontend rather than the cloud one:
 
 ```json
 {
-    "apiBaseUrl": "https://bff.authsamples-dev.com:444/investments",
-    "oauthAgentBaseUrl": "https://bff.authsamples-dev.com:444/oauth-agent"
+    "bffBaseUrl": "https://bfflocal.authsamples-dev.com:444"
 }
 ```
 
@@ -264,7 +262,7 @@ CLIENT_SECRET='1d18g4v05sesjkv161borl012j009l7ooktnfs10ph9p6nkbbfl9'
 REDIRECT_URI='https://www.authsamples-dev.com/spa/'
 POST_LOGOUT_REDIRECT_URI='https://www.authsamples-dev.com/spa/loggedout'
 SCOPE='openid profile https://api.authsamples.com/investments'
-COOKIE_DOMAIN='bff.authsamples-dev.com'
+COOKIE_DOMAIN='bfflocal.authsamples-dev.com'
 COOKIE_NAME_PREFIX='mycompany'
 COOKIE_ENCRYPTION_KEY='33be02f1b76feccf2c30a4847b0ad68d01756d7a9fb7f9a533b12b5d249a9c66'
 CORS_ENABLED='true'
