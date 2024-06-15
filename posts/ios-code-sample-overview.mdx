@@ -149,13 +149,13 @@ A deep link could point to an unauthorized or invalid resource, as demonstrated 
 https://mobile.authsamples.com/basicmobileapp/deeplink
 
 // A deep link to the transactions for company 2
-https://mobile.authsamples.com/basicmobileapp/deeplink/company/2
+https://mobile.authsamples.com/basicmobileapp/deeplink/companies/2
 
 // A deep link to an unauthorized resource
-https://mobile.authsamples.com/basicmobileapp/deeplink/company/3
+https://mobile.authsamples.com/basicmobileapp/deeplink/companies/3
 
 // A deep link to an invalid resource
-https://mobile.authsamples.com/basicmobileapp/deeplink/company/abc
+https://mobile.authsamples.com/basicmobileapp/deeplink/companies/abc
 ```
 
 In both cases our API will deny access gracefully by returning known error codes to the mobile app, which will then navigate back to the home page, so that the end user is not impacted.
