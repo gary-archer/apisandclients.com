@@ -28,7 +28,7 @@ You will need to ensure that this blog’s web development domain points to your
 Add entries as follows to represent the domain that serves the SPA’s static web content:
 
 ```markdown
-127.0.0.1  localhost web.authsamples-dev.com
+127.0.0.1  localhost www.authsamples-dev.com
 ```
 
 ### Step 3: View Components in an IDE
@@ -95,7 +95,7 @@ To make the browser trust the certificate’s issuer you need to import the *aut
 
 ### Step 7: Run the App
 
-Next start a second terminal window and run the following command, which will start the web host, then invoke the default browser at https`:`//web.authsamples-dev.com:
+Next start a second terminal window and run the following command, which will start the web host, then invoke the default browser at https`:`//www.authsamples-dev.com:
 
 ```bash
 ./run.sh
@@ -180,7 +180,7 @@ Select one of this blog’s final APIs from the below list, and follow its instr
 Next, add the local API subdomain to your computer’s hosts file:
 
 ```markdown
-127.0.0.1  localhost web.authsamples-dev.com apilocal.authsamples-dev.com
+127.0.0.1  localhost www.authsamples-dev.com apilocal.authsamples-dev.com
 ```
 
 ### Step C: Run the SPA against a Local API
@@ -288,7 +288,7 @@ The OAuth agent uses the following environment variables to interact with the au
 
 ```bash
 PORT=8000
-TRUSTED_WEB_ORIGIN='https://web.authsamples-dev.com'
+TRUSTED_WEB_ORIGIN='https://www.authsamples-dev.com'
 ISSUER='https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9'
 AUTHORIZE_ENDPOINT='https://login.authsamples.com/oauth2/authorize'
 TOKEN_ENDPOINT='https://login.authsamples.com/oauth2/token'
@@ -296,8 +296,8 @@ USERINFO_ENDPOINT='https://login.authsamples.com/oauth2/userInfo'
 LOGOUT_ENDPOINT='https://login.authsamples.com/logout'
 CLIENT_ID='7q5pope8rki7okarj2u8l4in7o'
 CLIENT_SECRET='1d18g4v05sesjkv161borl012j009l7ooktnfs10ph9p6nkbbfl9'
-REDIRECT_URI='https://web.authsamples-dev.com/spa/'
-POST_LOGOUT_REDIRECT_URI='https://web.authsamples-dev.com/spa/loggedout'
+REDIRECT_URI='https://www.authsamples-dev.com/spa/'
+POST_LOGOUT_REDIRECT_URI='https://www.authsamples-dev.com/spa/loggedout'
 SCOPE='openid profile https://api.authsamples.com/investments'
 COOKIE_DOMAIN='apilocal.authsamples-dev.com'
 COOKIE_NAME_PREFIX='mycompany'

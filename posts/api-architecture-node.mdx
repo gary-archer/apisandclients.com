@@ -24,7 +24,7 @@ During development the API is run as a standalone component. Either mocha tests 
 First update the hosts file to create domains for local development. Include the web domain if running the SPA and API together:
 
 ```markdown
-127.0.0.1 apilocal.authsamples-dev.com login.authsamples-dev.com web.authsamples-dev.com
+127.0.0.1 apilocal.authsamples-dev.com login.authsamples-dev.com www.authsamples-dev.com
 ```
 
 ### Prerequisite 2: Install Node.js
@@ -107,7 +107,7 @@ cd oauth.websample.final
 ./run.sh LOCALAPI
 ```
 
-The *run.sh* script executes a number of commands in child terminals, to run the default browser at https`:`//web.authsamples-dev.com/spa. You can then sign into the SPA using this blog’s test credential:
+The *run.sh* script executes a number of commands in child terminals, to run the default browser at https`:`//www.authsamples-dev.com/spa. You can then sign into the SPA using this blog’s test credential:
 
 - User: *guestuser`@`mycompany.com*
 - Password: *GuestPassword1*

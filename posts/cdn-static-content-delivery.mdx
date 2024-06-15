@@ -16,8 +16,8 @@ In total we will use the following domains for web content and will create S3 bu
 
 | Domain | Usage |
 | ------ | ----- |
-| <span style={{color:'green'}}>**web.authsamples.com**</span> | Serving web content for an online SPA that connects to Serverless APIs |
-| <span style={{color:'green'}}>**web.authsamples-k8s.com**</span> | Serving web content for an online SPA that connects to Kubernetes APIs |
+| <span style={{color:'green'}}>**www.authsamples.com**</span> | Serving web content for an online SPA that connects to Serverless APIs |
+| <span style={{color:'green'}}>**www.authsamples-k8s.com**</span> | Serving web content for an online SPA that connects to Kubernetes APIs |
 | <span style={{color:'green'}}>**mobile.authsamples.com**</span> | Assets for enabling mobile logins and deep linking |
 | <span style={{color:'green'}}>**authsamples.com**</span> | The root domain will host interstitial web pages used during native app logins |
 
@@ -106,7 +106,7 @@ as Configuration;
 
 ### Web Content Uploads
 
-Now that the app is built in the preferred way we can focus on the actual cloud deployment, which starts with creating an S3 bucket. I followed the AWS wizard and used a subdomain of *web.authsamples.com*:
+Now that the app is built in the preferred way we can focus on the actual cloud deployment, which starts with creating an S3 bucket. I followed the AWS wizard and used a subdomain of *www.authsamples.com*:
 
 ![s3 bucket creation](/images/610/s3-bucket-creation.jpg)
 
@@ -117,13 +117,13 @@ I then activated *Static Website Hosting* and chose *index.html* as the default 
 When the *deploy.sh* script is run, it simply invokes *aws s3 cp* to copy the *dist* folder containing HTML assets up to AWS:
 
 ```markdown
-upload: .package/favicon.ico to s3://web.authsamples.com/favicon.ico
-upload: .package/spa/app.css to s3://web.authsamples.com/spa/app.css
-upload: .package/spa/index.html to s3://web.authsamples.com/spa/index.html
-upload: .package/spa/bootstrap.min.css to s3://web.authsamples.com/spa/bootstrap.min.css
-upload: .package/spa/app.bundle.js to s3://web.authsamples.com/spa/app.bundle.js
-upload: .package/spa/react.bundle.js to s3://web.authsamples.com/spa/react.bundle.js
-upload: .package/spa/vendor.bundle.js to s3://web.authsamples.com/spa/vendor.bundle.js
+upload: .package/favicon.ico to s3://www.authsamples.com/favicon.ico
+upload: .package/spa/app.css to s3://www.authsamples.com/spa/app.css
+upload: .package/spa/index.html to s3://www.authsamples.com/spa/index.html
+upload: .package/spa/bootstrap.min.css to s3://www.authsamples.com/spa/bootstrap.min.css
+upload: .package/spa/app.bundle.js to s3://www.authsamples.com/spa/app.bundle.js
+upload: .package/spa/react.bundle.js to s3://www.authsamples.com/spa/react.bundle.js
+upload: .package/spa/vendor.bundle.js to s3://www.authsamples.com/spa/vendor.bundle.js
 ```
 
 Once the upload completes a number of files exist in the S3 bucket, where the SPA files are located in an *spa* folder. Other micro-frontends could be hosted alongside these as the web architecture grows.
@@ -132,7 +132,7 @@ Once the upload completes a number of files exist in the S3 bucket, where the SP
 
 Our SPA’s default URL has this generated HTTP URL:
 
-- http`:`//web.authsamples.com.s3-website.eu-west-2.amazonaws.com
+- http`:`//www.authsamples.com.s3-website.eu-west-2.amazonaws.com
 
 If we try to browse to the SPA we get an access denied error, since only AWS CloudFront will be authorized to access S3 resources directly:
 
@@ -154,7 +154,7 @@ I used the most standard and up to date options for the distribution:
 
 ![cloudfront distro options](/images/610/cloudfront-distro-options.jpg)
 
-I then added *web.authsamples.com* as an alternative name and assigned the certificate created earlier:
+I then added *www.authsamples.com* as an alternative name and assigned the certificate created earlier:
 
 ![cloudfront dns](/images/610/cloudfront-dns.jpg)
 
@@ -176,7 +176,7 @@ I then selected *Copy Policy* and pasted the following JSON data into the permis
                 "Service": "cloudfront.amazonaws.com"
             },
             "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::web.authsamples.com/*",
+            "Resource": "arn:aws:s3:::www.authsamples.com/*",
             "Condition": {
                 "StringEquals": {
                     "AWS:SourceArn": "arn:aws:cloudfront::090109105180:distribution/E1P4XPOL1PNE6Z"
@@ -201,7 +201,7 @@ To use the friendly domain named I returned to Route 53 and added an *A Record* 
 
 The deployed SPA is then available at this cloud URL:
 
-- https`:`//web.authsamples.com/
+- https`:`//www.authsamples.com/
 
 By default though, navigating to React paths will lead to *404 Not Found* errors. To resolve this, a small amount of *web back end code* needs to run in the CDN as one of its behaviours.
 

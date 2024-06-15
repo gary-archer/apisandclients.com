@@ -71,7 +71,7 @@ These are the URLs I wanted to use for the deployed AWS environment. The use of 
 
 | Component | Base URL |
 | --------- | -------- |
-| <span style={{color:'green'}}>**SPA**</span> | https`:`//web.authsamples.com/spa/ |
+| <span style={{color:'green'}}>**SPA**</span> | https`:`//www.authsamples.com/spa/ |
 | <span style={{color:'green'}}>**Investments API**</span> | https`:`//api.authsamples.com/investments |
 | <span style={{color:'green'}}>**Investments API Web Route**</span> | https`:`//api.authsamples.com/investments |
 | <span style={{color:'green'}}>**OAuth Agent**</span> | https`:`//api.authsamples.com/oauth-agent |
@@ -89,7 +89,7 @@ Since this is not supported by AWS lambda technology, I instead ran token handle
 
 | Component | Base URL |
 | --------- | -------- |
-| <span style={{color:'green'}}>**SPA**</span> | https`:`//web.authsamples.com/spa/ |
+| <span style={{color:'green'}}>**SPA**</span> | https`:`//www.authsamples.com/spa/ |
 | <span style={{color:'green'}}>**Investments API**</span> | https`:`//api.authsamples.com/investments |
 | <span style={{color:'green'}}>**Investments API Web Route**</span> | https`:`//api.authsamples.com/tokenhandler/investments |
 | <span style={{color:'green'}}>**OAuth Agent**</span> | https`:`//api.authsamples.com/tokenhandler/oauth-agent | 
@@ -103,7 +103,7 @@ The final SPA is developed in React, and developers will run a simple *Developme
 
 | Component | Base URL |
 | --------- | -------- |
-| <span style={{color:'green'}}>**SPA**</span> | https`:`//web.authsamples-dev.com/spa/ |
+| <span style={{color:'green'}}>**SPA**</span> | https`:`//www.authsamples-dev.com/spa/ |
 | <span style={{color:'green'}}>**Investments API**</span> | https`:`//api.authsamples.com/tokenhandler/investments |
 | <span style={{color:'green'}}>**Investments API Web Route**</span> | https`:`//api.authsamples-dev.com/tokenhandler/investments |
 | <span style={{color:'green'}}>**OAuth Agent**</span> | https`:`//api.authsamples-dev.com/oauth-agent |
@@ -112,10 +112,10 @@ The final SPA is developed in React, and developers will run a simple *Developme
 The *authsamples-dev.com* site is partly local and partly cloud deployed. For the web origin and API routes to work together, the web domain must be aliased to localhost in the local computer’s hosts file:
 
 ```markdown
-127.0.0.1 web.authsamples-dev.com
+127.0.0.1 www.authsamples-dev.com
 ```
 
-Developers then run the SPA in the browser using its domain name, https`:`//web.authsamples-dev.com. There is then a pure SPA development setup, where only the React code and a browser needs to be run locally, while development also uses the recommended cookie security.
+Developers then run the SPA in the browser using its domain name, https`:`//www.authsamples-dev.com. There is then a pure SPA development setup, where only the React code and a browser needs to be run locally, while development also uses the recommended cookie security.
 
 ![spa](/images/210/spa.jpg)
 
@@ -125,7 +125,7 @@ It gets more complicated when you need to run both the SPA and APIs locally, whi
 
 | Component | Base URL |
 | --------- | -------- |
-| <span style={{color:'green'}}>**SPA**</span> | https`:`//web.authsamples-dev.com/spa/ |
+| <span style={{color:'green'}}>**SPA**</span> | https`:`//www.authsamples-dev.com/spa/ |
 | <span style={{color:'green'}}>**Investments API**</span> | https`:`//apilocal.authsamples-dev.com:446/investments |
 | <span style={{color:'green'}}>**Investments API Web Route**</span> | https`:`//apilocal.authsamples-dev.com:444/investments |
 | <span style={{color:'green'}}>**OAuth Agent**</span> | https`:`//apilocal.authsamples-dev.com:444/oauth-agent |
@@ -151,7 +151,7 @@ A cloud native deployment to AWS could use the following API URLs, that run from
 
 | Component | Base URL |
 | --------- | -------- |
-| <span style={{color:'green'}}>**SPA**</span> | https`:`//web.authsamples-k8s.com/spa/ |
+| <span style={{color:'green'}}>**SPA**</span> | https`:`//www.authsamples-k8s.com/spa/ |
 | <span style={{color:'green'}}>**Investments API**</span> | https`:`//api.authsamples-k8s.com/investments |
 | <span style={{color:'green'}}>**Investments API Web Route**</span> | https`:`//api.authsamples-k8s.com/investments |
 | <span style={{color:'green'}}>**OAuth Agent**</span> | https`:`//api.authsamples-k8s.com/oauth-agent |
