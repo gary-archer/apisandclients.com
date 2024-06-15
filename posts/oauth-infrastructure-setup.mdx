@@ -8,7 +8,7 @@ First it is worth understanding where an authorization server fits in an OAuth a
 
 | Development Base URL | Description |
 | -------------------- | ----------- |
-| https`:`//web.mycompany.com | A base URL for static web content
+| https`:`//www.mycompany.com | A base URL for static web content
 | https`:`//api.mycompany.com | A base URL for APIs
 | https`:`//login.mycompany.com | The OAuth Authorization Server
 
@@ -22,7 +22,7 @@ On a development computer you can configure working domain names by just editing
 Add entries such as the following to represent development domains, which is just another way of using *localhost*, but with real world URLs:
 
 ```markdown
-127.0.0.1 web.mycompany.com api.mycompany.com login.mycompany.com
+127.0.0.1 www.mycompany.com api.mycompany.com login.mycompany.com
 ```
 
 This blog’s <Link href='/posts/final-spa-overview'>Final SPA</Link> will require a same site relationship between the web origin and API entry points called from the browser, and the development base URLs will change.
@@ -132,7 +132,7 @@ This blog's early SPAs point to Cognito’s issuer base URL and the SPA’s secu
     "oauth": {
         "authority":        "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9",
         "clientId":         "62raqvncbki418n3ckl59uf0f4",
-        "redirectUri":      "https://web.mycompany.com/spa",
+        "redirectUri":      "https://www.mycompany.com/spa",
         "scope":            "openid profile"
     }
 }
@@ -145,7 +145,7 @@ The OAuth configuration for APIs is based on how OAuth access tokens are validat
     "api": {
         "port": 443,
         "trustedOrigins": [
-            "https://web.mycompany.com"
+            "https://www.mycompany.com"
         ],
         "useProxy": false,
         "proxyUrl": "http://127.0.0.1:8888"

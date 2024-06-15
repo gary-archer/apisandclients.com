@@ -14,7 +14,7 @@ This blog recommends an <Link href='/posts/oauth-infrastructure-setup'>OAuth Dev
 
 | Component	| Base URL |
 | --------- | -------- |
-| <span style={{color:'green'}}>**SPA**</span> | https`:`//web.mycompany.com |
+| <span style={{color:'green'}}>**SPA**</span> | https`:`//www.mycompany.com |
 | <span style={{color:'green'}}>**API**</span> | https`:`//api.mycompany.com |
 | <span style={{color:'green'}}>**Authorization Server**</span> | https`:`//login.mycompany.com |
 
@@ -116,7 +116,7 @@ Login requests can sometimes result in errors being returned, so let’s see an 
     "oauth": {
         "authority":        "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_qqJgVeuTn",
         "clientId":         "6tg0qglddpvqh74k3jbf1mmj64",
-        "redirectUri":      "https://web.mycompany.com/spa",
+        "redirectUri":      "https://www.mycompany.com/spa",
         "scope":            "openid profile xxx"
     }
 }
@@ -213,7 +213,7 @@ I recommend testing these scenarios to ensure that the API returns useful error 
     "api": {
         "port": 443,
         "trustedOrigins": [
-            "https://web.mycompany.com"
+            "https://www.mycompany.com"
         ],
         "useProxy": false,
         "proxyUrl": "http://127.0.0.1:8888"
