@@ -21,7 +21,7 @@ The ones that run locally use a domain called *authsamples-dev.com*. This is a f
 | <span style={{color:'green'}}>**Windows**</span> | c:\system32\drivers\etc\hosts |
 | <span style={{color:'green'}}>**macOS / Linux**</span> | /etc/hosts |
 
-For the first code sample, the following subdomains were configured. By using real-world URLs on a development computer you can design your production deployments and identify any technical issues early:
+For the first code sample, the following subdomains were configured. By using real-world URLs on a development computer you can identify and fix deployment issues early:
 
 ```markdown
 127.0.0.1 www.authsamples-dev.com api.authsamples-dev.com
@@ -29,7 +29,7 @@ For the first code sample, the following subdomains were configured. By using re
 
 ### Step 2: Choose an Initial Authorization Server
 
-By default, this blog’s code samples use my personal AWS Cognito system at `https://login.authsamples.com`. Doing so provides a low cost and convenient way to quickly run this blog's code samples. It is quite a basic authorization server, but good enough to get started with.
+By default, this blog’s code samples use my personal AWS Cognito system at `https://login.authsamples.com`. Anyone can run a frontend code sample to execute all OAuth lifecycle events.
 
 ![authorization server domain](/images/80/domain.jpg)
 
