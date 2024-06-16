@@ -187,7 +187,7 @@ Multiple views could throw this error at the same time. Therefore a *ViewModelCo
 
 ### Security Libraries
 
-The OAuth work for the UI must then be performed, to trigger an OpenID Connect code flow. This is done by plugging in a third party library, or backend for frontend in the case of the SPA. By default, I aim to use a respected standards based library.
+The OAuth work for the UI must then be performed, to trigger an OpenID Connect code flow. This is done by plugging in a third party library, or backend for frontend in the case of the SPA. By default, I aim to use a respected standards-based library.
 
 This blog’s final UIs  wrap use of libraries in an *AuthenticatorImpl* class. In the event of library limitations or problems it could be swapped out, without impacting the rest of the app. If required, the logic to implement a code flow and other lifecycle operations is fairly easy to code manually.
 

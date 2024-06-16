@@ -1,35 +1,35 @@
-# Initial Authorization Server
+# OAuth Infrastructure Setup
 
-Previously we discussed factors to consider when designing <Link href='/posts/jwt-access-token-validation'>JWT Access Token Validation</Link>. Next we will describe how to get started with an authorization server.
+The previous post explained <Link href='/posts/jwt-access-token-validation'>JWT Access Token Validation</Link> for developers. Next, let's show how to get started with your OAuth infrastructure, including the main security component, the authorization server.
 
 ### Step 1: Define Base URLs
 
-First it is worth understanding where an authorization server fits in an OAuth architecture. I like to start by designing base URLs. The following logical values are used for this blog’s code samples. For a real company the three components may be hosted in unrelated domains.
+When working with OAuth, I recommend designing URLs for a development computer, to enable the most productive setups. The following base URLs are used for this blog’s code samples:
 
 | Development Base URL | Description |
 | -------------------- | ----------- |
-| https`:`//*www*.authsamples-dev.com | A base URL for static web content
-| https`:`//api.authsamples-dev.com | A base URL for APIs
-| https`:`//login.authsamples.com | The OAuth Authorization Server
+| `https://www.authsamples-dev.com` | A base URL for web applications |
+| `https://api.authsamples-dev.com` | A base URL for APIs |
+| `https://login.authsamples.com` | The OAuth Authorization Server |
 
-On a development computer you can configure working domain names by just editing the hosts file, which exists at one of these locations:
+For this blog, I purchased a <Link href='/posts/cloud-domain-setup'>cloud domain</Link> called *authsamples.com* and used various subdomains for different purposes. When you run this blog's code samples, you use a mix of components, some of which run on your local computer and some of which run in the cloud.
+
+The ones that run locally use a domain called *authsamples-dev.com*. This is a fictional domain that is an alias to your local loopback address of `http://127.0.0.1`. You configure subdomain aliases in your local computer's *hosts file*, at one of these locations:
 
 | Operating System | Path |
 | ---------------- | ---- |
 | <span style={{color:'green'}}>**Windows**</span> | c:\system32\drivers\etc\hosts |
 | <span style={{color:'green'}}>**macOS / Linux**</span> | /etc/hosts |
 
-Add entries such as the following to represent development domains, which is just another way of using *localhost*, but with real world URLs:
+For the first code sample, the following subdomains were configured. By using real-world URLs on a development computer you can design your production deployments and identify any technical issues early:
 
 ```markdown
 127.0.0.1 www.authsamples-dev.com api.authsamples-dev.com
 ```
 
-This blog’s <Link href='/posts/final-spa-overview'>Final SPA</Link> will require a same site relationship between the web origin and API entry points called from the browser, and the development base URLs will change.
-
 ### Step 2: Choose an Initial Authorization Server
 
-By default, this blog’s code samples use my personal AWS Cognito system at https`:`//login.authsamples.com. Much of the difficult security work for SPAs and APIs are outsourced to this component.
+By default, this blog’s code samples use my personal AWS Cognito system at `https://login.authsamples.com`. Doing so provides a low cost and convenient way to quickly run this blog's code samples. It is quite a basic authorization server, but good enough to get started with.
 
 ![authorization server domain](/images/80/domain.jpg)
 
@@ -38,15 +38,15 @@ A key point when starting with OAuth is to point your apps to HTTPS endpoints de
 | Type | Description |
 | ---- | ----------- |
 | <span style={{color:'green'}}>**Cloud Hosted**</span> | A cloud platform’s authorization server, such as those provided by AWS or Microsoft, with internet OAuth endpoints |
-| <span style={{color:'green'}}>**Cloud Native**</span> | A docker based authorization server, with local OAuth endpoints |
+| <span style={{color:'green'}}>**Cloud Native**</span> | A docker based authorization server, with local OAuth endpoints and better visibility into how the authorization server works |
 
 Either provides a simple and convenient option when getting started with OAuth. This blog will show how to integrate user facing apps and APIs, using portable code. A useful goal is for these components to be compliant with any standards-based authorization server.
 
 ### Step 3: Create the User Accounts Schema
 
-The authorization server will store <Link href='/posts/user-data'>core user identity fields</Link>. It will also issue some of these user attributes as claims to access tokens. APIs will then authorize using received claims.
+You configure the authorization server to store <Link href='/posts/user-data'>core user identity fields</Link>. The authorization server also issues some of these user attributes as claims to access tokens. APIs then authorize using token claims.
 
-For this blog I set up the authorization server to authenticate users with an email and password, and to also store name details. Custom fields called manager_id and role were added. The values assigned to users will be issued to access tokens later:
+For this blog I configured the authorization server to authenticate users with an email and password, and also to store name details. I also added custom fields called *manager_id* and *role* that this blog's APIs will use for authorization.
 
 ![custom claims](/images/80/custom-claims.jpg)
 
@@ -66,7 +66,7 @@ This blog’s frontend code samples all perform an authorization code flow and t
 
 ### Step 6: Locate Open ID Connect Metadata
 
-Authorization servers have a base URL and usually publish OpenID Connect metadata at a subpath of *.well-known/openid-configuration*. The response provides endpoints that applications will connect to:
+Authorization servers have a base URL and usually publish OpenID Connect metadata at a subpath of *.well-known/openid-configuration*. The data provides endpoint locations that applications can connect to:
 
 - https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9/.well-known/openid-configuration
 
@@ -104,13 +104,13 @@ Authorization servers have a base URL and usually publish OpenID Connect metadat
 
 ### Step 7: Register OAuth Clients
 
-Apps typically need to be registered as OAuth clients using an administration user interface, where fields such as *Client ID*, *Redirect URI* and *Scope* are configured.
+Frontend apps are registered as OAuth clients using an administration user interface, where fields such as *Client ID*, *Redirect URI* and *Scope* are configured.
 
 ![oauth client](/images/80/oauth-client.jpg)
 
 ### Step 8: Configure Token Lifetimes
 
-OAuth client data will include token lifetimes. This blog’s code samples use the following values:
+The configuration of OAuth clients includes token lifetimes. This blog’s code samples use the following example values:
 
 - The access token lifetime is *15 minutes* and access tokens may expire multiple times during the user’s authenticated session
 - Refresh token lifetime is *12 hours*, which becomes the maximum time for the user’s authenticated session
@@ -120,9 +120,9 @@ OAuth client data will include token lifetimes. This blog’s code samples use t
 
 ### Step 9: Configure Applications
 
-Applications are configured with OAuth settings, used as input data to security libraries. In our code samples we will use JSON configuration files.
+Applications are configured with OAuth settings, whose values are used as input to security libraries. In application code I store these in one or more *Configuration* objects. In this blog I use JSON configuration files to populate that object in the simplest way. If you prefer you can use other options, such as environment variables.
 
-This blog's early SPAs point to Cognito’s issuer base URL and the SPA’s security library then looks up metadata to get the other details it needs:
+This blog's SPAs point to Cognito’s issuer base URL and the SPA’s security library then looks up metadata to get the other details it needs:
 
 ```json
 {
@@ -161,7 +161,7 @@ The OAuth configuration for APIs is based on how OAuth access tokens are validat
 
 ### Step 10: Build Apps that use OAuth Standards
 
-The initial objective should be to use security libraries to integrate OAuth in a standards based and portable manner, and to test end-to-end flows:
+A key objective should be to use security libraries to integrate OAuth in a standards-based and portable manner. In this blog I never use vendor-specific libraries to integrate with the authorization server:
 
 | Area | Description |
 | ---- | ----------- |
@@ -170,13 +170,13 @@ The initial objective should be to use security libraries to integrate OAuth in 
 
 ### Step 11: Clarify Requirements
 
-During the journey of integrating OAuth into apps, you will form a better idea of what you want from the authorization server. Before committing to a vendor, ensure there are no blocking issues in your end-to-end flows, in areas such as user data storage, usability, reliability and extensibility .
+During the journey of integrating OAuth into apps, you will form a better idea of what you want from the authorization server. Before committing to a vendor, ensure there are no blocking issues in your end-to-end flows, in areas such as security features, user data storage, usability, reliability and extensibility.
 
-If your initial choice of provider does not meet your requirements you can then spend some time reviewing alternative choices. When your clients and APIs integrate OAuth in a standards based way, switching authorization servers will require only minimal changes to application code.
+If your initial choice of authorization server does not meet your requirements you can then spend some time reviewing alternative choices. When your clients and APIs integrate OAuth in a standards-based way, switching authorization servers will require only minimal changes to application code.
 
 ### Where Are We?
 
-We have discussed an initial setup, to get started with OAuth development, while giving you time to learn before committing to a particular authorization server. This blog’s code samples will implement modern security while avoiding vendor lock-in. In a later post I provide further details on the <Link href='/posts/managed-authorization-server-setup'>AWS Cognito cloud setup</Link>.
+This post discussed an initial setup, to get started with OAuth development, while giving you time to learn and keep your options open. In a later post I provide further details on the <Link href='/posts/managed-authorization-server-setup'>Cloud Authorization Server Setup</Link>.
 
 ### Next
 
