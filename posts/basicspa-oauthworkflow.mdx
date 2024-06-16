@@ -6,29 +6,31 @@ In our last post we explained <Link href='/posts/basicspa-execution'>How to Run 
 
 Using an OAuth secured app generates a workflow of HTTP messages, starting from when the SPA is initially accessed, proceeding through to logins, then API calls, then dealing with token expiry and logouts.
 
-This page provides screenshots to visualise the partial workflow covered by the initial code sample when using AWS Cognito as the authorization server, and we will point out the most important behaviour.
+This page provides screenshots to visualise the partial workflow covered by the initial code sample when using AWS Cognito as the authorization server, and points out the main OAuth behaviours.
 
-### Developer URLs
+### Developent Domains
 
-This blog recommends an <Link href='/posts/oauth-infrastructure-setup'>OAuth Development Setup</Link> where three logical domains similar to the following are used on a development computer. This best enables thinking about the responsibility of each component.
+This blog recommends an <Link href='/posts/oauth-infrastructure-setup'>OAuth Development Setup</Link> where logical domains similar to the following are used on a development computer. This best enables early thinking about the deployment of each component.
 
 | Component	| Base URL |
 | --------- | -------- |
-| <span style={{color:'green'}}>**SPA**</span> | https`:`//*www*.authsamples-dev.com |
-| <span style={{color:'green'}}>**API**</span> | https`:`//api.authsamples-dev.com |
-| <span style={{color:'green'}}>**Authorization Server**</span> | https`:`//login.authsamples.com |
+| <span style={{color:'green'}}>**SPA**</span> | `https://www.authsamples-dev.com` |
+| <span style={{color:'green'}}>**API**</span> | `https://api.authsamples-dev.com` |
+| <span style={{color:'green'}}>**Authorization Server**</span> | `https://login.authsamples.com` |
+
+In this blog I use a cloud domain of *authsamples.com*, for components deployed to the AWS cloud. Components that run on a development computer use a fictional subdomain *authsamples-dev.com*, to indicate that they are under development. OAuth flows use a mix of local and deployed components.
 
 ### Viewing OAuth Messages
 
-Most of the time I trace HTTP/S messages using a proxy tool rather than browser tools. This allows me to view traffic from both the SPA and API together. See the below post if you are new to this type of tool:
+Most of the time I trace HTTP/S messages using a forward proxy rather than browser tools. This allows me to view traffic from both the SPA and API together. See the below post if you are new to this type of tool:
 
 - <Link href='/posts/http-debugging-setup'>HTTP Proxy Setup</Link>
 
-The first code sample runs on HTTP URLs and technical restrictions then force us to use a domain name of *localhost* for the SPA. Since HTTP proxy tools do not capture traffic sent to localhost URLs, the HTTP messages captured in this post were captured by temporarily updating the initial code sample to use HTTPS.
+The first code sample runs on HTTP URLs and technical restrictions force us to use a domain name of *localhost* for the SPA. Since HTTP proxy tools do not capture traffic sent to localhost URLs, the HTTP messages were captured for this post by temporarily updating the initial code sample to use HTTPS.
 
 ### Step 1. SPA Downloads its Configuration
 
-The sample first downloads configuration settings from the server, since I don’t want to hard code these details in JavaScript code.
+The sample first downloads configuration settings from the server, to avoid hard coding these details in JavaScript.
 
 ![Configuration Download](/images/40/config-download.jpg)
 
@@ -48,65 +50,65 @@ The metadata response includes details about the authorization server capabiliti
 
 ### Step 4. SPA Redirects to Authorization Endpoint
 
-The oidc-client-ts library then creates an authorization redirect URL using OpenID Connect keywords. The SPA sets its location to this URL, to cause a front channel browser redirect to Cognito’s authorization endpoint:
+The oidc-client-ts library then creates an authorization request URL using OpenID Connect keywords. The SPA sets its location to this URL, to cause a front-channel browser redirect to Cognito’s authorization endpoint:
 
 ![Authorization Request](/images/40/authorization-request.jpg)
 
 Authorization servers will check parameters and only allow requests from valid applications, whose *Client ID* and *Redirect URI* are registered as an OAuth client.
 
-The *Authorization Code Flow with PKCE* is recognised by the presence of the *response_type=code* and *code_challenge* parameters. Note also that we use the following scope parameters:
+The *Authorization Code Flow with Proof Key for Code Exchange (PKCE)* is recognised by the presence of the *response_type=code* and *code_challenge* parameters. Note also that we use the following scope parameters:
 
 | Scope | Meaning |
 | ----- | ------- |
 | <span style={{color:'green'}}>**openid**</span> | OpenID Connect is being used as the sign in protocol |
-| <span style={{color:'green'}}>**profile**</span> | Needed later to get the User’s Name from the UserInfo endpoint |
+| <span style={{color:'green'}}>**profile**</span> | Needed later to get the user’s name details from the OpenID Connect userinfo endpoint |
 
 ### Step 5. User Authenticates
 
-Next the login screen is presented and in a real app the user would type valid Cognito password credentials as proof of identity. In this blog however we are just using well known test users to allow anyone to sign in:
+Next, the login screen is presented and in a real app the user could authenticate in many possible ways to provide a proof of their identity. In this blog I provide pre-created test users and simple passwords to allow anyone to sign in:
 
 ![User Authentication](/images/40/user-authentication.jpg)
 
 ### Step 6. An Authenticated User Session is Started
 
-Once a login completes successfully, a session or SSO (single sign-on) cookie is set by the authorization server. In subsequent requests the authorization server knows the user is already signed in when it receives this cookie, and can avoid login prompts.
+Once a login completes successfully, a session or SSO (single sign-on) cookie is set by the authorization server. This is a third-party cookie since the authorization server runs in an unrelated domain from the SPA. In subsequent authorization requests the authorization server knows the user is already signed in when it receives this cookie, and can avoid login prompts.
 
 ![User Session Cookie](/images/40/user-session-cookie.jpg)
 
-The most standard option for identity systems is to use *SameSite=none*, to inform browsers that this is a third party cookie. At the time of  writing, Cognito instead uses *SameSite=lax* which will cause some <Link href='/posts/user-sessions-and-token-renewal'>token renewal problems</Link> in later posts.
+The most standard option for identity systems is to issue *SameSite=none* cookies, to inform browsers to send the (third-party) SSO cookie in top-level redirects to the authorization server. Yet at the time of  writing, Cognito instead uses *SameSite=lax*, which causes some <Link href='/posts/user-sessions-and-token-renewal'>token renewal problems</Link> in later posts.
 
 ### Step 7. An Authorization Response is Returned
 
-Cognito then triggers a redirect back to the SPA with the successful authorization result, which is an authorization code. The SPA’s main page must then execute again and handle this login response:
+Cognito then triggers a redirect back to the SPA with the authorization response, which contains an authorization code when login is successful. The SPA’s main page must then execute again and handle this login response:
 
 ![Authorization Response](/images/40/authorization-response.jpg)
 
-The security library takes care of OAuth security checks such as verifying that the response state parameter matches the request state parameter, so we do not have to write this type of code ourselves.
+The security library takes care of OAuth security checks such as verifying that the response state parameter matches the request state parameter, so I did not have to code this type of logic in the SPA.
 
 ### Step 8. SPA Swaps Code for Tokens
 
-The SPA then makes a direct HTTPS back channel request to the authorization server’s token endpoint. This is an authorization code grant message to swap the code for tokens:
+The SPA then makes a direct HTTPS back-channel request to the authorization server’s token endpoint. This is an authorization code grant message, which swaps the code for tokens:
 
 ![Authorization Code Grant](/images/40/authorization-code-grant.jpg)
 
 In OAuth there are multiple grant messages and this is just one of them. The result of all grant messages is to receive tokens, and we have configured Cognito to return access tokens with a short 15 minute expiry.
 
-An OAuth flow for SPAs should avoid returning refresh tokens to the browser, since it is a long lived credential and the browser has nowhere secure to store it. Yet AWS Cognito does not allow the refresh token to be disabled. The <Link href='/posts/final-spa-overview'>Final SPA</Link> will show a better way to deal with refresh tokens, though it will require a more complex flow.
+An OAuth flow for SPAs should avoid returning refresh tokens to the browser, since it is a long-lived credential and the browser has nowhere secure to store it. Yet, at the time of writing, AWS Cognito does not allow the refresh token to be disabled.
 
 ### Step 9. Proof Key for Code Exchange is Used
 
 PKCE is an extension to the original authorization code flow, and involves the following additional steps:
 
-- UI generates a runtime secret (the *code_verifier*) when beginning a login redirect
-- UI sends a hash of the secret (the *code_challenge*) in the authorization request
-- UI posts the code verifier when exchanging the code for tokens
+- Client generates a runtime secret (the *code_verifier*) when beginning a login redirect
+- Client sends a hash of the secret (the *code_challenge*) in the authorization request
+- Client posts the code verifier in the authorization code grant request
 - Authorization server verifies that hash of the verifier matches the challenge received earlier, before issuing tokens
 
 This protects against some types of attack, such as a malicious party sending an intercepted authorization code to the authorization server. 
 
 ### Step 10: Login Errors are Handled
 
-Login requests can sometimes result in errors being returned, so let’s see an example of this. We will configure an invalid scope in our SPA, and ensure that the error is handled in a controlled manner:
+Login requests can sometimes result in errors being returned, so let’s see an example of this. If you configure an invalid scope in our SPA, you can ensure that the error is handled in a controlled manner:
 
 ```json
 {
@@ -122,11 +124,11 @@ Login requests can sometimes result in errors being returned, so let’s see an 
 }
 ```
 
-If a login redirect is attempted, we receive an error response, and it is standard for OAuth errors to be returned in *error* and *error_description* fields of the authorization response:
+If a login redirect is attempted, you receive an error response, and it is standard for OAuth errors to be returned in *error* and *error_description* fields of the authorization response:
 
 ![Authorization Response Error](/images/40/authorization-response-error.jpg)
 
-The error details are read for us by the oidc-client-ts library, and our UI presents the error in a clear manner to help with problem resolution:
+The error details are read for us by the oidc-client-ts library, and, since the SPA cannot recover, it presents details in an error display, to help with problem resolution:
 
 ![Authorization Error Display](/images/40/authorization-error-display.jpg)
 
@@ -136,11 +138,11 @@ Note also that errors are only returned to the client when a recognised *Client 
 
 ### Step 11. View Access Token Claims
 
-After step 8 the SPA workflow typically continues by the SPA calling the API with an access token. First let’s view the token claims by pasting the JWT text into an [Online JWT Viewer](https://jwt.io/):
+After step 8 the SPA workflow typically continues by the SPA calling the API with an access token. First let’s view the access token claims by pasting the JWT text into an [Online JWT Viewer](https://jwt.io/):
 
 ![Access Token Claims](/images/40/access-token-claims.jpg)
 
-The token is a JWT that is digitally signed and which must be verified by APIs. The values in the payload are called ‘claims’ and the API can trust them after it has verified the digital signature:
+The token is a JWT that is digitally signed and which must be verified by APIs. The values in the payload are called *claims* and the API can trust them after it has verified the JWT's digital signature:
 
 - **sub**: A unique immutable identifier for the user
 - **iss**: The authorization server that issued the token
@@ -148,13 +150,13 @@ The token is a JWT that is digitally signed and which must be verified by APIs. 
 - **scope**: Scopes provide high level privileges for the token
 - **exp**: The time when the token expires
 
-Many authorization servers also issue an ‘aud‘ claim, where the audience can represent one or more related APIs that can accept the access token.
+The authorization servers should also issue an *aud* claim, where the audience can represent one or more related APIs that can accept access tokens from this client.
 
 Currently the access token contains only generic protocol claims. For the second code sample it will be updated to include custom claims that the API uses for its business authorization.
 
 ### Step 12. View ID Token Claims
 
-Because the SPA included the *openid* scope, an ID token is also received, which provides proof of authentication to the UI. The audience claim of this token is the client ID of the SPA:
+Because the SPA included the *openid* scope, an ID token is also received, which provides proof of authentication to the SPA. The audience claim of this token is the client ID of the SPA:
 
 ![ID Token Claims](/images/40/id-token-claims.jpg)
 
@@ -168,15 +170,15 @@ Next the oidc-client-ts library sends the access token to the authorization serv
 
 ### Step 14. UI Stores Tokens and User Info
 
-After login the SPA stores tokens and user info in session storage, so that if the page is refreshed the user does not need to re-login. We will use more secure options in future posts.
+After login the SPA stores tokens and userinfo in session storage, so that if the page is refreshed the user does not need to re-login. We will use more secure options in future posts.
 
 ### Step 15. SPA Calls API with Access Token
 
-Next the SPA calls the API and, because this is a cross domain call, the browser first triggers a pre flight HTTP OPTIONS request. The API response to the pre-flight request grants API access to the web origin:
+Next the SPA calls the API and, because this is a cross domain call, the browser first triggers a pre-flight HTTP OPTIONS request. The API response to the pre-flight request grants API access to the web origin:
 
 ![API options request](/images/40/api-options-request.jpg)
 
-The actual API request then looks like this, and the access token is sent in the *HTTP Authorization Header* as a bearer credential. Any party who can get the access token can call the API like this:
+The actual API request then looks like this, and the access token is sent in the *HTTP Authorization Header* as a bearer credential. Any party that can intercept a valid access token can call the API like this:
 
 ![API request](/images/40/api-request.jpg)
 
@@ -191,13 +193,13 @@ When the API receives the token it is the API’s job to validate it, which typi
 | <span style={{color:'green'}}>**Digital Signature**</span> | The token has not been tampered with since issued |
 | <span style={{color:'green'}}>**Active**</span> | The token is valid at the current time and not expired |
 
-To verify the access token’s digital signature, the API must download token signing public keys from AWS Cognito. This is done when the JOSE security library calls the JWKS endpoint:
+To verify the access token’s digital signature, the API must download token signing public keys from AWS Cognito. This is done when the JOSE security library calls Cognito's JWKS endpoint:
 
 ![Access token key identifier](/images/40/access-token-key-identifier.jpg)
 
 The response contains public keys in the *JSON Web Key* format, and the security library selects the one that matches the key identifier (*kid*) in the access token’s JWT header. The library then uses the public key to digitally verify the JWT.
 
-The API security library (or a utility that assists it) then caches JSON Web Keys in memory to avoid unnecessary lookups on subsequent API requests, whose access tokens use the same key identifier.
+The API security library (or a utility that assists it) caches JSON Web Keys in memory to avoid unnecessary lookups on subsequent API requests, whose access tokens use the same key identifier.
 
 ### Step 17. API Returns Correct Error Status Codes
 
@@ -244,11 +246,11 @@ Once token validation has completed, the API can trust claims from the JWT and u
 
 ### Step 19. API Returns 401 when the Token Expires
 
-The UI will continue to use the access token until it expires 15 minutes after login, or the user closes their browser. This can be simulated by clicking *Expire Token* followed by *Reload Data*:
+The SPA continues to use the access token until it expires 15 minutes after login, or the user closes their browser. Access token expiry can be simulated by clicking *Expire Token* followed by *Reload Data*:
 
 ![Access token expiry test](/images/40/access-token-expiry-test.jpg)
 
-Of course we cannot really change time to expire a token, so this test operation simply adds characters to the token to cause the API token validation to fail with a 401:
+Of course, I cannot really change time to expire a token, so this test operation simply adds characters to the token to cause the API token validation to fail with a 401:
 
 ![Access token expiry response](/images/40/access-token-expiry-response.jpg)
 
@@ -256,7 +258,7 @@ Of course we cannot really change time to expire a token, so this test operation
 
 The SPA is coded to expect 401 responses and deal with them without end user problems. No token renewal capability has been implemented yet, so the user is redirected to sign in again, which is not a good user experience.
 
-Due to the SSO Session Cookie issued earlier, a Single Sign On occurs and new tokens are issued to the SPA automatically. The SPA can then continue to call the API with the new access token.
+Due to the SSO session cookie issued earlier, a single sign-on event occurs and new tokens are issued to the SPA automatically. The SPA can then continue to call the API with the new access token.
 
 ### Trace Messages to Understand any OAuth Flow
 
@@ -266,7 +268,7 @@ Once you have a productive process for tracing HTTP requests in both browser and
 
 ### Where Are We?
 
-We have used OAuth technologies to securely integrate our SPA and API with an authorization server, and we understand the messages used. The initial end-to-end flow is missing some web and API lifecycle behaviours, and these will be addressed in the next code sample.
+We have used OAuth technologies to securely integrate our SPA and API with an authorization server, and we understand the messages used. The initial end-to-end flow is missing some web and API lifecycle behaviours, and these are addressed in the next code sample.
 
 ### Next
 
