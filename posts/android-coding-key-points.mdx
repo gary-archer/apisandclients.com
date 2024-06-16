@@ -22,7 +22,7 @@ The project was initially created via the below *Empty Activity* template, after
 
 ![project creation](/images/530/project-creation.jpg)
 
-I then added these options to the application’s *build.gradle.kts* file, which enables views to be created using the newer *Jetpack Compose* syntax, which lead to simpler code than older XML layout views:
+I then added these options to the application’s *build.gradle.kts* file, which enables views to be created using the newer *Jetpack Compose* syntax, which lead to cleaner code than older XML layout views:
 
 ```kotlin
 buildFeatures {
@@ -176,7 +176,7 @@ private fun createViews() {
 
 ### Data Binding and View Models
 
-Data binding is used, which aims for the simplest and most readable binding code. Each non-trivial view has a view model that manages state, including that returned from APIs. When the value of mutable state changes, the view is automatically updated.
+Data binding is used, which aims for the most readable binding code. Each non-trivial view has a view model that manages state, including that returned from APIs. When the value of mutable state changes, the view is automatically updated.
 
 ```kotlin
 class CompaniesViewModel(
@@ -241,7 +241,7 @@ fun callApi(options: ViewLoadOptions?, onComplete: () -> Unit) {
 }
 ```
 
-Use of [Kotlin Coroutines](https://developer.android.com/kotlin/coroutines) results in a readable async await coding model where we write simple suspending functions to do the work. The code also caches API responses to prevent redundant calls when views are recreated, such as during back navigation.
+Use of [Kotlin Coroutines](https://developer.android.com/kotlin/coroutines) results in readable async await code where we write suspending functions to do the work. The code also caches API responses to prevent redundant calls when views are recreated, such as during back navigation.
 
 ### API Call Details
 
@@ -782,7 +782,7 @@ This blog demonstrates mobile integration using the recommendations from RFC 825
 We have implemented an OpenID Connect secured Android app with no blocking issues. By using native tech a software company would now be in a good technical position:
 
 - The app supports many possible types of user login
-- The app has a modern coding model that is easy to extend
+- The app uses modern code that is easy to change
 - The app can use the latest Android native features
 - The app has good reliability and error handling control
 

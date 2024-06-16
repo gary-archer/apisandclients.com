@@ -159,7 +159,7 @@ The deployment configures an *Integration Request* for each incoming HTTP reques
 
 ![integration request](/images/630/integration-request.jpg)
 
-Our API has three simple endpoints that exist at the below internet URLs, and the third of these is parameterised via path segments:
+Our API has three endpoints that exist at the below internet URLs, and the third of these is parameterised via path segments:
 
 - https`:`//api.authsamples.com/investments/userinfo
 - https`:`//api.authsamples.com/investments/companies
@@ -171,7 +171,7 @@ In the AWS Console, I can then view the deployed lambda functions, which run in 
 
 ![lambdas](/images/630/lambdas.jpg)
 
-The compiled JavaScript of each lambda can also be inspected. I actually deploy all API code for each individual lambda, since this is the simplest deployment model, and it enables code sharing.
+The compiled JavaScript of each lambda can also be inspected. I deploy all API code for each individual lambda, which enables lambdas to share common classes.
 
 ![compiled code](/images/630/compiled-code.jpg)
 

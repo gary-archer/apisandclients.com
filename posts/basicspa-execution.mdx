@@ -67,7 +67,7 @@ The API acts as an *OAuth Resource Server* and uses these configuration values. 
 
 Both the SPA and API use endpoints from my personal AWS Cognito account, which is a low cost cloud solution. Jump ahead to these future posts for further details:
 
-- <Link href='/posts/oauth-infrastructure-setup'>OAuth Domain Setup</Link>
+- <Link href='/posts/oauth-infrastructure-setup'>OAuth Infrastructure Setup</Link>
 - <Link href='/posts/managed-authorization-server-setup'>AWS Cognito Cloud Setup</Link>
 
 OAuth clients must be registered at the authorization server, and the SPA includes an online entry:
@@ -141,7 +141,7 @@ The second terminal is for the API, which listens on port 80, and requires admin
 
 ![Running API](/images/30/running-api.jpg)
 
-To keep the developer setup simple, the API also serves the SPA’s bundle files to the browser. A real web host is used later in this blog, when the SPA is deployed to a <Link href="/posts/cdn-static-content-delivery">content delivery network</Link>.
+To simplify the developer setup, the API also serves the SPA’s bundle files to the browser. A real web host is used later in this blog, when the SPA is deployed to a <Link href="/posts/cdn-static-content-delivery">content delivery network</Link>.
 
 ### Step 8: Login to the SPA
 

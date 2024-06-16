@@ -127,7 +127,7 @@ Since the SPA is now deployed to the AWS cloud, we would expect it to be accesse
 
 ### Web Performance
 
-The cleanest separation of concerns and simplest code should lead to high performance, as long as frontend views and API endpoints are also designed intelligently. The following technical factors also impact performance, and there are trade offs between performance and other qualities:
+A strong separation of concerns and clean code should lead to high performance, as long as frontend views and API endpoints are also designed intelligently. The following technical factors also impact performance, and there are trade offs between performance and other qualities:
 
 | Aspect | Responsibilities |
 | ------ | ---------------- |
@@ -150,11 +150,11 @@ The real time to first render in a secured web application is not immediate and 
 | <span style={{color:'green'}}>**OAuth Login**</span> | The time to redirect to the authorization server and present login screens, then return to the SPA |
 | <span style={{color:'green'}}>**Secure SPA Access**</span> | The application reload, followed by API requests to get secured data specific to the user |
 
-I aim to have a good awareness of factors that impact performance, but avoid optimizations that add complexity to the architecture. Instead, I aim for the best separation of concerns, where code is kept simple and will grow effectively.
+I aim to have a good awareness of factors that impact performance, but avoid optimizations that add complexity to the architecture. Instead, I aim for the best separation of concerns, so that code can grow effectively.
 
 ### Web Code Scalability
 
-Some companies run multiple micro-frontends for the same business area within a single web domain. This keeps web code manageable as it grows and also enables bundle splitting in the simplest way.
+Some companies run multiple micro-frontends for the same business area within a single web domain. This keeps web code manageable as it grows and also provides a bundle splitting solution.
 
 The final web code example is hosted at an */spa* path to show that other apps could be added alongside it, and share the same cookies. This would enable multiple teams to each work on only one frontend at a time, and avoid loading the code for all other apps. Each frontend would call APIs  using shared cookies, and it would be possible to seamlessly navigate across apps without OpenID Connect redirects.
 

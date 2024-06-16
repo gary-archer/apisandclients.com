@@ -66,7 +66,7 @@ The API logs the error, along with some context to include the cause, in case th
 
 ### 4xx Error Responses due to Invalid Input
 
-In real world APIs you will want to validate all input early, to prevent deeper problems such as data corruption. This blog’s app have a couple of very simple input validation cases, just to cover the concept.
+In real world APIs you will want to validate all input early, to prevent deeper problems such as data corruption. This blog’s apps use a couple of basic input validation cases to cover the concept.
 
 The API returns a *Not Found for User* response if the user tries to access data they are not entitled to, by editing the browser location. In the below screenshot, the user is not authorized to access company 3:
 
@@ -206,9 +206,9 @@ export abstract class ClientError extends Error {
 
 ### Aim to Fail on First Error
 
-Unless there is a good reason, I avoid returning API composite errors and use a *Fail on First Error* approach. A single error item is usually much easier for clients to code against, and also simpler for the API to implement reliably.
+Unless there is a good reason, I avoid returning API composite errors and use a *Fail on First Error* approach. A single error item is usually much easier for clients to code against, and also easier for the API to implement reliably.
 
-This approach can also work well in cases where a form submits multiple values, since client side validation should deal with simple failures such as missing or malformed input, to ensure that multiple invalid fields submitted to the server is rare.
+This approach can also work well in cases where a form submits multiple values, since client side validation should deal with failures such as missing or malformed input, to ensure that multiple invalid fields submitted to the server is rare.
 
 ### API Validation Frameworks
 

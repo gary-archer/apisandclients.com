@@ -88,7 +88,7 @@ We can run the app using Xcode’s build and run option in the top left of the I
 
 ![xcode run](/images/480/xcode-run.jpg)
 
-This renders the following simple view. You can click *Auto* to run an entire OpenID Connect authorization redirect. Alternatively, do it in two stages, by using *Manual*, where step 1(A) is the front channel redirect, and step 1(B) is the back channel operation to swap the authorization code for tokens:
+This renders the following view. You can click *Auto* to run an entire OpenID Connect authorization redirect. Alternatively, do it in two stages, by using *Manual*, where step 1(A) is the front channel redirect, and step 1(B) is the back channel operation to swap the authorization code for tokens:
 
 ![unauthenticated app](/images/480/unauthenticated-app.jpg)
 
@@ -105,7 +105,7 @@ The login is done using the system browser, which overlays the mobile view and p
 
 ![aswebauthenticationsession](/images/480/aswebauthenticationsession.jpg)
 
-After login, control returns to the mobile app, which has an ID token, an access token and a refresh token. You can then test a couple of simple OAuth operations, including refreshing the access token:
+After login, control returns to the mobile app, which has an ID token, an access token and a refresh token. You can then test OAuth lifecycle operations, including refreshing the access token:
 
 ![authenticated app](/images/480/authenticated-app.jpg)
 

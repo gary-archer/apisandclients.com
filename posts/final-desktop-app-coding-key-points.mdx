@@ -262,7 +262,7 @@ session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
 
 ### Compiled Electron Code
 
-A single code base is used for main and renderer processes, which provides the simplest development setup. At deployment time I separated concerns to produce the following self-contained assets ready to deploy. Webpack is used to pull out code from the *node_modules* folder into bundles:
+A single code base is used for main and renderer processes, which provides a productive development setup. At deployment time I separated concerns to produce the following self-contained assets ready to deploy. Webpack is used to pull out code from the *node_modules* folder into bundles:
 
 ![bundles](/images/450/bundles.jpg)
 

@@ -82,14 +82,14 @@ When a user signs out, an OAuth secured app that uses refresh tokens can optiona
 
 Sometimes developers also expect all access tokens to be immediately rejected by APIs, to enable the same behaviour as in older cookie based web apps. For this to work, APIs would need to call the authorization server on every API request, leading to performance problems.
 
-Instead, access tokens are bearer tokens and remain usable until they expire. The simplest option is to implement the following behaviour, which is the approach followed by all of this blog’s apps:
+Instead, access tokens are bearer tokens and remain usable until they expire. This blog's apps implement the following behaviour:
 
 - Client applications discard all tokens upon logout
 - Access tokens are short lived so that they expire soon after logout 
 
 ### Where Are We?
 
-We have explained how this blog’s logout behaviour will work, which will involve only simple and reliable code. RP Initiated and multi-tab logout will be implemented in the next SPA code sample, in a few posts’ time.
+We have explained how this blog’s logout behaviour will work. RP Initiated and multi-tab logout will be implemented in the next SPA code sample, in a few posts’ time.
 
 ### Next
 

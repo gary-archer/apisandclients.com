@@ -10,7 +10,7 @@ The API uses [Node.js Express](https://expressjs.com/) as the HTTP server and is
 
 ### Dependencies
 
-Use of third party libraries has been kept fairly simple, and the most interesting dependency in the package.json file is the [jose security library](https://github.com/panva/jose), used to validate JWTs:
+Only a handful of third-party libraries are used, and the most interesting dependency in the *package.json* file is the [jose security library](https://github.com/panva/jose), used to validate JWTs:
 
 ```json
 {
@@ -124,7 +124,7 @@ In the real world you would use a separate web host component, and for SPA's thi
 
 ### Service Logic Classes
 
-The most mainstream coding model for API technology stacks involves receiving API requests into a controller class, then calling other testable business logic classes.
+A mainstream way to implement APIs involves receiving API requests into a controller class, then calling other testable business logic classes.
 
 In this blog's early API code samples I manually wire up an *ApiController* object with its dependencies. This blog's final APIs instead use a dependency injection framework.
 

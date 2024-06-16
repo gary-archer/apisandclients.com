@@ -58,7 +58,7 @@ In Java our API’s OAuth code will follow the same two phases that we used in N
 
 This API’s security implementation is meant to be thought provoking, to provide techniques for taking finer control over claims and error handling during secured requests. Some of these may be of interest to readers.
 
-The API contains quite a bit of plumbing code though, to make the API code feel the same across technology stacks. For your own solution you may be able to meet similar requirements with simpler code.
+The API contains quite a bit of plumbing code though, to make the API code feel the same across technology stacks. For your own solution you may be able to meet similar requirements in alternative ways.
 
 ### OAuth API Configuration
 
@@ -239,7 +239,7 @@ public CompanyService(final CompanyRepository repository, final ClaimsPrincipalH
 }
 ```
 
-When the OAuth filter runs successfully, it update the holder object with the claims principal. When the controller logic runs, the claims principal can be resolved, and this works even if the request uses child threads. The API can then easily implement its authorization logic, using simple code:
+When the OAuth filter runs successfully, it update the holder object with the claims principal. When the controller logic runs, the claims principal can be resolved, and this works even if the request uses child threads. The API can then easily implement its authorization logic:
 
 ```java
 private boolean isUserAuthorizedForCompany(final Company company) {

@@ -4,7 +4,7 @@ Previously we explained this blog’s <Link href='/posts/cdn-static-content-deli
 
 ### API Features
 
-The main behaviour is summarised below, and is identical to that of our earlier Node.js API, which was hosted by the Express HTTP server:
+The main behaviour to aim for is summarised below, where code is identical to that in our earlier Node.js API, which was hosted by the Express HTTP server:
 
 | Behaviour | Description |
 | --------- | ----------- |
@@ -12,7 +12,7 @@ The main behaviour is summarised below, and is identical to that of our earlier 
 | <span style={{color:'green'}}>**Extensible Authorization**</span> | Our API is in full control of authorization values from both the access token and other sources |
 | <span style={{color:'green'}}>**Supportable**</span> | Our API will use this blog’s designs for logging and error handling to ensure good technical support qualities |
 | <span style={{color:'green'}}>**Scalable**</span> | The same coding techniques, and any common code, can be used for many APIs in a software platform |
-| <span style={{color:'green'}}>**Productive**</span> | Our API coding model will be modern and portable across mainstream languages |
+| <span style={{color:'green'}}>**Productive**</span> | The API code is modern and portable across mainstream languages |
 
 ### Preferred Local Setup
 
@@ -101,7 +101,7 @@ The overall authorization used by the Serverless API was summarised earlier in o
 
 ![claims](/images/620/claims.jpg)
 
-The claims principal is then injected into service logic classes, which have all of the values needed, to apply authorization with simple code.
+The claims principal is then injected into service logic classes, which have all of the values needed to apply their authorization.
 
 ### Lambdas and In-Memory Caching
 

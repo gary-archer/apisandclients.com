@@ -142,7 +142,7 @@ export class MockAuthorizationServer {
 
 ### Using Mock Access Tokens in Tests
 
-This blog’s API tests cover token validation and authorization behaviour. All of these can be tested productively with simple code and the following type of syntax. Tokens for real users from the API’s data can be requested, and there is no need to deal with any OAuth client concerns:
+This blog’s API tests cover token validation and authorization behaviour. All of these can be tested productively with the following type of syntax. Tokens for real users from the API’s data can be requested, and there is no need to deal with any OAuth client concerns:
 
 ```typescript
 it ('Get transactions returns 404 for companies that do not match the regions claim', async () => {

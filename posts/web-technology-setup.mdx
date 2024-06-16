@@ -1,10 +1,10 @@
 # JavaScript Technology Setup
 
-Previously we chose an <Link href='/posts/oauth-infrastructure-setup'>Initial Authorization Server</Link>. In this post we will describe how this blog uses JavaScript technology, for Node.js APIs, browser based apps and Electron desktop apps. The goal is to focus on our own requirements rather than being dictated to be technology.
+Previously I explained an <Link href='/posts/oauth-infrastructure-setup'>OAuth Infrastructure Setup</Link>. In this post we will describe how this blog uses JavaScript technology, for Node.js APIs, browser based apps and Electron desktop apps. The goal is to focus on our own requirements rather than being dictated to be technology.
 
 ### Goal: Simple and Modern Coding Model
 
-The main part of our SPA is the TypeScript logic, which can help to enable a simple coding model with a great separation of concerns. I use TypeScript since I like the extensions to JavaScript in areas such as these:
+The main part of our SPA is the TypeScript logic, which can help to enable clean code with a great separation of concerns. I use TypeScript since I like the extensions to JavaScript in areas such as these:
 
 - **More Expressive Types**, including interfaces and private class members
 - **Types Exchanged with APIs** can be expressed in the frontend code
@@ -95,7 +95,7 @@ The following settings are relevant to importing modules. I aim to use only the 
 | Setting | Description |
 | ------- | ----------- |
 | [moduleResolution](https://www.typescriptlang.org/tsconfig#moduleResolution) | Use the most compatible rules when resolving external modules |
-| [allowSyntheticDefaultImports](https://www.typescriptlang.org/tsconfig#allowSyntheticDefaultImports) | Enable the simplest import syntax for CommonJS modules |
+| [allowSyntheticDefaultImports](https://www.typescriptlang.org/tsconfig#allowSyntheticDefaultImports) | Enable the cleanest import syntax for CommonJS modules |
 | [esModuleInterop](https://www.typescriptlang.org/tsconfig#esModuleInterop) | Provides stronger compatibility with CommonJS modules when needed |
 
 We also need to tell the compiler that the project’s own source files use ECMAScript modules. This is done by specifying *type=module* in the *package.json* file.
@@ -178,7 +178,7 @@ Strong typing during coding allows the environment to make more checks for us du
 
 ### Writing Code: Styling
 
-The blog uses CSS in only a simple way, via the [Bootstrap](https://getbootstrap.com/docs/4.0/getting-started/introduction/) library. In particular the built-in styles enable us to use both presentation and grid based layout styles:
+The blog uses CSS in only a basic way, via the [Bootstrap](https://getbootstrap.com/docs/4.0/getting-started/introduction/) library. In particular the built-in styles enable us to use both presentation and grid based layout styles:
 
 ```html
 <div class='row listRow'>
@@ -203,7 +203,7 @@ The blog uses CSS in only a simple way, via the [Bootstrap](https://getbootstrap
 </div>
 ```
 
-For this blog, I keep SPA styles simple, and the application CSS file is small. containing only padding, colours and minor adjustments to support mobile layouts:
+For this blog, I keep SPA styles basic. The application CSS file is small, containing only padding, colours and minor adjustments to support mobile layouts:
 
 ```css
 .row
@@ -253,7 +253,7 @@ For this blog, I keep SPA styles simple, and the application CSS file is small. 
 
 ### Executing Tasks
 
-For the best control, this blog’s code examples are run from bash scripts. The scripting allows nuances to be controlled, and is the simplest way to ensure working code on Linux, macOS and Windows:
+For the best control, this blog’s code examples are run from bash scripts. The scripting allows nuances to be controlled, and ensures working code on Linux, macOS and Windows:
 
 ```bash
 cd "$(dirname "${BASH_SOURCE[0]}")"
@@ -320,7 +320,7 @@ For the SPA, a build phase is essential, for the following reasons:
 | <span style={{color:'green'}}>**Browser Support**</span> | Ensure that JavaScript code is produced, for execution by browsers |
 | <span style={{color:'green'}}>**Web Performance**</span> | Reducing code size so that bundle sizes stay small, and the SPA performs well |
 
-The [webpack](https://webpack.js.org/) tool is used, but I aim to keep usage simple. It only does one  job, to produce the JavaScript bundles expressed in the final index.html file:
+The [webpack](https://webpack.js.org/) tool is used. I use it for one main task, to produce the JavaScript bundles expressed in the final index.html file:
 
 ```html
 <!DOCTYPE html>
@@ -410,7 +410,7 @@ app.bundle.js
 app.bundle.js.map
 ```
 
-For SPAs, we need to ensure that output works in older browsers, but we also want to produce simple and clean production JavaScript code, without the need for excessive [polyfilling](https://javascript.info/polyfills). The following *tsconfig.json* output settings are used:
+For SPAs, we need to ensure that output works in older browsers, but we also want to produce clean production JavaScript code, without the need for excessive [polyfilling](https://javascript.info/polyfills). The following *tsconfig.json* output settings are used:
 
 | Setting | Description |
 | ------- | ----------- |
@@ -437,7 +437,7 @@ All main mobile and desktop browsers have supported these features since around 
 
 ### Building Code: API Compilation
 
-During development of TypeScript APIs, the simplest option is to avoid producing JavaScript files, since doing so adds confusion when searching the code base.
+During development of TypeScript APIs, I prefer to avoid producing JavaScript files, since doing so adds confusion when searching the code base.
 
 Instead, Node.js can be asked to execute TypeScript files directly using the [tsx](https://github.com/privatenumber/tsx) tool. This results in the node runtime using ECMAScript modules built in-memory:
 
@@ -579,7 +579,7 @@ The web pipeline steps for a development computer are now complete. Later in thi
 
 ### Where Are We?
 
-We have enabled an initial setup that is modern and productive, and have also kept the web technology simple and understandable. Later, we will follow the same steps for the <Link href='/posts/final-spa-overview'>Final SPA</Link>, which is developed in React.
+We have enabled an initial setup that is modern and productive, and have also kept the web technology understandable. Later, we will follow the same steps for the <Link href='/posts/final-spa-overview'>Final SPA</Link>, which is developed in React.
 
 ### Next
 

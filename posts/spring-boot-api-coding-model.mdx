@@ -85,7 +85,7 @@ The role of each of these middleware classes is summarised below:
 
 ### Single Threaded Coding Model
 
-For APIs with simple dependency graphs, I like to reduce the likelihood of parallel requests  impacting each other. I do this by giving each request its own independent object instances. The API uses a request scope for REST specific objects, or a prototype scope for domain logic classes:
+For APIs with small dependency graphs, I like to reduce the likelihood of parallel requests  impacting each other. I do this by giving each request its own independent object instances. The API uses a request scope for REST specific objects, or a prototype scope for domain logic classes:
 
 ```java
 @RestController()
@@ -108,7 +108,7 @@ Our earlier Node.js and .NET APIs were [Non Blocking](https://medium.com/@vimalm
 
 ![throughput](/images/370/throughput.jpg)
 
-Our Node.js API used *Promises* to achieve this, with only a small impact on the overall coding model. In Java we will aim for an equivalent solution.
+Our Node.js API used *Promises* to achieve this, with only a small impact on its overall code. In Java we will aim for an equivalent solution.
 
 ### Java Non Blocking API Solutions
 
@@ -117,10 +117,10 @@ There are a few approaches to using async await code in Java, summarized below. 
 | Solution | Characteristics |
 | -------- | --------------- |
 | [Reactor](https://projectreactor.io/docs/core/release/reference/#context) | A streaming interface to return large collections of resources to clients in chunks |
-| [Completable Futures](https://www.baeldung.com/java-completablefuture) | Non blocking I/O in line with Node.js and .NET, with a traditional coding model |
+| [Completable Futures](https://www.baeldung.com/java-completablefuture) | Non blocking I/O in line with Node.js and .NET |
 | [Virtual Threads](https://www.azul.com/blog/jdk-21-delivers-virtual-threads-other-new-features-and-long-term-support/) | Virtual threads in Java 21+ are used to only block a lightweight thread and return the main OS thread to the thread pool |
 
-The code sample uses virtual threads, with the following setting in the *application properties file*, to meet my requirements in the simplest way.
+The code sample uses virtual threads, with the following setting in the *application properties file*:
 
 ```markdown
 spring.threads.virtual.enabled=true

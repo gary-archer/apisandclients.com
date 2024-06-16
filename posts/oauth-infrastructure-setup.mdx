@@ -40,7 +40,7 @@ A key point when starting with OAuth is to point your apps to HTTPS endpoints de
 | <span style={{color:'green'}}>**Cloud Hosted**</span> | A cloud platform’s authorization server, such as those provided by AWS or Microsoft, with internet OAuth endpoints |
 | <span style={{color:'green'}}>**Cloud Native**</span> | A docker based authorization server, with local OAuth endpoints and better visibility into how the authorization server works |
 
-Either provides a simple and convenient option when getting started with OAuth. This blog will show how to integrate user facing apps and APIs, using portable code. A useful goal is for these components to be compliant with any standards-based authorization server.
+Either provides a convenient option when getting started with OAuth. This blog will show how to integrate user facing apps and APIs, using portable code. A useful goal is for these components to be compliant with any standards-based authorization server.
 
 ### Step 3: Create the User Accounts Schema
 
@@ -58,7 +58,7 @@ In AWS Cognito I acted as an administrator to create two initial user accounts f
 
 ### Step 5: Configure the Login User Experience
 
-An authorization server should enable many possible ways for users to authenticate. For this blog I use only simple logins where an email and password are entered for the above test user accounts.
+An authorization server should enable many possible ways for users to authenticate. For this blog I only enable basic logins, where an email and password are entered for the above test user accounts.
 
 ![login user experience](/images/80/login-ux.jpg)
 
@@ -120,7 +120,7 @@ The configuration of OAuth clients includes token lifetimes. This blog’s code 
 
 ### Step 9: Configure Applications
 
-Applications are configured with OAuth settings, whose values are used as input to security libraries. In application code I store these in one or more *Configuration* objects. In this blog I use JSON configuration files to populate that object in the simplest way. If you prefer you can use other options, such as environment variables.
+Applications are configured with OAuth settings, whose values are used as input to security libraries. In application code I store these in one or more *Configuration* objects. In this blog I use JSON configuration files to populate that object in a natural way. If you prefer you can use other options, such as environment variables.
 
 This blog's SPAs point to Cognito’s issuer base URL and the SPA’s security library then looks up metadata to get the other details it needs:
 

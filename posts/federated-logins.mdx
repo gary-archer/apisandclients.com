@@ -57,7 +57,7 @@ The deeper behaviour when designing authentication is ensuring that access token
 
 The process of matching logins to existing accounts is called *Account Linking*. It requires some data storage in the authorization server and you must also define the logic that will be used to link accounts.
 
-In simple cases you may be able to deterministically match up user attributes, such as by email address. Another option is to force the user to login with their existing method as part of onboarding to a new one.
+In some use-cases you may be able to deterministically match up user attributes, such as by email address. Another option is to force the user to login with their existing method as part of onboarding to a new one.
 
 Yet many authorization servers have poor support for account linking. Without care, there can be outcomes such as <span style={{color:'red'}}>duplication of user accounts</span>, which damage the integrity of both your identity and business data.
 

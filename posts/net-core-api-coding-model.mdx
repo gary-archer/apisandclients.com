@@ -86,7 +86,7 @@ The role of each of these middleware classes is summarised below:
 
 ### Single Threaded Coding Model
 
-For APIs with simple dependency graphs, I like to reduce the likelihood of parallel requests  impacting each other. I do this by giving each request its own independent object instances. The API uses a request scope for REST specific objects, or a transient scope for domain logic classes:
+For APIs with small dependency graphs, I like to reduce the likelihood of parallel requests  impacting each other. I do this by giving each request its own independent object instances. The API uses a request scope for REST specific objects, or a transient scope for domain logic classes:
 
 ```csharp
 private void ConfigureApiDependencies(IServiceCollection services)
@@ -268,7 +268,7 @@ public async Task<CompanyTransactions> GetCompanyTransactionsAsync(string id)
 
 ### Portability
 
-The above coding model is very mainstream and the concepts can be easily followed in any technology stack. Our earlier Node.js API was almost identical.
+The above code is very mainstream and the concepts can be easily followed in any technology stack. Our earlier Node.js API was almost identical.
 
 ### Where Are We?
 

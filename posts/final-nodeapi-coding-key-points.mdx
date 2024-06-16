@@ -16,7 +16,7 @@ In a real API platform, much of the plumbing folder could be extracted into one 
 
 ### Use of Dependency Injection
 
-Our coding model has changed a fair amount since the previous API sample, and this includes use of [InversifyJS](https://github.com/inversify/InversifyJS) to manage object creation and lifetimes:
+Our code has changed a fair amount since the previous API sample, and this includes use of [InversifyJS](https://github.com/inversify/InversifyJS) to manage object creation and lifetimes:
 
 ![inversifyjs](/images/310/inversifyjs.jpg)
 
@@ -180,7 +180,7 @@ The controller and method for the incoming request are then identified based on 
 
 ### Single Threaded Coding Model
 
-For APIs with simple dependency graphs, I like to reduce the likelihood of parallel requests  impacting each other. I do this by giving each request its own independent object instances. The API uses a request scope for REST specific objects, or a transient scope for domain logic classes:
+For APIs with small dependency graphs, I like to reduce the likelihood of parallel requests  impacting each other. I do this by giving each request its own independent object instances. The API uses a request scope for REST specific objects, or a transient scope for domain logic classes:
 
 ```typescript
 public static registerDependencies(container: Container): void {
@@ -361,7 +361,7 @@ private _unauthorizedError(companyId: number): ClientError {
 
 ### Portability
 
-The above coding model is mainstream and can be implemented in any technology stack. This blog’s .NET and Java APIs will be coded in an almost identical manner.
+The above code is mainstream and can be implemented in any technology stack. This blog’s .NET and Java APIs will be coded in an almost identical manner.
 
 ### Where Are We?
 

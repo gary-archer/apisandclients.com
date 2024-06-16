@@ -88,7 +88,7 @@ Most web APIs spend the vast majority of the time for an API request  waiting on
 - Database access
 - Calls to other APIs
 
-This blog’s APIs use a modern and standard *async await* coding model to ensure that each thread can process additional API calls during the first request’s I/O completion. In multi threaded languages this looks like this:
+This blog’s APIs use modern and standard *async await* code to ensure that each thread can process additional API calls during the first request’s I/O completion. In multi threaded languages this looks like this:
 
 ![throughput](/images/260/throughput.jpg)
 
@@ -225,7 +225,7 @@ describe('OAuth API Tests', () => {
 
 ### API Returns Friendly Errors to Clients
 
-One of the reasons why I use a JOSE library is to take finer control of error responses for clients. For most API errors I return a simple code and message, and use the same format for OAuth errors:
+One of the reasons why I use a JOSE library is to take finer control of error responses for clients. For most API errors I return a `code` and `message`, and use the same format for OAuth errors:
 
 ```json
 {

@@ -249,7 +249,7 @@ async function loadData(options?: ViewLoadOptions): Promise<void> {
 }
 ```
 
-The view model code is also quite simple and uses a fetch client that deals with lower level aspects. The view model coordinator provides a mechanism for triggering a new login redirect when the API session expires:
+The view model code is business-focused and uses a fetch client to deal with lower level aspects. The view model coordinator provides a mechanism for triggering a new login redirect when the API session expires:
 
 ```typescript
 public async callApi(options?: ViewLoadOptions): Promise<void> {
@@ -399,7 +399,7 @@ The lower level API code uses a basic caching layer. This avoids duplicated API 
 
 ### API Driven OpenID Connect
 
-The final SPA continues to drive its own authentication flow, with the help of a remote OAuth agent. The following operations are used and the overall coding model is the same as that used for this blog’s earlier SPA code samples.
+The final SPA continues to drive its own authentication flow, with the help of a remote OAuth agent. The following operations are used and the overall code is the same as that used for this blog’s earlier SPA code samples.
 
 ```typescript
 export interface Authenticator {

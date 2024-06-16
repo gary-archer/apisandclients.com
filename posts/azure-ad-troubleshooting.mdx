@@ -124,7 +124,7 @@ The API then sends the returned access token to the Graph endpoint, and returns 
 
 ![userinfo](/images/200/userinfo.jpg)
 
-The API implements the On Behalf Of flow by forming a simple grant request with the following Node.js code:
+The API implements the On Behalf Of flow by forming a grant request with the following Node.js code:
 
 ```typescript
 private async _getGraphAccessToken(accessToken: string): Promise<string> {

@@ -4,7 +4,7 @@ The <Link href='/posts/basicspa-oauthworkflow'>SPA and API OAuth Messages</Link>
 
 ### SPA Code
 
-The SPA uses the following types of static resource that are downloaded to the browser. In this blog we will keep HTML and CSS simple, so that our main code focus for SPAs is the JavaScript logic:
+The SPA uses the following types of static resource that are downloaded to the browser. In this blog I use only basic HTML and CSS, so that the main code focus for SPAs is the JavaScript logic:
 
 | Area | Implementation Details |
 | ---- | ---------------------- |
@@ -318,7 +318,7 @@ The API credential is a *Bearer Token*, and if an attacker can somehow intercept
 
 ### Safe Input Handling
 
-The SPA uses the technically simple [Mustache Template Library](https://github.com/janl/mustache.js/) to bind received data to the SPA's DOM elements. This ensures that potentially dangerous input is escaped, to prevent malicious code execution. This blog's final SPA uses React, which provides similar input protection.
+The SPA uses the [Mustache Template Library](https://github.com/janl/mustache.js/) to bind received data to the SPA's DOM elements. This ensures that potentially dangerous input is escaped, to prevent malicious code execution. This blog's final SPA uses React, which provides similar input protection.
 
 
 ```typescript
