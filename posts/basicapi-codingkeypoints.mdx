@@ -1,10 +1,10 @@
 # Basic API – Coding Key Points
 
-Previously we covered <Link href='/posts/basicspa-codingkeypoints'>SPA Coding Key Points</Link> for the first code sample. In this post we’ll drill into some important identity related code in the API.
+Previously we provided some <Link href='/posts/basicspa-codingkeypoints'>SPA Coding Key Points</Link> to explain some code setup for the SPA. In this post we’ll provide a similar breakdown for the API.
 
 ### Code Layout
 
-The API uses [Node.js Express](https://expressjs.com/) as the HTTP server and is coded in TypeScript. The business functionality is in a logic folder and the plumbing, including OAuth handling, is in the host folder:
+The API uses [Node.js Express](https://expressjs.com/) as the HTTP server and is coded in TypeScript. The business functionality is in a *logic* folder and the API's plumbing, including OAuth handling, is in a *host* folder:
 
 ![API code layout](/images/60/api-layout.jpg)
 
@@ -15,13 +15,13 @@ Use of third party libraries has been kept fairly simple, and the most interesti
 ```json
 {
     "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "fs-extra": "^11.1.1",
-    "jose": "^5.0.1",
-    "on-headers": "^1.0.2",
-    "https-proxy-agent": "^5.0.1",
-    "winston": "^3.8.2"
+        "cors": "^2.8.5",
+        "express": "^4.18.2",
+        "fs-extra": "^11.1.1",
+        "jose": "^5.0.1",
+        "on-headers": "^1.0.2",
+        "https-proxy-agent": "^5.0.1",
+        "winston": "^3.8.2"
     }
 }
 ```
@@ -54,7 +54,7 @@ When *npm start* is run, the *startup/app.ts* class executes, which configures t
 })();
 ```
 
-The startup logic is in the *HttpServerConfiguration* class, whose main role is to define the following aspects:
+The startup logic is in the *HttpServerConfiguration* class, whose main role is to express how API requests are processed:
 
 - How each REST URL is processed, via the *get* expressions
 - How cross cutting concerns are handled, via the *use* expressions
@@ -82,11 +82,9 @@ public async initializeApi(): Promise<void> {
 }
 ```
 
-The API then continues by configuring an HTTP listener, after which it runs indefinitely.
-
 ### API Configuration
 
-The API uses a configuration file in a similar manner to the SPA, and this includes details used for JWT validation, as discussed shortly:
+The API uses a JSON configuration file in a similar manner to the SPA, and this includes details used for JWT validation:
 
 ```json
 {
@@ -122,13 +120,13 @@ public initializeWebStaticContentHosting(): void {
 }
 ```
 
-In the real world you would use a separate web host component, and this will often be a Content Delivery Network. The <Link href='/posts/final-spa-overview'>Final SPA</Link> will switch to using a dedicated web host.
+In the real world you would use a separate web host component, and for SPA's this is often a content delivery network. The <Link href='/posts/final-spa-overview'>Final SPA</Link> switches to using a dedicated web host for development and is deployed to a CDN.
 
 ### Service Logic Classes
 
 The most mainstream coding model for API technology stacks involves receiving API requests into a controller class, then calling other testable business logic classes.
 
-In our first Node.js sample we will wire up these classes manually via an *ApiController* class, though we will use dependency injection in later API code samples:
+In this blog's early API code samples I manually wire up an *ApiController* object with its dependencies. This blog's final APIs instead use a dependency injection framework.
 
 ```typescript
 public async getCompanyList(request: Request, response: Response): Promise<void> {
@@ -142,9 +140,9 @@ public async getCompanyList(request: Request, response: Response): Promise<void>
 }
 ```
 
-### API is Non Blocking
+### API is Non-Blocking
 
-Whenever the API performs I/O, as for the below *CompanyRepository* class, it does so using a standard async / await coding model, so that other code can execute on the current thread while I/O is in progress:
+As is standard these days in any frontend technology, the API uses *async / await* code to perform I/O, as demonstrated by the code in the *CompanyRepository* class. Other code can continue to execute while I/O is in progress:
 
 ```typescript
 public async getCompanyTransactions(id: number): Promise<CompanyTransactions | null> {
@@ -169,7 +167,7 @@ public async getCompanyTransactions(id: number): Promise<CompanyTransactions | n
 
 ### Authorization Middleware
 
-Express uses a middleware terminology for describing functions that handle cross cutting concerns. The first of these in our code sample is to validate the JWT access token before allowing business logic to run:
+Express uses a middleware terminology for describing functions that handle cross cutting concerns. A middleware validate the JWT access token before allowing business logic to run:
 
 ```typescript
 public async authorizationHandler(
@@ -226,11 +224,11 @@ public async execute(request: Request): Promise<ClaimsPrincipal> {
 }
 ```
 
-The API is responsible for providing correct inputs to the library, so it is important for API developers to understand these, which are summarised in a separate <Link href='/posts/index'>Access Token Validation</Link> page.
+The API is responsible for providing correct inputs to the library, so it is important for API developers to understand these, which are summarised in a separate <Link href='/posts/jwt-access-token-validation'>Access Token Validation</Link> page.
 
 ### Claims Principal
 
-After the JWT has been digitally verified, its claims can be trusted and used by the API’s business logic, to authorize access to resources. The claim values are provided by an object that we will call a *ClaimsPrincipal*:
+After the JWT has been digitally verified, its claims can be trusted and used by the API’s business logic, to authorize access to resources. The claim values are provided by an object I call a *ClaimsPrincipal*:
 
 ```typescript
 export class ClaimsPrincipal {
@@ -255,7 +253,7 @@ export class ClaimsPrincipal {
 
 ### Authorizing Requests
 
-The code sample then injects the claims principal into its business logic classes as follows:
+Once the access token validator has created the claims principal, it is injected into business logic classes:
 
 ```typescript
 export class CompanyService {
@@ -270,7 +268,7 @@ export class CompanyService {
 }
 ```
 
-If an attempt is made to access unauthorized data then a forbidden error can be returned:
+If an attempt is made to access unauthorized data, the SPA can throw a forbidden error:
 
 ```typescript
 private _unauthorizedError(companyId: number): ClientError {
@@ -283,11 +281,11 @@ private _unauthorizedError(companyId: number): ClientError {
 
 ### Claims Based Authorization
 
-For the first code sample default claims are used, but any real world system will need to use claims from business data in order to implement their authorization. We will drill into this topic in future posts.
+For the first code sample, default claims are used, but any real world system will need to use claims from business data in order to implement their authorization. I show how to do this in the next code sample.
 
 ### API Logs
 
-The initial API code sample does some basic logging, where each API request writes a log entry in JSON format, represented by the following class:
+The initial API code sample does some basic logging, where each API request writes a structured JSON log entry represented by the following class:
 
 ```typescript
 export class LogEntry {
@@ -327,7 +325,7 @@ By default this leads to lightweight output as follows:
 
 ### API Error Handling
 
-The API also performs solid error handling, with these main classes:
+The API code also implements solid error handling using these main classes:
 
 | Class | Description |
 | ----- | ----------- |
@@ -337,7 +335,7 @@ The API also performs solid error handling, with these main classes:
 | <span style={{color:'green'}}>**ErrorFactory**</span> | Used to create exceptions to throw |
 | <span style={{color:'green'}}>**ErrorCodes**</span> | A list of error causes |
 
-An unhandled exception handler is used to deal with adding error details to logs and returning a useful response to the SPA:
+An unhandled exception handler writes errors to logs and returns useful error responses to the SPA:
 
 ```typescript
 public static handleError(exception: any, response: Response): ClientError {
@@ -360,7 +358,7 @@ public static handleError(exception: any, response: Response): ClientError {
 }
 ```
 
-Errors are included in logs and any technical problems, such as when contacting OAuth endpoints, are output with a 500 status and include extra details to help with fast problem resolution:
+Errors are included in logs, where technical problems, such as when contacting OAuth endpoints, are logged with a 500 status and details about the cause, to help with fast problem resolution:
 
 ```json
 {
@@ -402,13 +400,13 @@ Errors are included in logs and any technical problems, such as when contacting 
 
 ### Supportability
 
-Future posts will drill much deeper into <Link href='/posts/effective-api-logging'>logging</Link> and <Link href='/posts/error-handling-and-supportability'>error handling</Link>. These are high value areas for back end systems, and people productivity is improved when they are implemented in a solid end-to-end manner.
+Future posts will drill much deeper into <Link href='/posts/effective-api-logging'>logging</Link> and <Link href='/posts/error-handling-and-supportability'>error handling</Link>. These are high value areas for backend systems, and people productivity is improved when they are implemented in a solid end-to-end manner.
 
 ### Where Are We?
 
-The initial API integrates with an authorization server and validates JWTs correctly. The API also does some initial work on claims, logging and error handling, and we will do more work on these areas for future samples.
+The initial API integrates with an authorization server and validates JWTs correctly. The API also does some initial work on claims, logging and error handling, and we will do more work on these areas for future code samples.
 
 ### Next
 
-- Next we will drill into <Link href='/posts/jwt-access-token-validation'>JWT Access Token Validation</Link>
+- Next we will explain <Link href='/posts/jwt-access-token-validation'>JWT Access Token Validation</Link> for APIs
 - For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>
