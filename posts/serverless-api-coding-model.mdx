@@ -239,7 +239,7 @@ it ('Get transactions returns 404 for companies that do not match the regions cl
     const mockUserInfo = {
         given_name: 'Guest',
         family_name: 'User',
-        email: 'guestuser@mycompany.com',
+        email: 'guestuser@example.com',
     };
     await wiremockAdmin.registerUserInfo(JSON.stringify(mockUserInfo));
 

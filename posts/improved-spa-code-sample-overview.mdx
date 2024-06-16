@@ -50,14 +50,14 @@ The SPA now uses more complete OAuth settings and SSL based URLs:
 ```json
 {
     "app": {
-        "apiBaseUrl":             "https://api.mycompany.com/api"
+        "apiBaseUrl":             "https://api.authsamples-dev.com/api"
     },
     "oauth": {
         "provider":               "cognito",
         "authority":              "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9",
         "clientId":               "hje94a2jj3lgkobkh57ikenhh",
-        "redirectUri":            "https://www.mycompany.com/spa",
-        "postLogoutRedirectUri":  "https://www.mycompany.com/spa/loggedout.html",
+        "redirectUri":            "https://www.authsamples-dev.com/spa",
+        "postLogoutRedirectUri":  "https://www.authsamples-dev.com/spa/loggedout.html",
         "scope":                  "openid profile email https://api.authsamples.com/api/investments",
         "customLogoutEndpoint":   "https://login.authsamples.com/logout"
     }
@@ -70,10 +70,10 @@ The API configuration has been updated in a similar manner:
 {
     "api": {
         "port": 443,
-        "sslCertificateFileName": "./certs/mycompany.ssl.p12",
+        "sslCertificateFileName": "./certs/authsamples-dev.ssl.p12",
         "sslCertificatePassword": "Password1",
         "trustedOrigins": [
-            "https://www.mycompany.com"
+            "https://www.authsamples-dev.com"
         ],
         "useProxy": false,
         "proxyUrl": "http://127.0.0.1:8888"
@@ -108,7 +108,7 @@ The build script also downloads OpenSSL generated certificates from a [Developme
 
 ![web host certs](/images/170/web-host-certs.jpg)
 
-The *mycompany.ca.pem* file is a root certificate authority that must be added to your system trust store in order for the browser to use SSL without warnings. See the <Link href='/posts/developer-ssl-setup'>Browser SSL Trust</Link> instructions for further information.
+The *authsamples-dev.ca.pem* file is a root certificate authority that must be added to your system trust store in order for the browser to use SSL without warnings. See the <Link href='/posts/developer-ssl-setup'>Browser SSL Trust</Link> instructions for further information.
 
 ### Run the SPA and API
 
@@ -130,12 +130,12 @@ The API terminal window listens for requests from the SPA on port 443:
 
 The following AWS Cognito test account can continue to be used to sign in to the SPA:
 
-- User = *guestuser`@`mycompany.com*
+- User = *guestuser`@`example.com*
 - Password = *GuestPassword1*
 
 A second test account is also available, with different permissions to the data shown in the SPA:
 
-- User = *guestadmin`@`mycompany.com*
+- User = *guestadmin`@`example.com*
 - Password = *GuestPassword1*
 
 The updated SPA then shows different data depending on the user, since the API is now applying claims based authorization.
@@ -199,7 +199,7 @@ As for the first code example, the SPA continues to get name details for display
     "given_name": "Guest",
     "family_name": "User",
     "custom:role": "user",
-    "email": "guestuser@mycompany.com",
+    "email": "guestuser@example.com",
     "username": "06e3c525-33d1-47ec-97be-03d8affc3726"
 }
 ```

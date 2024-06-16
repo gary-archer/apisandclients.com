@@ -40,8 +40,8 @@ In this post I will describe some setup details for the Entra ID authorization s
 
 | Component | URL |
 | --------- | --- |
-| <span style={{color:'green'}}>**Secured API**</span> | https`:`//api.mycompany.com/api |
-| <span style={{color:'green'}}>**Secured SPA**</span> | https`:`//www.mycompany.com/spa |
+| <span style={{color:'green'}}>**Secured API**</span> | https`:`//api.authsamples-dev.com/api |
+| <span style={{color:'green'}}>**Secured SPA**</span> | https`:`//www.authsamples-dev.com/spa |
 
 In order to get a working system, you would need to follow the steps in this post for your own Microsoft account, then reconfigure the apps. The configuration is a little complex though, due to my requirement to issue custom claims to access tokens.
 
@@ -73,8 +73,8 @@ Next I navigated to Users and created the two users for testing from the previou
 
 The *Guest User* and *Guest Admin* accounts I created have the following login names based on my domain:
 
-- *guestuser`@`garyarcher36gmail.onmicrosoft.com*
-- *guestadmin`@`garyarcher36gmail.onmicrosoft.com*
+- *guestuser`@`[mytenant].onmicrosoft.com*
+- *guestadmin`@`[mytenant].onmicrosoft.com*
 
 I assigned each user *First name* and *Last name* fields. The *Object ID* field is the unique account identifier of each user account:
 
@@ -188,13 +188,13 @@ For the SPA update both the *Tenant ID* and the SPA’s *Client ID* to your own 
 ```json
 {
     "app": {
-        "apiBaseUrl":             "https://api.mycompany.com/api"
+        "apiBaseUrl":             "https://api.authsamples-dev.com/api"
     },
     "oauth": {
         "authority":              "https://login.microsoftonline.com/7f071fbc-8bf2-4e61-bb48-dabd8e2f5b5a/v2.0",
         "clientId":               "e9a29a01-21b4-4533-bae6-438141ebc05c",
-        "redirectUri":            "https://www.mycompany.com/spa/",
-        "postLogoutRedirectUri":  "https://www.mycompany.com/spa/loggedout.html",
+        "redirectUri":            "https://www.authsamples-dev.com/spa/",
+        "postLogoutRedirectUri":  "https://www.authsamples-dev.com/spa/loggedout.html",
         "scope":                  "openid api://552b475c-471d-43a1-9dfe-f6b895931110/investments"
     }
 }
@@ -208,10 +208,10 @@ For the API configuration, replace the *Tenant ID* with your own value, and also
 {
     "api": {
         "port": 443,
-        "sslCertificateFileName": "./certs/mycompany.ssl.p12",
+        "sslCertificateFileName": "./certs/authsamples-dev.ssl.p12",
         "sslCertificatePassword": "Password1",
         "trustedOrigins": [
-            "https://www.mycompany.com"
+            "https://www.authsamples-dev.com"
         ],
         "useProxy": false,
         "proxyUrl": "http://127.0.0.1:8888"
@@ -240,7 +240,7 @@ This configuration is equivalent to that of the earlier <Link href='/posts/impro
 Update the hosts file on your PC to include this blog’s local development domains, described in the earlier <Link href='/posts/oauth-infrastructure-setup'>Initial OAuth Setup</Link> post:
 
 ```markdown
-127.0.0.1 www.mycompany.com api.mycompany.com
+127.0.0.1 www.authsamples-dev.com api.authsamples-dev.com
 ```
 
 ### Step 12. Build the Code
@@ -253,13 +253,13 @@ Next run the following script, which will download some OpenSSL generated certif
 
 ### Step 13. Configure SSL Trust
 
-Our sample runs over SSL using self signed certificates, the root certificate mycompany.ca.pem needs to be trusted by your browser, as covered in the <Link href='/posts/developer-ssl-setup'>Developer SSL Setup</Link> post.
+Our sample runs over SSL using self signed certificates, the root certificate authsamples-dev.ca.pem needs to be trusted by your browser, as covered in the <Link href='/posts/developer-ssl-setup'>Developer SSL Setup</Link> post.
 
 ![ssl certs](/images/190/ssl-certs.jpg)
 
 ### Step 14. Run the SPA
 
-Next run the following script, to run the API over SSL on port 443, and the default browser will then be opened at https`:`//*www*.mycompany.com/spa. The SPA will then redirect to Microsoft online and you can sign in with one of the test user accounts:
+Next run the following script, to run the API over SSL on port 443, and the default browser will then be opened at https`:`//*www*.authsamples-dev.com/spa. The SPA will then redirect to Microsoft online and you can sign in with one of the test user accounts:
 
 ```bash
 ./run.sh

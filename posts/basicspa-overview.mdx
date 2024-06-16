@@ -16,7 +16,7 @@ The behaviour provided in our initial sample is summarised below:
 
 ### Components
 
-The Basic SPA Code Sample will get the below components and endpoints talking to each other, using OAuth based security:
+The Basic SPA Code Sample will get the below components and endpoints talking to each other, using OAuth security:
 
 ![Components](/images/20/components.jpg)
 
@@ -24,7 +24,7 @@ The Basic SPA Code Sample will get the below components and endpoints talking to
 
 <span style={{color:'red'}}>This sample uses the traditional SPA solution, with OpenID Connect implemented solely in JavaScript. This is no longer recommended, and your production apps should instead use a <Link href='/posts/spa-back-end-for-front-end'>Backend for Frontend</Link> approach.</span>
 
-The traditional SPA flow remains useful for representing a pure SPA architecture, and learning about OAuth endpoints and messages. This blog's <Link href='/posts/final-spa-overview'>Final SPA</Link> provides a BFF based solution, but requires a more complex flow.
+The traditional SPA flow remains useful when first learning OAuth, and for representing a pure SPA architecture.
 
 ### Code Download
 
@@ -34,11 +34,11 @@ The code for our SPA and API can be downloaded from [here](https://github.com/ga
 
 ### Security Libraries
 
-In our SPA and API we will use the following respected open source libraries, which are referenced on the OpenID Connect Libraries website:
+In our SPA and API we will use the following respected open source libraries:
 
 | Component | Library | Features |
 | --------- | ------- | -------- |
-| <span style={{color:'green'}}>**SPA**</span> | [oidc-client-ts](https://github.com/authts/oidc-client-ts) | Implements OpenID Connect lifecycle events for a browser based client, including logins, logouts and token renewal |
+| <span style={{color:'green'}}>**SPA**</span> | [oidc-client-ts](https://github.com/authts/oidc-client-ts) | Implements OpenID Connect lifecycle events for a browser-based client, including logins, logouts and token renewal |
 | <span style={{color:'green'}}>**API**</span> | [jose](https://github.com/panva/jose) | Validates JWT access tokens, returns claims and manages looking up and caching of token signing public keys |
 
 ### Programming Languages
@@ -56,20 +56,20 @@ We will use modern web technology, but will avoid web frameworks to start with, 
 
 | Step | Details |
 | ---- | ------- |
-| <span style={{color:'green'}}>**SPA OAuth Coding Model**</span> | First show how to integrate standards based OAuth support into a Simple SPA so that we can focus on OAuth requirements |
-| <span style={{color:'green'}}>**Modern SPA Framework**</span> | Avoid getting sidetracked by too much web technology initially, though later our Final SPA will use React |
+| <span style={{color:'green'}}>**SPA OAuth Coding Model**</span> | First show how to integrate standards-based OAuth support into a simple SPA so that we can focus on OAuth requirements |
+| <span style={{color:'green'}}>**Modern SPA Framework**</span> | Avoid getting sidetracked by too much web technology initially, though this blog's <Link href="/posts/final-spa-overview">Final SPA</Link> uses React |
 
 ### Code Sample Theme
 
-This blog's samples represent a fictional financial scenario, where sensitive investment details are displayed. In a real financial app we would need to be diligent about protecting this data:
+This blog's code samples represent a fictional financial scenario, where sensitive investment details are displayed. In a real financial app we would need to be diligent about protecting this data:
 
 ![List View](/images/20/list-view.jpg)
 
-The actual data shown is just made up and does not represent anything real. The UI just renders fixed JSON data received from the API. Our Sample UIs will also include a basic *Transactions View* and we will imagine that this contains sensitive details from particular investors.
+The actual data shown is just made up and does not represent anything real. The UI just renders fixed JSON data received from the API. Our sample UIs will include a basic *Transactions View* and we will imagine that this contains money transaction details.
 
 ![Details View](/images/20/details-view.jpg)
 
-This view primarily exists to demonstrate navigation and Deep Linking. Users can bookmark URLs to secured resources, and UIs may need to renew a token or log the user in before presenting the view:
+This view primarily exists to demonstrate navigation and deep linking, where an access token needs to be retrieved before the UI can present its view. Users can bookmark URLs to secured resources, and UIs may need to renew a token or log the user in before presenting the view:
 
 - http`:`//localhost/spa#company=1
 - http`:`//localhost/spa#company=2

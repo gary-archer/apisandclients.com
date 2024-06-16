@@ -1,6 +1,6 @@
 # Basic SPA – How to Run the Sample
 
-Previously we summarised the behaviour of the initial <Link href='/posts/basicspa-overview'>SPA and API Code Sample</Link>. Next we will get it running on a Developer PC, then visually describe the important OAuth related behaviour.
+Previously we summarised the behaviour of the initial <Link href='/posts/basicspa-overview'>SPA and API Code Sample</Link>. Next we will get it running on a development computer, then visually describe the important OAuth related behaviour.
 
 ### Prerequisites
 
@@ -8,7 +8,7 @@ This blog’s code examples run in any Linux based terminal, and are tested on U
 
 ### Step 1: Download Code from GitHub
 
-The project is available here, consisting of a UI and API component. It can be downloaded / cloned to your local PC with this command:
+The project is available here, consisting of a UI and API component. You can clone it to your computer with this command:
 
 ```bash
 git clone https://github.com/gary-archer/oauth.websample1
@@ -18,11 +18,11 @@ git clone https://github.com/gary-archer/oauth.websample1
 
 ### Step 2: View Code in an IDE
 
-I use [Visual Studio Code](https://code.visualstudio.com/) but any editor can be used:
+I use [Visual Studio Code](https://code.visualstudio.com/) but any editor can be used to view the code layout:
 
 ![Code layout](/images/30/code-layout.jpg)
 
-The project demonstrates a code setup to aim for. Firstly, JavaScript code runs in the browser and is focused on a great user experience. Secondly, API code serves data to frontends. Frontend code is business focused, with less plumbing than older web back end solutions.
+The project demonstrates a code setup to aim for. Firstly, JavaScript code runs in the browser and is focused on a great user experience. Secondly, API code serves data to frontends. Frontend code is business focused, with less plumbing than older website solutions.
 
 ### Step 3: View Configuration
 
@@ -31,7 +31,7 @@ Both the SPA and API use configuration files that highlight important OAuth sett
 ```json
 {
     "app": {
-        "apiBaseUrl":       "http://api.mycompany.com/api"
+        "apiBaseUrl":       "http://api.authsamples-dev.com/api"
     },
     "oauth": {
         "authority":        "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9",
@@ -67,40 +67,42 @@ The API acts as an *OAuth Resource Server* and uses these configuration values. 
 
 Both the SPA and API use endpoints from my personal AWS Cognito account, which is a low cost cloud solution. Jump ahead to these future posts for further details:
 
-- <Link href='/posts/oauth-infrastructure-setup'>Authorization Server Setup</Link>
+- <Link href='/posts/oauth-infrastructure-setup'>OAuth Domain Setup</Link>
 - <Link href='/posts/managed-authorization-server-setup'>AWS Cognito Cloud Setup</Link>
 
-OAuth clients must be registered at the authorization server, and our SPA includes an online entry as follows:
+OAuth clients must be registered at the authorization server, and the SPA includes an online entry:
 
 ![Client settings 1](/images/30/client-settings1.jpg)
 
-The registered OAuth settings for *Client ID*, *Redirect URI* and *Scope* allow these values to be used by applications. The same values must be used in the SPA’s own configuration.
+The registered OAuth settings for *Client ID*, *Redirect URI* and *Scope* allow these values to be used by the SPA. The same values must be used in the SPA’s own configuration.
 
 ![Client settings 2](/images/30/client-settings2.jpg)
 
-This blog’s code samples are standards based, so you can change configurations to point to your own authorization server instead. You will then be able to use your own preferred URLs and ports for the SPA and API.
+This blog’s code samples are standards-based, so you can change configurations to point to your own authorization server instead. You will then be able to use your own preferred URLs for the SPA and API.
 
 ### Step 5: User Setup
 
-This blog will use the following main Cognito test account for signing in to the SPA. This is not a real user and no personal data is used by this blog’s code samples:
+This blog uses the following main Cognito test account for SPA logins. This is not a real user and no personal data is used by this blog’s code samples:
 
-- User: *guestuser`@`mycompany.com*
-- Password: *GuestPassword1*
+- User: `guestuser@example.com`
+- Password: `GuestPassword1`
 
 ### Step 6: Domain Setup
 
-This blog’s code samples will run on the local computer using DNS based URLs that represent a deployed architecture, and localhost based URLs will be avoided where possible. The initial code sample runs on these URLs:
+This blog’s code samples use DNS based URLs on a local computer, to represent a deployed architecture. Clean URLs are used, without a port number in the URL.
 
-- API: http`:`//api.mycompany.com/api
-- SPA: http`:`//localhost/spa
+| Component | Base URL |
+| --------- | -------- |
+| <span style={{color:'green'}}>**SPA**</span> | `http://www.authsamples-dev/spa` |
+| <span style={{color:'green'}}>**API**</span> | `http://api.authsamples-dev.com/api` |
 
-To enable this on a development computer, add the API's DNS entry to your hosts file:
+To enable the DNS lookup to work on a development computer, add DNS entries to your hosts file:
 
 ```markdown
-127.0.0.1 api.mycompany.com
+127.0.0.1 www.authsamples-dev.com api.authsamples-dev.com
 ```
 
-Both AWS Cognito and the crypto in the oidc-client-ts library require the SPA to use a localhost domain name when using HTTP URLs. In future code samples I will update to HTTPS URLs and use a web domain of **www*.mycompany.com*.
+Yet both AWS Cognito and the crypto in the oidc-client-ts library require the SPA to use a *localhost* domain name when using HTTP URLs. So the custom SPA domain cannot be used until this blog's second code samples, which uses HTTPS URLs.
 
 ### Step 7: Run the SPA and API
 
@@ -139,11 +141,11 @@ The second terminal is for the API, which listens on port 80, and requires admin
 
 ![Running API](/images/30/running-api.jpg)
 
-To keep the developer setup simple, the API also serves the SPA’s bundle files to the browser. Later in this blog we will update to a development web host, and deploy the final SPA to a content delivery network.
+To keep the developer setup simple, the API also serves the SPA’s bundle files to the browser. A real web host is used later in this blog, when the SPA is deployed to a <Link href="/posts/cdn-static-content-delivery">content delivery network</Link>.
 
 ### Step 8: Login to the SPA
 
-The script then invokes a browser at http`:`//localhost/spa, and the SPA triggers an OpenID Connect redirect when it loads, to get an OAuth access token, so that it can call the API:
+The *start.sh* script then invokes a browser at `http://localhost/spa`, and the SPA triggers an OpenID Connect redirect when it loads, to get an OAuth access token, so that it can call the API:
 
 ![Login](/images/30/login.jpg)
 
@@ -151,7 +153,7 @@ After signing in, the SPA is rendered, which just shows hard coded fictional dat
 
 ![List view](/images/20/list-view.jpg)
 
-The first API call is to http`:`//api.mycompany.com/api/companies, and if you browse there directly you will get a 401 response, since direct browsing to APIs does not send an OAuth access token:
+The first API call is to `http://api.authsamples-dev.com/api/companies`, and if you browse there directly you will get a 401 response, since direct browsing to APIs does not send an OAuth access token:
 
 ![API browser access](/images/30/api-browser-access.jpg)
 
@@ -159,7 +161,9 @@ The first API call is to http`:`//api.mycompany.com/api/companies, and if you br
 
 You can navigate to the SPA’s second view by clicking one of the *View Transactions* links. The following type of URL can also be typed in the browser:
 
-- http`:`//localhost/spa/#company=2
+```markdown
+http://localhost/spa/#company=2
+```
 
 ![Company 1](/images/20/details-view.jpg)
 
@@ -169,15 +173,15 @@ SPA URLs can be bookmarked, and this can be done by opening a new browser tab or
 
 ### Step 10: Run a User Session
 
-The SPA’s session management is incomplete in the initial sample. Every time the access token expires the user has to login again. This can be simulated by clicking *Expire Token* followed by *Reload Data*.
+The SPA’s session management is incomplete in the initial code sample. Every time the access token expires the user has to login again. This can be simulated by clicking *Expire Token* followed by *Reload Data*.
 
 ![Session testing](/images/30/session-testing.jpg)
 
-The code samples stores access tokens in session storage, so that page reloads do not redirect the browser. However, opening a new browser tab or window does a single sign-on operation, to get a new access token.
+The initial SPA stores access tokens in session storage, so that page reloads do not redirect the browser. However, opening a new browser tab or window does a single sign-on operation, to get a new access token.
 
 ### Step 11: View Browser Traffic
 
-Developers need to understand OAuth messages, which are sent using an HTTP language, with input and output parameter names defined in OAuth specifications. An OAuth authorization request begins the login process, and includes a number of query string parameters:
+Developers need to understand OAuth messages, which are sent using an HTTP language, with input and output parameter names defined in OAuth specifications. An  authorization request begins the login process, and includes a number of query string parameters:
 
 ![HTTP debugging](/images/30/http-debugging.jpg)
 
@@ -185,7 +189,7 @@ Developers need to understand OAuth messages, which are sent using an HTTP langu
 
 The SPA can show debug details from the oidc-client-ts library, to provide visualisation of the OAuth SPA logic. You can activate this by adding a *#log=debug* query parameter to the SPA, then viewing the browser console.
 
-In the following screenshot, Google Chrome DevTools is used. Note that the Verbose level is selected in order to show debug messages, and *Preserve Log* is used, to maintain messages before and after login redirects.
+In the following screenshot, Google Chrome DevTools is used. Note that the *Verbose* level is selected, to show debug messages, and *Preserve Log* is used, to maintain messages before and after login redirects.
 
 ![OAuth debugging](/images/30/oauth-debugging.jpg)
 

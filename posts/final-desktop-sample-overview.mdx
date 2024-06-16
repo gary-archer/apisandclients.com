@@ -55,7 +55,7 @@ The app executes logins in the same manner as our initial code sample:
 
 This blog’s test credential can then be used to sign in:
 
-- User: *guestuser`@`mycompany.com*
+- User: *guestuser`@`example.com*
 - Password: *GuestPassword1*
 
 Once login completes, a completion web page is rendered in the browser. A similar page is also shown when receiving the logout response:
@@ -92,7 +92,7 @@ The final desktop app’s configuration no longer uses HTTP ports, and now uses 
         "authority":                "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9",
         "clientId":                 "5r463je7qeddssfqttaa8cpv91",
         "redirectUri":              "https://authsamples.com/apps/finaldesktopapp/postlogin.html",
-        "privateSchemeName":        "x-mycompany-desktopapp",
+        "privateSchemeName":        "x-authsamples-desktopapp",
         "scope":                    "openid profile email https://api.authsamples.com/api/transactions_read",
         "customLogoutEndpoint":     "https://login.authsamples.com/logout",
         "postLogoutRedirectUri":    "https://authsamples.com/apps/finaldesktopapp/postlogout.html",
@@ -181,7 +181,7 @@ Type=Application
 Name=Final Desktop App
 Exec=$APP_COMMAND %U
 StartupNotify=false
-MimeType=x-scheme-handler/x-mycompany-desktopapp
+MimeType=x-scheme-handler/x-authsamples-desktopapp
 ```
 
 To use private URI schemes you need to be able to restrict the desktop app to a single instance. In some desktop cases, such as for a *Microsoft Excel Plugin*, this may not be possible, and you will need to use a loopback based solution.
@@ -206,20 +206,20 @@ The actual tokens are stored as base64 encrypted bytes in a JSON file at one of 
 
 The login and logout response messages received by the app are a type of deep link notification:
 
-- *x-mycompany-desktopapp:/callback?code=…&state=…*
-- *x-mycompany-desktopapp:/logoutcallback*
+- *x-authsamples-desktopapp:/callback?code=…&state=…*
+- *x-authsamples-desktopapp:/logoutcallback*
 
 We can also use deep linking to bookmark screens, by sending a user an email with a URL link such as this:
 
-- *x-mycompany-desktopapp:/companies/2*
+- *x-authsamples-desktopapp:/companies/2*
 
 The easiest way to test deep linking is from a command shell, and this varies slightly for the different operating systems:
 
 | Operating System | Example Command |
 | ---------------- | --------------- |
-| <span style={{color:'green'}}>**Windows**</span> | start x-mycompany-desktopapp:/companies/2 |
-| <span style={{color:'green'}}>**macOS**</span> | open x-mycompany-desktopapp:/companies/2 |
-| <span style={{color:'green'}}>**Linux (Gnome)**</span> | xdg-open  x-mycompany-desktopapp:/companies/2 |
+| <span style={{color:'green'}}>**Windows**</span> | start x-authsamples-desktopapp:/companies/2 |
+| <span style={{color:'green'}}>**macOS**</span> | open x-authsamples-desktopapp:/companies/2 |
+| <span style={{color:'green'}}>**Linux (Gnome)**</span> | xdg-open  x-authsamples-desktopapp:/companies/2 |
 
 If the desktop app is running, this command will cause it to update its location to the *Transactions View* for our second company. If not then it will start up at that location:
 

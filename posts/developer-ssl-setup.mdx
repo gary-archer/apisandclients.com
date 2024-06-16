@@ -15,8 +15,8 @@ In some setups, being able to view HTTPS messages in flight can be highly useful
 
 For the first code sample we created custom domain names for local PC hosting, and in the next sample these will be updated to HTTPS URLs:
 
-- https`:`//*www*.mycompany.com/spa
-- https`:`//api.mycompany.com/api
+- https`:`//*www*.authsamples-dev.com/spa
+- https`:`//api.authsamples-dev.com/api
 
 Code samples will download and use development certificates and keys precreated by the [openssl command line tool](https://www.openssl.org/). We will take a closer look at how the creation script works at the end of this post.
 
@@ -119,7 +119,7 @@ export NODE_EXTRA_CA_CERTS=<path to bundle file>
 The environment variable points to a CA bundle file that contains the public keys of multiple root certificates, and I use a local file containing a number of entries:
 
 ```markdown
-# mycompany.com
+# authsamples-dev.com
 -----BEGIN CERTIFICATE-----
 MIIDZzCCAk+gAwIBAgIJAN7ZkzJkHq8DMA0GCSqGSIb3DQEBCwUAMCsxKTAnBgNV
 BAMTIFNlbGYgU2lnbmVkIENBIGZvciBteWNvbXBhbnkuY29tMB4XDTIxMTIwNjE4
@@ -183,15 +183,15 @@ Later we will provide some <Link href='/posts/desktop-apps-overview'>OAuth Secur
 Command line tools usually use the default operating system trust store, so that these commands work once root certificates are trusted:
 
 ```bash
-curl https://api.mycompany.com/api/companies
-openssl s_client -connect api.mycompany.com:443
+curl https://api.authsamples-dev.com/api/companies
+openssl s_client -connect api.authsamples-dev.com:443
 ```
 
 It is also possible to use a different certificate bundle file via an override, which may be required in some cases, and is useful for troubleshooting:
 
 ```bash
-curl --cacert ~/certs/trusted.ca.pem https://api.mycompany.com/api/companies
-openssl s_client -CAfile ~/certs/trusted.ca.pem -connect api.mycompany.com:443
+curl --cacert ~/certs/trusted.ca.pem https://api.authsamples-dev.com/api/companies
+openssl s_client -CAfile ~/certs/trusted.ca.pem -connect api.authsamples-dev.com:443
 ```
 
 The results include some technical output after which a trusted certificate has a zero return code:
@@ -253,8 +253,8 @@ public async startListening(): Promise<void> {
 
 The host process then serves content securely for both of these base URLs:
 
-- API JSON data from https`:`//api.mycompany.com
-- Web static content from https`:`//*www*.mycompany.com
+- API JSON data from https`:`//api.authsamples-dev.com
+- Web static content from https`:`//*www*.authsamples-dev.com
 
 I always issue the full DNS API and web domain names in the *Subject Alternative Names* of the certificate to avoid any client errors due to mismatched host names:
 

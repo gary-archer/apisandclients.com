@@ -72,13 +72,13 @@ In addition to business scopes, user facing applications typically use OpenID Co
 
 ### Audience Checks
 
-APIs also have an expected audience. This provides a way to group APIs together, to enable access tokens to be shared, or to prevent it. In a small microservices setup, where a set of APIs work together, one option is to use values like this:
+APIs also have an expected audience. This provides a way to group APIs together, to enable access tokens to be shared, or to prevent it. In a small microservices setup, one option is to shared the same audience across APIs:
 
 | API | Audience |
 | --- | -------- |
-| <span style={{color:'green'}}>**Orders**</span> | api.mycompany.com |
-| <span style={{color:'green'}}>**Products**</span> | api.mycompany.com |
-| <span style={{color:'green'}}>**Billing**</span> | api.mycompany.com |
+| <span style={{color:'green'}}>**Orders**</span> | api.authsamples.com |
+| <span style={{color:'green'}}>**Products**</span> | api.authsamples.com |
+| <span style={{color:'green'}}>**Billing**</span> | api.authsamples.com |
 
 ### Step 3: Claims
 
@@ -157,7 +157,7 @@ In this blog’s access tokens, the scope restricts access to an investments bus
 ```json
 {
   "iss": "https://login.authsamples.com",
-  "aud": "api.mycompany.com",
+  "aud": "api.authsamples.com",
   "scope": "openid profile investments",
   "sub": "a6b404b1-98af-41a2-8e7f-e4061dc0bf86",
   "manager_id": "10345",

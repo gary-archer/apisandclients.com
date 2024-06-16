@@ -14,9 +14,9 @@ This blog recommends an <Link href='/posts/oauth-infrastructure-setup'>OAuth Dev
 
 | Component	| Base URL |
 | --------- | -------- |
-| <span style={{color:'green'}}>**SPA**</span> | https`:`//*www*.mycompany.com |
-| <span style={{color:'green'}}>**API**</span> | https`:`//api.mycompany.com |
-| <span style={{color:'green'}}>**Authorization Server**</span> | https`:`//login.mycompany.com |
+| <span style={{color:'green'}}>**SPA**</span> | https`:`//*www*.authsamples-dev.com |
+| <span style={{color:'green'}}>**API**</span> | https`:`//api.authsamples-dev.com |
+| <span style={{color:'green'}}>**Authorization Server**</span> | https`:`//login.authsamples.com |
 
 ### Viewing OAuth Messages
 
@@ -111,12 +111,12 @@ Login requests can sometimes result in errors being returned, so let’s see an 
 ```json
 {
     "app": {
-        "apiBaseUrl":       "https://api.mycompany.com/api"
+        "apiBaseUrl":       "https://api.authsamples-dev.com/api"
     },
     "oauth": {
         "authority":        "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_qqJgVeuTn",
         "clientId":         "6tg0qglddpvqh74k3jbf1mmj64",
-        "redirectUri":      "https://www.mycompany.com/spa",
+        "redirectUri":      "https://www.authsamples-dev.com/spa",
         "scope":            "openid profile xxx"
     }
 }
@@ -213,7 +213,7 @@ I recommend testing these scenarios to ensure that the API returns useful error 
     "api": {
         "port": 443,
         "trustedOrigins": [
-            "https://www.mycompany.com"
+            "https://www.authsamples-dev.com"
         ],
         "useProxy": false,
         "proxyUrl": "http://127.0.0.1:8888"

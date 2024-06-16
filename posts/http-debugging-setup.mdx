@@ -47,7 +47,7 @@ Next run this blog’s <Link href='/posts/basicspa-execution'>initial SPA and AP
     "api": {
         "port": 80,
         "trustedOrigins": [
-            "http://www.mycompany.com",
+            "http://www.authsamples-dev.com",
             "http://localhost"
         ],
         "useProxy": true,
@@ -270,8 +270,8 @@ Example commands are shown below:
 ```bash
 export http_proxy=http://127.0.0.1:8888
 export https_proxy=http://127.0.0.1:8888
-curl -H "Authorization Bearer XXXX" http://api.mycompany.com/api/companies
-openssl s_client -connect api.mycompany.com:443
+curl -H "Authorization Bearer xxx" http://api.authsamples-dev.com/api/companies
+openssl s_client -connect api.authsamples-dev.com:443
 ```
 
 ### Proxy Settings for iOS and Android

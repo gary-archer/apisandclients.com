@@ -52,14 +52,14 @@ To activate iframe based token renewal, simply set a different provider name in 
 ```json
 {
     "app": {
-        "apiBaseUrl":             "https://api.mycompany.com/api"
+        "apiBaseUrl":             "https://api.authsamples-dev.com/api"
     },
     "oauth": {
         "provider":               "cognito",
         "authority":              "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9",
         "clientId":               "hje94a2jj3lgkobkh57ikenhh",
-        "redirectUri":            "https://www.mycompany.com/spa",
-        "postLogoutRedirectUri":  "https://www.mycompany.com/spa/loggedout.html",
+        "redirectUri":            "https://www.authsamples-dev.com/spa",
+        "postLogoutRedirectUri":  "https://www.authsamples-dev.com/spa/loggedout.html",
         "scope":                  "openid profile https://api.authsamples.com/investments",
         "customLogoutEndpoint":   "https://login.authsamples.com/logout"
     }
@@ -110,7 +110,7 @@ private async _performAccessTokenRenewalViaIframeRedirect(): Promise<void> {
 
 On success a response URL of the following form is received, containing the authorization code:
 
-- https`:`//*www*.mycompany.com/spa?code=xxx&state=yyy
+- https`:`//*www*.authsamples-dev.com/spa?code=xxx&state=yyy
 
 The below code then runs in the minimal iframe app to send the response URL to the SPA’s main window, which then deals with exchanging the code for tokens and storing results:
 

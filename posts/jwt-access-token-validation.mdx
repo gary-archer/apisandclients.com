@@ -101,7 +101,7 @@ OAuth secured APIs must validate JWT access tokens on every request. This is des
 | <span style={{color:'green'}}>**Algorithm**</span> | The API specifies one or more algorithms that can be used, and AWS Cognito tokens use the mainstream RS256 option |
 | <span style={{color:'green'}}>**Signature**</span> | The API provides the token signing public key to the library,  most commonly by configuring a trusted download URL |
 | <span style={{color:'green'}}>**Issuer**</span> | The API expects the issuer in the token to match the authorization server the API trusts |
-| <span style={{color:'green'}}>**Audience**</span> | The audience represents one or more related APIs, and the API must specify a value such as *api.mycompany.com* |
+| <span style={{color:'green'}}>**Audience**</span> | The audience represents one or more related APIs, and the API must specify a value such as *api.authsamples-dev.com* |
 | <span style={{color:'green'}}>**Time**</span> | Access tokens should be short lived, such as 15 minutes, and the API must check the token is valid for use and not expired |
 
 ### API OAuth Configuration

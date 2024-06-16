@@ -14,7 +14,7 @@ APIs start by loading their configuration, which includes OAuth settings needed 
 {
   "oauth": {
     "issuer":                       "https://login.authsamples-dev.com",
-    "audience":                     "api.mycompany.com",
+    "audience":                     "api.authsamples.com",
     "scope":                        "investments",
     "jwksEndpoint":                 "https://login.authsamples-dev.com:447/.well-known/jwks.json",
     "claimsCacheTimeToLiveMinutes": 15
@@ -99,7 +99,7 @@ This blog’s API code samples receive the following format of access token, whi
 ```json
 {
   "iss": "https://login.authsamples-dev.com",
-  "aud": "api.mycompany.com",
+  "aud": "api.authsamples.com",
   "scope": "openid profile investments",
   "sub": "a6b404b1-98af-41a2-8e7f-e4061dc0bf86",
   "manager_id": "10345",
