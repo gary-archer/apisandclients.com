@@ -1,4 +1,4 @@
-# Node.js API – Coding Model
+# Node.js API – Coding Key Points
 
 In our last post we started describing an advanced code sample that implemented our <Link href='/posts/api-architecture-node'>API Architecture in Node.js</Link>. We will now drill into some final implementation details.
 
@@ -178,7 +178,7 @@ Inversify Express Utils uses a [Container Per Request](https://structuremap.gith
 
 The controller and method for the incoming request are then identified based on which controller annotations the incoming request maps to. The controller class and its dependencies are then created.
 
-### Single Threaded Coding Model
+### Single Threaded Code
 
 For APIs with small dependency graphs, I like to reduce the likelihood of parallel requests  impacting each other. I do this by giving each request its own independent object instances. The API uses a request scope for REST specific objects, or a transient scope for domain logic classes:
 

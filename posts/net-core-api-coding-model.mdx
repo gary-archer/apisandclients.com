@@ -1,4 +1,4 @@
-# .NET API – Coding Model
+# .NET API – Coding Key Points
 
 In our previous post we described our <Link href='/posts/net-core-api-oauth-integration'>.NET API OAuth Integration</Link>. We will now drill into some final implementation details.
 
@@ -84,7 +84,7 @@ The role of each of these middleware classes is summarised below:
 | <span style={{color:'green'}}>**CustomHeaderMiddleware**</span> | Allow advanced client side testing of APIs via custom headers |
 | <span style={{color:'green'}}>**UnhandledExceptionMiddleware**</span> | A central place for handling exceptions, adding error details to logs, and producing the client error response |
 
-### Single Threaded Coding Model
+### Single Threaded Code
 
 For APIs with small dependency graphs, I like to reduce the likelihood of parallel requests  impacting each other. I do this by giving each request its own independent object instances. The API uses a request scope for REST specific objects, or a transient scope for domain logic classes:
 
