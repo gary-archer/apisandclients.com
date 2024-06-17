@@ -93,7 +93,7 @@ The deeper authorization behaviour in OAuth is using claims effectively. Claims 
 
 ### Access Token Claims
 
-The authorization server issues claims based on the scopes configured against the client. The <Link href='/posts/managed-authorization-server-setup/'>Cloud Authorization Server Setup</Link> blog post explains how this works for this blog’s example setup in AWS Cognito, where a lambda function issues different custom claims depending on the scope.
+The authorization server issues claims based on the scopes configured against the client. The <Link href='/posts/managed-authorization-server-setup'>Cloud Authorization Server Setup</Link> blog post explains how this works for this blog’s example setup in AWS Cognito, where a lambda function issues different custom claims depending on the scope.
 
 In some cases, claims issued are dynamic. APIs cannot always decide how to authorize solely from a user ID in an access token. Sometimes they instead need to be provided with values by the access token.
 
