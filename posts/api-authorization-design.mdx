@@ -58,7 +58,7 @@ A client that is issued an access token with only a *sales* scope can never call
 
 Scopes are fixed at design time and typically cannot be used for dynamic purposes, such as different scopes for different types of user. Aim to keep scopes fairly high level, since creating too many scopes too early can result in productivity problems.
 
-As APIs scale it is common for them to call each other. All of them must validate an access token, such as by forwarding the token between APIs. Solutions such as creating a separate scope for each microservice can work against this goal.
+As APIs scale it is common for them to call each other. All of them must validate an access token, either by forwarding the original token or getting a new one. Solutions such as creating a separate scope for each microservice can work against this goal.
 
 ### Built-In Scopes
 
@@ -72,13 +72,7 @@ In addition to business scopes, user facing applications typically use OpenID Co
 
 ### Audience Checks
 
-APIs also have an expected audience. This provides a way to group APIs together, to enable access tokens to be shared, or to prevent it. In a small microservices setup, one option is to shared the same audience across APIs:
-
-| API | Audience |
-| --- | -------- |
-| <span style={{color:'green'}}>**Orders**</span> | api.authsamples.com |
-| <span style={{color:'green'}}>**Products**</span> | api.authsamples.com |
-| <span style={{color:'green'}}>**Billing**</span> | api.authsamples.com |
+APIs also have an expected audience, that must be contained in the audiences of incoming access tokens. This is used in conjunction with scopes to enable access tokens to be shared, or to prevent it. You can set the audience(s) of an access token to match only a particular API, an array of APIs, or use a logical name that represents a set of related APIs as a business unit. In this blog I use the latter approach.
 
 ### Step 3: Claims
 

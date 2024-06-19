@@ -15,8 +15,8 @@ In some setups, being able to view HTTPS messages in flight can be highly useful
 
 For the first code sample we created custom domain names for local PC hosting, and in the next sample these will be updated to HTTPS URLs:
 
-- https`:`//*www*.authsamples-dev.com/spa
-- https`:`//api.authsamples-dev.com/api
+- `https://www.authsamples-dev.com/spa`
+- `https://api.authsamples-dev.com/api`
 
 Code samples will download and use development certificates and keys precreated by the [openssl command line tool](https://www.openssl.org/). We will take a closer look at how the creation script works at the end of this post.
 
@@ -253,8 +253,8 @@ public async startListening(): Promise<void> {
 
 The host process then serves content securely for both of these base URLs:
 
-- API JSON data from https`:`//api.authsamples-dev.com
-- Web static content from https`:`//*www*.authsamples-dev.com
+- API JSON data from `https://api.authsamples-dev.com`
+- Web static content from `https://www.authsamples-dev.com`
 
 I always issue the full DNS API and web domain names in the *Subject Alternative Names* of the certificate to avoid any client errors due to mismatched host names:
 

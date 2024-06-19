@@ -1,22 +1,13 @@
 # SPA Backend for Frontend
 
-In our previous post we ran a <Link href='/posts/azure-ad-troubleshooting'>Microsoft Entra ID SPA and API OAuth Flow</Link>. Our SPA now needs hardening before it is final, and in a real company we would have two major issues to deal with:
+In the previous post I ran a <Link href='/posts/azure-ad-troubleshooting'>Microsoft Entra ID SPA and API OAuth Flow</Link>. The SPA now needs hardening before it is final, and in a real company we would have two major issues to deal with:
 
 - Concerns about whether using access tokens in the browser is secure enough, and whether HTTP-only cookies should be used instead
 - A <Link href='/posts/user-sessions-and-token-renewal'>blocking usability problem</Link> with token renewal and multi tab browsing, due to authorization server cookies being dropped
 
 ### Security Best Practices for SPAs
 
-In recent years, the [RFC 6265bis specification](https://httpwg.org/http-extensions/draft-ietf-httpbis-rfc6265bis.html) proposed updates to cookies to protect user privacy. This also introduced SameSite cookies, with some improved security behaviours.
-
-Security experts now consider it best to use only the latest and strongest *HTTP-only* and *SameSite=strict* cookies in an SPA, and to avoid all use of tokens in the browser. These are usually the two main threats:
-
-| Threat | Best Practice Mitigation |
-| ------ | ------------------------ |
-| <span style={{color:'red'}}>Cross Site Scripting</span> | Malicious code execution is by far the biggest threat, so follow [OWASP XSS Prevention Best Practices](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html) |
-| <span style={{color:'red'}}>Cross Site Request Forgery</span> | Also use only the latest secure cookies in the browser and follow [OWASP CSRF Prevention Best Practices](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html) |
-
-The best practices are explained further in the [OAuth for Browser Based Apps](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps) document. The key benefit of using cookies is to limit the impact of cross-site scripting exploits.
+The definitive document on security best practices is [OAuth 2.0 for Browser Based Apps](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps). Due to the threats of malicious JavaScript, there are many token-based threats. The option with the strongest security guarantees is a Backend for Frontend (BFF). SPAs are now encouraged to avoid tokens in the browser and use only the latest and strongest *HTTP-only SameSite=strict Secure* cookies to call APIs. The key benefit of using cookies is to limit the impact of cross-site scripting exploits.
 
 ### High Level Requirements
 
@@ -30,32 +21,24 @@ At a higher level, there were three main requirements I wanted to meet for this 
 
 ### This Blog’s Backend for Frontend
 
-In 2021 I adopted the *Token Handler Pattern*, which involves using the following API components to deal with the cookie security:
+In 2021 I adopted the [Token Handler Pattern](https://github.com/curityio/spa-using-token-handler), which involves using the following API components to deal with the cookie security. These components are stateless and easy to manage, since all state is received in cookies. They are deployed to the API side of the architecture and do not need to run on the computers of web developers, or in the web static content host.
 
 | Component | Description |
 | --------- | ----------- |
-| [OAuth Agent](https://github.com/curityio/oauth-agent-node-express) | An API driven backend for frontend that simplifies OAuth  work for the SPA and manages a backend client credential. The BFF also issues cookies to the SPA. |
+| [OAuth Agent](https://github.com/curityio/oauth-agent-node-express) | An API-driven backend for frontend that simplifies OAuth  work for the SPA and manages a backend client credential. The BFF also issues cookies to the SPA that contain encrypted tokens. |
 | [OAuth Proxy](https://github.com/curityio/nginx-lua-oauth-proxy-plugin) | A plugin that runs in a high-performance API gateway. During API requests the plugin decrypts cookies and forwards JWT access tokens to APIs. |
-
-These components are deployed to the API side of the architecture and do not need to run on the computers of web developers, or in the web static content host.
-
-### Large Scale Cookie Design
-
-In larger architectures, up-front thinking is recommended when designing cookie security. Cookie domains and paths can be designed in various ways for deployed systems. I also think through these routes in terms of what developers need. This post summarizes the choices I made for this blog’s final SPA.
 
 ### Security Components
 
-The overall components that need to be deployed are shown here, where the token handler components act as an advanced reverse proxy. The SPA calls an API that uses an investments theme, and returns hard coded data for display. This will be done while using best practice cookie security.
+The overall components that need to be deployed are shown here, where the token handler components act as an advanced reverse proxy. Calls from the SPA to APIs must be SameSite so that cookies are classified as first-party, which prevents the browser from dropping them.
 
 ![components](/images/210/components.jpg)
 
-Calls from the SPA to token handler components must be SameSite and are also cross origin. The SPA’s cookies are therefore first-party and never impacted by recent browser restrictions to block third-party cookies.
-
-The final SPA’s web content is deployed to an [AWS CloudFront](https://aws.amazon.com/cloudfront/) web subdomain and does not need securing. The SPA uses APIs deployed as Serverless Lambdas to an API subdomain behind the [AWS API Gateway](https://aws.amazon.com/api-gateway/).
+The final SPA’s web content is deployed to an [AWS CloudFront](https://aws.amazon.com/cloudfront/) web subdomain and does not need securing. The SPA calls an API deployed as Serverless Lambdas to the [AWS API Gateway](https://aws.amazon.com/api-gateway/).
 
 ### API Driven Cookie Issuing
 
-The final SPA uses a dedicated *bff* subdomain where utility API components issue cookies with the following properties. These cookies are API credentials and are not used on requests for web static content:
+Token handler components run in a dedicated *bff* subdomain that serves as the SPA's entry point to APIs. Access is restricted to the SPA's precise web origin. Cookies are issued with the following properties. A cookie containing an encrypted access token becomes the API message credential:
 
 - HTTP-only
 - Secure
@@ -63,23 +46,17 @@ The final SPA uses a dedicated *bff* subdomain where utility API components issu
 - Domain=bff.authsamples-dev.com
 - Path=/
 
-When using this technique, it is recommended that you own the entire domain, as in this blog’s example deployments. The BFF must also restrict access to precise *Trusted Web Origins*.
-
 ### Cloud Environment
 
-These are the URLs I designed for the deployed AWS environment. The use of a */spa* path for the SPA indicates that additional micro-frontends for the same business area could be deployed alongside it and share the same cookies. Similarly, additional APIs could be deployed off the API base URL:
+These are the URLs I designed for the deployed AWS environment. The use of an */spa* path for the SPA indicates that additional micro-frontends for the same business area could be deployed alongside it and share the same cookies. Similarly, additional APIs could be deployed off the API base URL:
 
 | Component | Base URL |
 | --------- | -------- |
-| <span style={{color:'green'}}>**SPA**</span> | https`:`//*www*.authsamples.com/spa/ |
-| <span style={{color:'green'}}>**Investments API**</span> | https`:`//api.authsamples.com/investments |
-| <span style={{color:'green'}}>**Investments API Web Route**</span> | https`:`//bff.authsamples.com/investments |
-| <span style={{color:'green'}}>**OAuth Agent**</span> | https`:`//bff.authsamples.com/oauth-agent |
-| <span style={{color:'green'}}>**Authorization Server**</span> | https`:`//login.authsamples.com |
-
-In AWS I use <Link href='/posts/serverless-api-overview'>Serverless Lambda Functions</Link> for the investments API, which is deployed behind the AWS API gateway, to provide a low cost and low maintenance online API.
-
-The web route must always be in the same parent site as the web origin so that the browser can send it first-party cookies. During API requests, the route decrypts cookies and forwards a JWT access token to the API.
+| <span style={{color:'green'}}>**SPA**</span> | `https://www.authsamples.com/spa/` |
+| <span style={{color:'green'}}>**Investments API**</span> | `https://api.authsamples.com/investments` |
+| <span style={{color:'green'}}>**Investments API Web Route**</span> | `https://bff.authsamples.com/investments` |
+| <span style={{color:'green'}}>**OAuth Agent**</span> | `https://bff.authsamples.com/oauth-agent` |
+| <span style={{color:'green'}}>**Authorization Server**</span> | `https://login.authsamples.com` |
 
 ### Web Development Environment
 
@@ -87,11 +64,11 @@ The final SPA is developed in React, and developers run a *Development Web Host*
 
 | Component | Base URL |
 | --------- | -------- |
-| <span style={{color:'green'}}>**SPA**</span> | https`:`//*www*.authsamples-dev.com/spa/ |
-| <span style={{color:'green'}}>**Investments API**</span> | https`:`//api.authsamples.com/investments |
-| <span style={{color:'green'}}>**Investments API Web Route**</span> | https`:`//bff.authsamples-dev.com/investments |
-| <span style={{color:'green'}}>**OAuth Agent**</span> | https`:`//bff.authsamples-dev.com/oauth-agent |
-| <span style={{color:'green'}}>**Authorization Server**</span> | https`:`//login.authsamples.com |
+| <span style={{color:'green'}}>**SPA**</span> | `https://www.authsamples-dev.com/spa/` |
+| <span style={{color:'green'}}>**Investments API**</span> | `https://api.authsamples.com/investments` |
+| <span style={{color:'green'}}>**Investments API Web Route**</span> | `https://bff.authsamples-dev.com/investments` |
+| <span style={{color:'green'}}>**OAuth Agent**</span> | `https://bff.authsamples-dev.com/oauth-agent` |
+| <span style={{color:'green'}}>**Authorization Server**</span> | `https://login.authsamples.com` |
 
 The *authsamples-dev.com* site is primarily for components that run on the local computer. Yet the *bff* subdomain is deployed to AWS, to support SPA development. For the web origin and API routes to work together, the web domain must be aliased to localhost in the local computer’s hosts file:
 
@@ -99,7 +76,7 @@ The *authsamples-dev.com* site is primarily for components that run on the local
 127.0.0.1 www.authsamples-dev.com
 ```
 
-Developers then run the SPA in the browser using its domain name, https`:`//*www*.authsamples-dev.com. There is then a pure SPA development setup, where only the React code and a browser needs to be run locally, while development also uses the recommended cookie security.
+Developers then run the SPA in the browser using its domain name, `https://www.authsamples-dev.com`. There is a pure SPA development setup, where only the React code and a browser needs to be run locally.
 
 ![spa](/images/210/spa.jpg)
 
@@ -109,23 +86,15 @@ It gets more complicated when you need to run both the SPA and APIs locally, whi
 
 | Component | Base URL |
 | --------- | -------- |
-| <span style={{color:'green'}}>**SPA**</span> | https`:`//*www*.authsamples-dev.com/spa/ |
-| <span style={{color:'green'}}>**Investments API**</span> | https`:`//api.authsamples-dev.com:446/investments |
-| <span style={{color:'green'}}>**Investments API Web Route**</span> | https`:`//bfflocal.authsamples-dev.com:444/investments |
-| <span style={{color:'green'}}>**OAuth Agent**</span> | https`:`//bfflocal.authsamples-dev.com:444/oauth-agent |
-| <span style={{color:'green'}}>**Authorization Server**</span> | https`:`//login.authsamples.com |
+| <span style={{color:'green'}}>**SPA**</span> | `https://www.authsamples-dev.com/spa/` |
+| <span style={{color:'green'}}>**Investments API**</span> | `https://api.authsamples-dev.com:446/investments` |
+| <span style={{color:'green'}}>**Investments API Web Route**</span> | `https://bfflocal.authsamples-dev.com:444/investments` |
+| <span style={{color:'green'}}>**OAuth Agent**</span> | `https://bfflocal.authsamples-dev.com:444/oauth-agent` |
+| <span style={{color:'green'}}>**Authorization Server**</span> | `https://login.authsamples.com` |
 
 Developers must then also add the *bfflocal* subdomain to the hosts file. An end-to-end local setup can then be run, where the local SPA calls a local API.
 
 ![spa and api](/images/210/spa-and-api.jpg)
-
-### Cookie Limits
-
-This blog follows an approach of storing tokens in encrypted HTTP-only cookies. The backend OAuth and cookie components are then stateless and easy to manage. By default, the tokens are issued by AWS Cognito, which uses a JWT format, with an RS256 signature, for all tokens.
-
-For the final SPA, [cookie size limits of desktop and mobile browsers](https://datatracker.ietf.org/doc/html/rfc2109#section-6.3) are not exceeded, but the 4KB limit for a response HTTP header might be exceeded in the cookie response after a user login. Some HTTP servers, such as NGINX, would therefore need default header size limits to be increased.
-
-To resolve this in the best way, the authorization server should issue smaller tokens. A more efficient JWT algorithm such as ES256 will reduce cookie sizes by around 50%. Issuing access and refresh tokens in an opaque reference token format will reduce them even further.
 
 ### Where Are We?
 

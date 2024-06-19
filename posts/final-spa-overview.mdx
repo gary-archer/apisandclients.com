@@ -8,17 +8,9 @@ Our final SPA improves on the previous <Link href='/posts/improved-spa-code-samp
 
 | Requirement | Description |
 | ----------- | ----------- |
-| <span style={{color:'green'}}>**Best Browser Security**</span> | Only the strongest *HTTP-only SameSite=strict* cookies will be used, with no tokens in the browser |
+| <span style={{color:'green'}}>**Best Browser Security**</span> | The SPA calls APIs using the strongest *HTTP-only SameSite=strict* cookies, with no tokens in the browser |
 | <span style={{color:'green'}}>**Globally Equal Performance**</span> | Our static web content will be delivered to many locations via a *Content Delivery Network (CDN)* |
 | <span style={{color:'green'}}>**Pure SPA Development**</span> | Web developers work productively on frontends, with small code bases and no security plumbing |
-
-### Security Architecture
-
-As explained in the previous post, the following components are used by the SPA to implement end-to-end security. The security is based on the [Token Handler Example](https://github.com/curityio/spa-using-token-handler), where the OAuth agent handles cookie issuing on behalf of the SPA:
-
-![components](/images/220/components.jpg)
-
-After user login, the SPA sends HTTP-Only cookies in API requests. The SPA calls directly to a high-performance API gateway that is hosted in the same site as the SPA’s web origin. An OAuth proxy component runs in the gateway, which decrypts cookies and forwards JWT access tokens to APIs.
 
 ### Cloud Hosting
 
@@ -46,11 +38,11 @@ The following URLs are accessed during local development, and only the first of 
 
 | Component | Base URL |
 | --------- | -------- |
-| <span style={{color:'green'}}>**SPA**</span> | https`:`//*www*.authsamples-dev.com/spa/ |
-| <span style={{color:'green'}}>**Investments API**</span> | https`:`//api.authsamples.com/investments |
-| <span style={{color:'green'}}>**Investments API Web Route**</span> | https`:`//bff.authsamples-dev.com/investments |
-| <span style={{color:'green'}}>**OAuth Agent**</span> | https`:`//bff.authsamples.com-dev/oauth-agent |
-| <span style={{color:'green'}}>**Authorization Server**</span> | https`:`//login.authsamples.com |
+| <span style={{color:'green'}}>**SPA**</span> | `https://www.authsamples-dev.com/spa/` |
+| <span style={{color:'green'}}>**Investments API**</span> | `https://api.authsamples.com/investments` |
+| <span style={{color:'green'}}>**Investments API Web Route**</span> | `https://bff.authsamples-dev.com/investments` |
+| <span style={{color:'green'}}>**OAuth Agent**</span> | `https://bff.authsamples.com-dev/oauth-agent` |
+| <span style={{color:'green'}}>**Authorization Server**</span> | `https://login.authsamples.com` |
 
 The current post summarises the main web behaviours, and the next post explains how to run the SPA locally.
 
@@ -154,9 +146,7 @@ I aim to have a good awareness of factors that impact performance, but avoid opt
 
 ### Web Code Scalability
 
-Some companies run multiple micro-frontends for the same business area within a single web domain. This keeps web code manageable as it grows and also provides a bundle splitting solution.
-
-The final web code example is hosted at an */spa* path to show that other apps could be added alongside it, and share the same cookies. This would enable multiple teams to each work on only one frontend at a time, and avoid loading the code for all other apps. Each frontend would call APIs  using shared cookies, and it would be possible to seamlessly navigate across apps without OpenID Connect redirects.
+The final web code example is hosted at an */spa* path to show that other apps with the same business privileges could be added alongside it, and share the same cookies. This would enable the code for a large app to be split at development time, then recomposed at deployment time. Each frontend would call APIs using shared cookies, and it would be possible to seamlessly navigate across apps without OpenID Connect redirects.
 
 ### Legal and Regulatory
 
