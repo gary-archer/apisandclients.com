@@ -48,20 +48,20 @@ This is because the HTTP proxy is intercepting SSL requests at runtime and repla
 
 ### Deploy the HTTP Proxy Root Certificate
 
-If you are using the MITM proxy tool, you can just browse from a mobile browser on the device or simulator to *http`:`//mitm.it*. Then download the certificate to the device’s Downloads folder. Otherwise, there will be an export option similar to that shown below, so use it to save the HTTP proxy root certificate to the local computer.
+If you are using the MITM proxy tool, you can just browse from a mobile browser on the device or simulator to http://mitm.it. Then download the certificate to the device’s Downloads folder. Otherwise, there will be an export option similar to that shown below, so use it to save the HTTP proxy root certificate to the local computer.
 
 ![proxy root ca](/images/490/proxy-root-ca.jpg)
 
 Rename the file so that it has a *.crt* extension. You can then email the certificate to the device. Alternatively you can run an HTTP server to download the file using a mobile browser. The following steps do this using this blog’s initial code sample:
 
-- git clone https`:`//github.com/gary-archer/oauth.websample1
+- git clone `https://github.com/gary-archer/oauth.websample1`
 - cd oauth.websample1/api
 - cp ~/Desktop/charlesroot.pem ../spa
 - npm install
 - npm start
 - Run the Safari browser on the simulator
 - Get the local computer’s IP address, such as 192.168.42.37
-- Browse to a URL such as http`:`//192.168.42.37/spa/charlesroot.pem
+- Browse to a URL such as `http://192.168.42.37/spa/charlesroot.pem`
 
 However you deliver the certificate, save it to the *Downloads* folder. In the following example I used the *Save to files* option:
 
@@ -87,7 +87,7 @@ Finally switch to *Settings / General / About / Certificate Trust Settings* and 
 
 ### Understand Domain Name Service Lookup
 
-During mobile development it can be useful to also run a local API, with a real world API URL such as https`:`//api.authsamples-dev.com/api. To support this I add a local DNS entry on my local computer:
+During mobile development it can be useful to also run a local API, with a real world API URL such as `https://api.authsamples-dev.com/api`. To support this I add a local DNS entry on my local computer:
 
 ![local dns](/images/490/local-dns.jpg)
 

@@ -111,8 +111,8 @@ The SPA downloads personal data from the OAuth user info endpoint. This requires
 
 The SPA calls the first URL below. The API then performs the token exchange and sends the Graph access token to the second URL to get user info. The results are then returned to the SPA:
 
-- https`:`//api.authsamples-dev.com/oauthuserinfo
-- https`:`//graph.microsoft.com/oidc/userinfo
+- `https://api.authsamples-dev.com/oauthuserinfo`
+- `https://graph.microsoft.com/oidc/userinfo`
 
 The API gets a Graph access token by calling the Entra ID token endpoint and uses the following grant type. This request is based on the [RFC 7523](https://datatracker.ietf.org/doc/html/rfc7523) specification and sometimes called a *User Assertion*:
 

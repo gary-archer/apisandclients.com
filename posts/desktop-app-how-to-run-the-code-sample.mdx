@@ -104,9 +104,9 @@ In the default setup the following URLs are used:
 
 | Component | URL(s) |
 | --------- | ------ |
-| <span style={{color:'green'}}>**API**</span> | https`:`//api.authsamples.com |
-| <span style={{color:'green'}}>**Authorization Server**</span> | https`:`//login.authsamples.com |
-| <span style={{color:'green'}}>**Post Login Page**</span> | https`:`//authsamples.com/apps/basicdesktopapp/postlogin.html |
+| <span style={{color:'green'}}>**API**</span> | `https://api.authsamples.com` |
+| <span style={{color:'green'}}>**Authorization Server**</span> | `https://login.authsamples.com` |
+| <span style={{color:'green'}}>**Post Login Page**</span> | `https://authsamples.com/apps/basicdesktopapp/postlogin.html` |
 
 Note that the JSON configuration also includes details related to running a *Loopback Web Server* on the local PC:
 
@@ -121,7 +121,7 @@ Our desktop app is registered as an OAuth client in AWS Cognito, with the follow
 
 ![oauth client](/images/420/oauth-client.jpg)
 
-According to RFC 8252, it should be possible to register a redirect URI of *http`:`//localhost* and any port should then be allowed at runtime. Not all authorization servers support this, and for AWS Cognito I had to register all possible redirect URI values.
+According to RFC 8252, it should be possible to register a redirect URI of `http://localhost` and any port should then be allowed at runtime. Not all authorization servers support this, and for AWS Cognito I had to register all possible redirect URI values.
 
 ![loopback behaviour](/images/420/loopback-behaviour.jpg)
 

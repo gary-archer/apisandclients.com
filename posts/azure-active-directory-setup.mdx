@@ -40,8 +40,8 @@ In this post I will describe some setup details for the Entra ID authorization s
 
 | Component | URL |
 | --------- | --- |
-| <span style={{color:'green'}}>**Secured API**</span> | https`:`//api.authsamples-dev.com/api |
-| <span style={{color:'green'}}>**Secured SPA**</span> | https`:`//www.authsamples-dev.com/spa |
+| <span style={{color:'green'}}>**Secured API**</span> | `https://api.authsamples-dev.com/api` |
+| <span style={{color:'green'}}>**Secured SPA**</span> | `https://www.authsamples-dev.com/spa` |
 
 In order to get a working system, you would need to follow the steps in this post for your own Microsoft account, then reconfigure the apps. The configuration is a little complex though, due to my requirement to issue custom claims to access tokens.
 
@@ -59,7 +59,7 @@ After email confirmation I visited https://entra.microsoft.com and could manage 
 
 Note the *Tenant ID*, since the *Authorization Server Base URL* will be of the following form:
 
-- https`:`//login.microsoftonline.com/[tenantid]/v2.0
+- `https://login.microsoftonline.com/[tenantid]/v2.0`
 
 The *OpenID Connect Discovery Endpoint* for my developer account is therefore at the following location:
 

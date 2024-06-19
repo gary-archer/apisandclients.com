@@ -73,9 +73,9 @@ Only the first two options work for a desktop app, and the loopback option will 
 
 | Option | Example Redirect URI | Usable By |
 | ------ | -------------------- | --------- |
-| <span style={{color:'green'}}>**Loopback Interface**</span> | 	http`:`//127.0.0.1:8000 | Desktop apps |
-| <span style={{color:'green'}}>**Private URI Scheme**</span> | x-authsamples-myapp`:`/callback | Mobile or desktop apps |
-| <span style={{color:'green'}}>**Claimed HTTPS Scheme**</span> | https`:`//www.authsamples-dev.com/myapp | Mobile apps |
+| <span style={{color:'green'}}>**Loopback Interface**</span> | 	`http://127.0.0.1:8000` | Desktop apps |
+| <span style={{color:'green'}}>**Private URI Scheme**</span> | `x-authsamples-myapp:/callback` | Mobile or desktop apps |
+| <span style={{color:'green'}}>**Claimed HTTPS Scheme**</span> | `https://www.authsamples-dev.com/myapp` | Mobile apps |
 
 ### The AppAuth Code Sample
 
@@ -96,7 +96,7 @@ When the *Sign In* link is clicked, the system browser is opened. If the user is
 
 ![appauth login](/images/410/appauth-login.jpg)
 
-The Desktop App supplies a *loopback’*value of http`:`//127.0.0.1:8000 for the OAuth redirect URI, and creates an HTTP endpoint on this port, to listen for the response.
+The Desktop App supplies a *loopback’*value of `http://127.0.0.1:8000` for the OAuth redirect URI, and creates an HTTP endpoint on this port, to listen for the response.
 
 After login, a request is sent to this HTTP endpoint, with the authorization response URL. The desktop app then extracts the returned authorization code and swaps it for tokens, after which it can call APIs.
 

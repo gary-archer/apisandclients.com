@@ -91,8 +91,8 @@ Elasticsearch’s REST API will be contactable via both of these URLs, and in a 
 
 | URL | Description |
 | --- | ----------- |
-| https`:`//logs.authsamples-dev.com:9200 | The external URL for connecting  from the host computer |
-| https`:`//elasticsearch-internal.authsamples-dev.com:9200 | The internal URL used by Kibana and Filebeat inside the Docker network |
+| `https://logs.authsamples-dev.com:9200` | The external URL for connecting  from the host computer |
+| `https://elasticsearch-internal.authsamples-dev.com:9200` | The internal URL used by Kibana and Filebeat inside the Docker network |
 
 ### Step 4: Understand Kibana Deployment
 
@@ -120,7 +120,7 @@ kibana:
 
 Once the installation has completed, Kibana will later be accessible using the following URL:
 
-- https`:`//logs.authsamples-dev.com:5601
+- `https://logs.authsamples-dev.com:5601`
 
 ### Step 5: Understand Filebeat Deployment
 
@@ -260,7 +260,7 @@ Later, when you are finished with testing, free up all Docker resources with the
 
 Next sign in to Kibana with credentials *elastic / Password1*. There are various tools for working with logs, though I consider the following URL to be the most important:
 
-- https`:`//logs.authsamples-dev.com:5601/app/dev_tools#/console
+- `https://logs.authsamples-dev.com:5601/app/dev_tools#/console`
 
 The *Dev Tools* allow you to access API log documents and fields without restriction, unlike many other logging solutions. Each API log entry will be available in a record of the following form:
 

@@ -54,7 +54,7 @@ This is because the HTTP proxy is intercepting SSL requests at runtime and repla
 
 ### Deploy the HTTP Proxy Root Certificate
 
-If you are using the MITM proxy tool, you can just browse from a mobile browser on the device or emulator to *http`:`//mitm.it*. Then download the certificate to the device’s downloads folder. Otherwise, there will be an export option similar to that shown below, so use it to save the HTTP proxy root certificate to the local computer.
+If you are using the MITM proxy tool, you can just browse from a mobile browser on the device or emulator to http://mitm.it. Then download the certificate to the device’s downloads folder. Otherwise, there will be an export option similar to that shown below, so use it to save the HTTP proxy root certificate to the local computer.
 
 ![get proxy root ca](/images/470/get-proxy-root-ca.jpg)
 
@@ -64,14 +64,14 @@ Rename the file so that it has a *.crt* extension. If using an emulator, you can
 
 Alternatively you can email the certificate to the device, or run an HTTP server to download the file using a mobile browser. The following steps do this using this blog’s initial code sample:
 
-- git clone https`:`//github.com/gary-archer/oauth.websample1
+- git clone `https://github.com/gary-archer/oauth.websample1`
 - cd oauth.websample1/api
 - cp ~/Desktop/charlesroot.pem ../spa
 - npm install
 - npm start
 - Run the Chrome browser on the emulator
 - Get the local computer’s IP address, such as 10.0.2.2
-- Browse to a URL such as http`:`//10.0.2.2/spa/charlesroot.pem
+- Browse to a URL such as `http://10.0.2.2/spa/charlesroot.pem`
 
 ### Configure Android SSL Trust
 
