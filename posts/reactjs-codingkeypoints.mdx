@@ -85,13 +85,13 @@ In the main SPA, OpenID Connect is no longer implemented using a JavaScript secu
 
 ```json
 "dependencies": {
-  "axios": "^1.6.8",
+  "axios": "^1.7.2",
   "guid-typescript": "^1.0.9",
   "js-event-bus": "^1.1.1",
-  "react": "^18.2.0",
-  "react-dom": "^18.2.0",
+  "react": "^18.3.2",
+  "react-dom": "^18.3.0",
   "react-modal": "^3.16.1",
-  "react-router-dom": "^6.9.0"
+  "react-router-dom": "^6.23.1"
 }
 ```
 
@@ -338,7 +338,7 @@ The *ViewModelCoordinator* object also deals with invalid token errors, such as 
 
 ### API Credentials
 
-API requests now use cookie credentials, with the *HTTP-only, Secure, SameSite=strict* properties. Any data changing commands also send a *CSRF token*, in line with OWASP best practices for CSRF prevention:
+API requests now use cookie credentials, with the *HttpOnly, Secure, SameSite=strict* properties. Any data changing commands also send a *CSRF token*, in line with OWASP best practices for CSRF prevention:
 
 ```typescript
 private async _callApiWithCredential(

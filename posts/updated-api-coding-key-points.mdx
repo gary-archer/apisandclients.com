@@ -104,7 +104,7 @@ export class ExtraClaimsProvider {
 }
 ```
 
-The main authorizer Express middleware does the main work to set up a useful claims principal:
+An *OAuthFilter* object does the main work to set up a useful claims principal:
 
 ```typescript
 public async authorizeRequestAndGetClaims(request: Request): Promise<ClaimsPrincipal> {
@@ -133,7 +133,7 @@ public async authorizeRequestAndGetClaims(request: Request): Promise<ClaimsPrinc
 When a token is first received, the extra claims are cached using the [Node Memory Cache](https://github.com/mpneuried/nodecache). A time to live is set that must not exceed the access token’s expiry claim:
 
 ```typescript
-public async addClaimsForToken(accessTokenHash: string, claims: ExtraClaims, expiry: number): Promise<void> {
+public addClaimsForToken(accessTokenHash: string, claims: ExtraClaims, expiry: number): void {
 
     const epochSeconds = Math.floor((new Date() as any) / 1000);
     let secondsToCache = expiry - epochSeconds;
@@ -141,12 +141,12 @@ public async addClaimsForToken(accessTokenHash: string, claims: ExtraClaims, exp
 
         console.debug(`Token to be cached will expire in ${secondsToCache} seconds (hash: ${accessTokenHash})`);
 
-        if (secondsToCache > this._cache.options.stdTTL!) {
-            secondsToCache = this._cache.options.stdTTL!;
+        if (secondsToCache > this._defaultTimeToLiveSeconds) {
+            secondsToCache = this._defaultTimeToLiveSeconds;
         }
 
         console.debug(`Adding token to claims cache for ${secondsToCache} seconds (hash: ${accessTokenHash})`);
-        await this._cache.set(accessTokenHash, claims, secondsToCache);
+        this._cache.set(accessTokenHash, claims, secondsToCache);
     }
 }
 ```
@@ -154,9 +154,9 @@ public async addClaimsForToken(accessTokenHash: string, claims: ExtraClaims, exp
 When the same token is received on subsequent API requests, the cached claims are retrieved immediately. This ensures that the API performs well:
 
 ```typescript
-public async getClaimsForToken(accessTokenHash: string): Promise<ExtraClaims | null> {
+public getClaimsForToken(accessTokenHash: string): ExtraClaims | null {
 
-    const claims = await this._cache.get<ExtraClaims>(accessTokenHash);
+    const claims = this._cache.get<ExtraClaims>(accessTokenHash);
     if (!claims) {
 
         console.debug(`New token will be added to claims cache (hash: ${accessTokenHash})`);

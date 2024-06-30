@@ -113,7 +113,7 @@ Our sample uses the following middleware classes, which are equivalent to those 
 | Middleware Class | Responsibility |
 | ---------------- | -------------- |
 | <span style={{color:'green'}}>**LoggerMiddleware**</span> | Manages the log entry for each request, by logging request and response details
-| <span style={{color:'green'}}>**OAuthAuthorizer**</span> | JWT access token validation, creating the claims principal and identity logging
+| <span style={{color:'green'}}>**OAuthFilter**</span> | JWT access token validation, creating the claims principal and identity logging
 | <span style={{color:'green'}}>**CustomHeaderMiddleware**</span> | Allows advanced client side testing of APIs, to enable error rehearsal
 | <span style={{color:'green'}}>**UnhandledExceptionHandler**</span> | A central place for adding error details to logs, and producing the client error
 

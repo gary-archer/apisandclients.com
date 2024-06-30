@@ -121,16 +121,7 @@ public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception
                     authorize.dispatcherTypeMatchers(DispatcherType.ASYNC).permitAll()
                     .anyRequest().authenticated()
             )
-            .addFilterBefore(authorizationFilter, AbstractPreAuthenticatedProcessingFilter.class)
-
-            .cors(AbstractHttpConfigurer::disable)
-            .csrf(AbstractHttpConfigurer::disable)
-            .headers(AbstractHttpConfigurer::disable)
-            .requestCache(AbstractHttpConfigurer::disable)
-            .securityContext(AbstractHttpConfigurer::disable)
-            .logout(AbstractHttpConfigurer::disable)
-            .exceptionHandling(AbstractHttpConfigurer::disable)
-            .sessionManagement(AbstractHttpConfigurer::disable);
+            .addFilterBefore(authorizationFilter, AbstractPreAuthenticatedProcessingFilter.class);
 
     return http.build();
 }
@@ -230,7 +221,7 @@ public class ClaimsPrincipal implements AuthenticatedPrincipal {
 }
 ```
 
-It can then be injected into business focused classes and used for authorization. This is a little tricky, since Spring may resolve and create all request scoped dependencies at the start of an HTTP request, before the OAuth filter is executed. Therefore a holder object is injected:
+It can then be injected into business focused classes and used for authorization. This is a little tricky, since Spring may resolve and create all request scoped dependencies at the start of an HTTP request, before the OAuth middleware runs. Therefore a holder object is injected:
 
 ```java
 public CompanyService(final CompanyRepository repository, final ClaimsPrincipalHolder claimsHolder) {
@@ -239,7 +230,7 @@ public CompanyService(final CompanyRepository repository, final ClaimsPrincipalH
 }
 ```
 
-When the OAuth filter runs successfully, it update the holder object with the claims principal. When the controller logic runs, the claims principal can be resolved, and this works even if the request uses child threads. The API can then easily implement its authorization logic:
+When the filter runs successfully, it update the holder object with the claims principal. When the controller logic runs, the claims principal can be resolved, and this works even if the request uses child threads. The API can then easily implement its authorization logic:
 
 ```java
 private boolean isUserAuthorizedForCompany(final Company company) {
@@ -263,7 +254,7 @@ private boolean isUserAuthorizedForCompany(final Company company) {
 
 ### OAuth Middleware Customization
 
-The *OAuthAuthorizer* class encapsulates the overall OAuth work and deals with injecting claims into the claims principal when needed. In Spring it is also possible to add extra claims in a custom [JwtAuthenticationConverter](https://www.baeldung.com/spring-security-map-authorities-jwt#using_custom_jwtauthenticationconverter).
+An *OAuthFilter* class encapsulates the overall OAuth work and deals with injecting claims into the claims principal when needed. In Spring it is also possible to add extra claims in a custom [JwtAuthenticationConverter](https://www.baeldung.com/spring-security-map-authorities-jwt#using_custom_jwtauthenticationconverter).
 
 ```java
 public ClaimsPrincipal execute(final HttpServletRequest request) {

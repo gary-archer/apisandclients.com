@@ -2,12 +2,12 @@
 
 In the previous post I ran a <Link href='/posts/azure-ad-troubleshooting'>Microsoft Entra ID SPA and API OAuth Flow</Link>. The SPA now needs hardening before it is final, and in a real company we would have two major issues to deal with:
 
-- Concerns about whether using access tokens in the browser is secure enough, and whether HTTP-only cookies should be used instead
+- Concerns about whether using access tokens in the browser is secure enough, and whether HttpOnly cookies should be used instead
 - A <Link href='/posts/user-sessions-and-token-renewal'>blocking usability problem</Link> with token renewal and multi tab browsing, due to authorization server cookies being dropped
 
 ### Security Best Practices for SPAs
 
-The definitive document on security best practices is [OAuth 2.0 for Browser Based Apps](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps). Due to the threats of malicious JavaScript, there are many token-based threats. The option with the strongest security guarantees is a Backend for Frontend (BFF). SPAs are now encouraged to avoid tokens in the browser and use only the latest and strongest *HTTP-only SameSite=strict Secure* cookies to call APIs. The key benefit of using cookies is to limit the impact of cross-site scripting exploits.
+The definitive document on security best practices is [OAuth 2.0 for Browser Based Apps](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps). Due to the threats of malicious JavaScript, there are many token-based threats. The option with the strongest security guarantees is a Backend for Frontend (BFF). SPAs are now encouraged to avoid tokens in the browser and use only the latest and strongest *HttpOnly SameSite=strict Secure* cookies to call APIs. The key benefit of using cookies is to limit the impact of cross-site scripting exploits.
 
 ### High Level Requirements
 

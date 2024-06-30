@@ -85,7 +85,7 @@ private async _initialiseApp(): Promise<void> {
 
     this._authenticator = new AuthenticatorImpl(this._configuration.oauth);
 
-    this._apiClient = new ApiClient(this._configuration.app.apiBaseUrl, this._authenticator);
+    this._apiClient = new ApiClient(this._configuration, this._authenticator);
 
     this._router = new Router(this._apiClient);
 }
@@ -104,6 +104,8 @@ export interface Authenticator {
 
     refreshAccessToken(): Promise<string>;
 
+    getUserInfoEndpoint(): string;
+
     login(): Promise<void>;
 
     logout(): void;
@@ -121,9 +123,7 @@ As we shall see, the authentication code is tricky, since it needs to manage a  
 As for our SPA, our desktop app’s *ApiClient* class will handle 401 responses from the API by getting a new token and retrying the API call:
 
 ```typescript
-private async _callApi(path: string, method: Method, dataToSend?: any): Promise<any> {
-
-    const url = `${this._apiBaseUrl}${path}`;
+private async _callApi(url: string, method: Method, dataToSend?: any): Promise<any> {
 
     let token = await this._authenticator.getAccessToken();
     if (!token) {

@@ -189,10 +189,10 @@ private _isUserAuthorizedForCompany(company: Company): boolean {
 
 ### Claims Caching Algorithm
 
-This blog’s APIs uses the following algorithm for OAuth processing, where a thread-safe memory cache stores a hash of the access token mapped to extra claims. This ensures that the extra claims data source lookup only occurs occasionally.
+This blog’s APIs use an OAuth filter with the following overall algorithm, where a thread-safe memory cache stores a hash of the access token mapped to extra claims. This ensures that the extra claims data source lookup only occurs occasionally.
 
 ```typescript
-export class OAuthAuthorizer {
+export class OAuthFilter {
 
     public async execute(request: Request): Promise<ClaimsPrincipal> {
 

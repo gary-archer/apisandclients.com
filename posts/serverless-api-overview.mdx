@@ -115,7 +115,7 @@ This is awkward though, since the code becomes more complex, and the Serverless 
 
 ### Client Specific Security Differences
 
-The API serves this blog’s final frontend code samples which you can run as explained in the <Link href='/posts/quick-start'>Quick Start</Link> page. Each frontend has its own client best practices. The SPA uses the latest HTTP-only secure cookies when calling the Serverless API.
+The API serves this blog’s final frontend code samples which you can run as explained in the <Link href='/posts/quick-start'>Quick Start</Link> page. Each frontend has its own client best practices. The SPA uses *HttpOnly SameSite=strict Secure* cookies when calling the Serverless API.
 
 The Serverless API does not contain any cookie logic though, so that its usage is identical for web and native clients. Instead, cookies during API requests are dealt with by an *OAuth Proxy* component, as described in the <Link href='/posts/spa-back-end-for-front-end'>SPA Backend for Frontend</Link> post.
 

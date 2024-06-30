@@ -17,9 +17,9 @@ The SPA uses only a handful of external dependencies, expressed in its *package.
 ```json
 {
     "dependencies": {
-        "axios": "^1.6.8",
+        "axios": "^1.7.2",
         "mustache": "^4.2.0",
-        "oidc-client-ts": "^2.4.0"
+        "oidc-client-ts": "^3.0.1"
     }
 }
 ```
@@ -96,7 +96,7 @@ private async _initialiseApp(): Promise<void> {
 
     this._apiClient = new ApiClient(this._configuration.app.apiBaseUrl, this._authenticator);
 
-    this._router = new Router(this._apiClient, this._errorView!);
+    this._router = new Router(this._apiClient, this._errorView);
 
     this._isInitialised = true;
 }

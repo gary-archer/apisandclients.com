@@ -126,7 +126,7 @@ private void ConfigureOAuth(IServiceCollection services)
 }
 ```
 
-The implementation ensures that claims used for authorization can be controlled. We will also be able to customize API logs and error responses based on the results of the handler.
+The implementation's main logic calls an *OAuthFilter* object, which ensures that the JWT access token is validated and that claims used for authorization can be controlled. The handler then customizes API logs and error responses.
 
 ```csharp
 protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -136,8 +136,8 @@ protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
 
     try
     {
-        var authorizer = (OAuthAuthorizer)this.Context.RequestServices.GetService(typeof(OAuthAuthorizer));
-        var claimsPrincipal = await authorizer.ExecuteAsync(this.Request);
+        var filter = (OAuthFilter)this.Context.RequestServices.GetService(typeof(OAuthFilter));
+        var claimsPrincipal = await filter.ExecuteAsync(this.Request);
 
         logEntry.SetIdentity(claimsPrincipal.JwtClaims.Sub);
 
@@ -166,7 +166,7 @@ A number of small classes are used to implement the desired behaviour. The main 
 
 ### JWT Access Token Validation
 
-The *AccessTokenValidator* class deals with direct calls to the authorization server and its main code is to validate access tokens using jose-jwt. This includes checking for the API’s required scope:
+The *AccessTokenValidator* class wraps calls to the *jose-jwt* library and also makes some additional checks:
 
 ```csharp
 public async Task ValidateTokenAsync(string accessToken)
@@ -268,9 +268,9 @@ private bool IsUserAuthorizedForCompany(Company company)
 }
 ```
 
-### OAuth Middleware Customization
+### OAuth Middleware
 
-The *OAuthAuthorizer* object encapsulates the overall OAuth work and deals with injecting claims into the claims principal when needed. In .NET it is also possible to add extra claims in an [OnTokenValidated](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.jwtbearer.jwtbearerevents.ontokenvalidated) event handler.
+The *OAuthFilter* object encapsulates the overall OAuth work and deals with injecting claims into the claims principal when needed. In .NET it is also possible to add extra claims in an [OnTokenValidated](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.jwtbearer.jwtbearerevents.ontokenvalidated) event handler.
 
 ```csharp
 public async Task<CustomClaimsPrincipal> ExecuteAsync(HttpRequest request)

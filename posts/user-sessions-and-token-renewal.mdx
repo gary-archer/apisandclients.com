@@ -6,7 +6,7 @@ In our previous post we described this blog’s <Link href='/posts/federated-log
 
 The traditional SPA token renewal solution relied on returning only a short lived access token to the browser, and storing the access token in memory as the most secure option.
 
-To refresh the token, the authorization server’s HTTP-only SSO cookie was used, which is shared across all browser tabs. Therefore any browser tab should be able to reliably get a new access token by sending the cookie.
+To refresh the token, the authorization server’s HttpOnly SSO cookie was used, which is shared across all browser tabs. Therefore any browser tab should be able to reliably get a new access token by sending the cookie.
 
 ### Iframe Token Renewal Requests
 
@@ -82,7 +82,7 @@ There are three options for SPA token renewal in 2021. We have seen that the fir
 | ------ | ------------------------------ |
 | <span style={{color:'red'}}>Hidden Iframes</span> | Medium security using iframe redirects, though this has reliability problems |
 | <span style={{color:'red'}}>Refresh Tokens</span> | Low security by storing a refresh token in local storage and using it to renew access tokens across all browser tabs |
-| <span style={{color:'green'}}>**Same Site Cookies**</span> | Best security using HTTP-only cookies that contain or reference OAuth tokens, across all browser tabs |
+| <span style={{color:'green'}}>**Same Site Cookies**</span> | Best security using HttpOnly cookies that contain or reference OAuth tokens, across all browser tabs |
 
 ### Backend for Frontend
 

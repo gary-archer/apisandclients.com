@@ -108,7 +108,7 @@ You will then be prompted to sign in, and can do so with this test credential:
 - User: *guestuser`@`example.com*
 - Password: *GuestPassword1*
 
-After login the SPA sends an HTTP-only encrypted cookie containing an AWS Cognito access token to the AWS API gateway. The cookie is decrypted and the access token is forwarded to lambda-based APIs which validate the access token and use claims-based authorization. When the frontend is authorized it receives and renders data returned from the API:
+After login the SPA sends an HttpOnly encrypted cookie containing an AWS Cognito access token to the AWS API gateway. The cookie is decrypted and the access token is forwarded to lambda-based APIs which validate the access token and use claims-based authorization. When the frontend is authorized it receives and renders data returned from the API:
 
 ![spa data](/images/230/spa-data.jpg)
 
