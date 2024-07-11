@@ -148,10 +148,6 @@ I aim to have a good awareness of factors that impact performance, but avoid opt
 
 The final web code example is hosted at an */spa* path to show that other apps with the same business privileges could be added alongside it, and share the same cookies. This would enable the code for a large app to be split at development time, then recomposed at deployment time. Each frontend would call APIs using shared cookies, and it would be possible to seamlessly navigate across apps without OpenID Connect redirects.
 
-### Legal and Regulatory
-
-A real cookie secured SPA may also need to ask the user to consent to use of cookies, and provide information on how any personal information is used, to comply with regulations such as [GDPR](https://gdpr.eu/cookies). This blog’s SPA omits this step, since it uses only fictional data and fictional user accounts.
-
 ### Where Are We?
 
 We have summarised the behaviour of the final SPA, to complete the web architecture’s foundational security work. We have updated to a modern web framework, and the architecture enables both URLs and code to be scaled effectively as the web code base grows.
