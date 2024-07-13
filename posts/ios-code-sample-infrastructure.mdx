@@ -23,8 +23,8 @@ They are then included in one of this blog’s <Link href='/posts/cdn-static-con
 
 Pages are then available at these URLs:
 
-- `https://authsamples.com/apps/basicmobileapp/postlogin.html`
-- `https://authsamples.com/apps/basicmobileapp/postlogout.html`
+- https://authsamples.com/apps/basicmobileapp/postlogin.html
+- https://authsamples.com/apps/basicmobileapp/postlogout.html
 
 ### Deep Linking Assets File
 
@@ -44,13 +44,24 @@ To support deep linking needed for claimed HTTPS scheme logins to work, the proj
 }
 ```
 
-The deep linking domains allowed by the app are configured as *Associated Domains*, which are a type of *iOS Entitlement*:
+The deep linking domains allowed by the app are configured as *Associated Domains* in a *basicmobileapp.entitlements* file:
 
-![associated domains](/images/560/associated-domains.jpg)
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:mobile.authsamples.com?mode=developer</string>
+	</array>
+</dict>
+</plist>
+```
 
 I uploaded the assets file to run at the below HTTPS URL, in a similar manner to the interstitial pages. We use a second S3 bucket and CloudFront distribution for the root domain:
 
-- `https://mobile.authsamples.com/.well-known/apple-app-site-association`
+- https://mobile.authsamples.com/.well-known/apple-app-site-association
 
 The *mobile.authsamples.com* S3 bucket has a *.well-known* folder containing the assets files for both Android and iOS:
 
@@ -62,7 +73,7 @@ The Apple file needs to be configured to return a content type of *application/j
 
 ### Deep Linking Online Verification
 
-We can verify the configuration via the following test site:
+You can verify the configuration via the following test site:
 
 - https://branch.io/resources/aasa-validator
 
@@ -70,23 +81,60 @@ The details for our demo app can be provided to the site as follows:
 
 ![verification settings](/images/560/verification-settings.jpg)
 
-We will then get the following validated results:
+The site then shows the following validated results:
 
 ![deep linking verification](/images/560/deep-linking-verification.jpg)
 
 ### Deep Linking Registration Process
 
-During installation of our app we can run the iOS console tool and filter on our domain name, though the information is pretty limited:
+During installation of our app you can run the macOS *Console App* from *Finder / Applications / Utilities*. Select the simulator, ensure that tracing has started, and filter output on the *mobile.authsamples.com* domain name. A successful registration results in output like this:
 
-![ios debug](/images/560/ios-debug.jpg)
+![ios debug success](/images/560/ios-debug-success.jpg)
 
-### Deep Linking Registration Failures
+Yet some developers may experience errors when running the app. A failed registration results in output like this:
 
-Deep linking registration can fail, and one way to reproduce this is to configure the mobile device to use an <Link href='/posts/ios-https-debugging'>HTTP Proxy</Link>:
+![ios debug failure](/images/560/ios-debug-failure.jpg)
 
-![http proxy](/images/560/http-proxy.jpg)
+### Fixing Deep Linking Registration Failures
 
-Registration will fail because the iOS system does not trust the HTTP proxy’s man in the middle certificate. The result is that the app installs successfully but the claimed HTTPS scheme is not registered. In the console tool you can filter on *app-site* to see basic failure details, and you may also be able to get further details from the *sysdiagnose* tool.
+The quickest way to fix deep linking registration failures and get a working app is to switch to using private URI scheme based redirect URIs. Do so by updating the *mobile_config.json* file with the following settings:
+
+```json
+{
+  "app": {
+    "apiBaseUrl":             "https://api.authsamples.com/investments"
+  },
+  "oauth": {
+    "authority":              "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9",
+    "clientId":               "2vshs4gidsbpnjmsprhh607ege",
+    "redirectUri":            "com.authsamples.basicmobileapp:/callback",
+    "postLogoutRedirectUri":  "com.authsamples.basicmobileapp:/logoutcallback",
+    "scope":                  "openid profile https://api.authsamples.com/investments",
+    "userInfoEndpoint":       "https://login.authsamples.com/oauth2/userInfo",
+    "customLogoutEndpoint":   "https://login.authsamples.com/logout",
+    "deepLinkBaseUrl":        "https://mobile.authsamples.com"
+  }
+}
+```
+
+Yet this is not really how my code sample is meant to be run. An alternative option is to host your own deep linking assets file on a development web server. To do so, start by updating the */etc/hosts* file on your MacBook, to alias the deep linking domain to localhost:
+
+```text
+127.0.0.1 mobile.authsamples.com
+```
+
+Then run the following script, providing your Apple Team ID:
+
+```bash
+export APPLE_TEAM_ID='U3VTCHYEM7'
+./DevelopmentWebServer/run.sh
+```
+
+You can study the script to see how it creates an SSL certificate and key, registers the root certificate authority as trusted on the simulator, then runs an HTTPS web server, to serve a deep linking assets file that uses your Apple Team ID. Finally, configure Xcode to use the same Apple Team ID to sign the app before deploying it to the simulator:
+
+![code signing](/images/560/code-signing.jpg)
+
+Since we are using [mode=developer](https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_developer_associated-domains) the app should then run successfully. This technique will only work on simulators, and for a real app you would need to provide your own iOS infrastructure to run on devices.
 
 ### HTTP Debugging and Claimed HTTPS Schemes
 
@@ -97,17 +145,9 @@ During development, I proceed as follows when I want to view OAuth or API messag
 - Next start the HTTP proxy on the host MacBook
 - Messages from the app will then be captured successfully
 
-### iOS Code Signing
-
-When Xcode is used to build and install our app on a real device, the app must be signed with an Apple certificate linked to the *Team ID*. Therefore readers of this blog can only run the app on an emulator:
-
-![code signing](/images/560/code-signing.jpg)
-
-For a real app you would go through a complete Apple deployment process to the app store, after which deep linking registration would work on any iOS device.
-
 ### Where Are We?
 
-We have explained some infrastructure plumbing needed for our iOS code sample. Using claimed HTTPS schemes for mobile logins required some interaction between the mobile device and cloud endpoints.
+We have explained some infrastructure plumbing needed by our iOS code sample. Using claimed HTTPS schemes for production mobile apps requires verification between the mobile device and HTTPS endpoints.
 
 ### Next
 

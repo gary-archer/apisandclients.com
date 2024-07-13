@@ -474,11 +474,7 @@ func resumeOperation(responseUrl: URL) {
 
 ### AppAuth Library – Cancelled Logins
 
-It is possible for users to quit the login attempt if they are having trouble signing in, via the *Cancel* button in the top left:
-
-![cancelled logins](/images/570/cancelled-logins.jpg)
-
-AppAuth libraries are well designed and provide error codes that we can use to determine cancellation and other conditions:
+It is possible for users to quit the login attempt if they are having trouble signing in. AppAuth libraries are well designed and provide error codes that we can use to determine cancellation and other conditions:
 
 ```swift
 private func isCancelledError(error: Error) -> Bool {
@@ -493,7 +489,7 @@ private func isCancelledError(error: Error) -> Bool {
 
 For cancelled logins we return the user to the *Login Required View* so that they can retry the operation:
 
-![login required](/images/570/login-required.jpg)
+![cancelled login](/images/570/cancelled-login.jpg)
 
 ### AppAuth Library – Authorization Code Grant
 
@@ -530,7 +526,7 @@ The message includes a *Code Verifier* used for PKCE handling, and AppAuth libra
 
 ### Secure Token Storage
 
-After login we store OAuth tokens in a secure manner and need to ensure that no other app can access them. This is straightforward using the [Swift KeyChain Wrapper](https://github.com/jrendel/SwiftKeychainWrapper) helper library:
+After login we store OAuth tokens in a secure manner and need to ensure that no other app can access them. This is straightforward using the [Keychain Swift](https://github.com/evgenyneu/keychain-swift) helper library:
 
 ```swift
 private func saveTokenData() {
@@ -538,7 +534,7 @@ private func saveTokenData() {
     let encoder = JSONEncoder()
     let jsonText = try? encoder.encode(self.tokenData)
     if jsonText != nil {
-        KeychainWrapper.standard.set(jsonText!, forKey: self.storageKey)
+        keychain.set(jsonText!, forKey: self.storageKey)
     }
 }
 ```
