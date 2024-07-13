@@ -27,11 +27,11 @@ git clone https://github.com/gary-archer/oauth.mobilesample.ios
 
 In Xcode the project layout looks as follows, and our Swift code is under the *Source* folder. I used techniques from [this link](https://stevenpcurtis.medium.com/how-to-structure-your-folders-in-xcode-fbb1afa50bc7) to control the folder layout.
 
-![project layout](/images/550/project-layout.jpg)
+![project layout](/images/550/project-layout.jpg?v=20240713)
 
 Then run the app on a simulator, with your default *Signing and Capabilities* settings, which can be empty if required:
 
-![emulator settings](/images/550/simulator-settings.jpg)
+![emulator settings](/images/550/simulator-settings.jpg?v=20240713)
 
 ### Step 3: Understand Dependencies
 
@@ -45,11 +45,11 @@ We are using the following external dependencies:
 
 These references were added via the *Swift Package Manager* and are built as libraries:
 
-![dependencies](/images/550/dependencies.jpg)
+![dependencies](/images/550/dependencies.jpg?v=20240713)
 
 I then linked with the built libraries from the following page:
 
-![library linking](/images/550/library-linking.jpg)
+![library linking](/images/550/library-linking.jpg?v=20240713)
 
 ### Step 4: Run the App on a Simulator
 
@@ -60,11 +60,11 @@ You can now run our demo app via the *Run* icon in the Xcode toolbar. You may th
 
 Next save the password when prompted, then navigate between views by clicking an item in the companies view or using the *Home* button:
 
-![running app](/images/550/running-app.jpg)
+![running app](/images/550/running-app.jpg?v=20240713)
 
 Logins require associated domain registration to work on your simulator. If registration fails, you will receive the following display. The cause is that a mobile deep link is incorrectly processed in the browser. The next post, on iOS infrastructure explains how you can resolve this problem, if it impacts you.
 
-![not found login response](/images/550/not-found-login-response.jpg)
+![not found login response](/images/550/not-found-login-response.jpg?v=20240713)
 
 ### Step 5: Understand Configuration Settings
 
@@ -141,7 +141,7 @@ The token data is then saved to the iOS keychain, which ensures that the data is
 
 It is worth performing certain tests while the ASWebAuthenticationSession window is active, to ensure that the app does not throw exceptions or recreate views unnecessarily:
 
-![login](/images/550/login.jpg)
+![login](/images/550/login.jpg?v=20240713)
 
 The first of these is to switch away from the app and then reactivate it from its shortcut. Verify that this does not cause any application problems:
 
@@ -149,7 +149,7 @@ The first of these is to switch away from the app and then reactivate it from it
 
 Similarly I would recommend changing the screen orientation half way through login and then completing the sign in.
 
-![landscape](/images/550/landscape.jpg)
+![landscape](/images/550/landscape.jpg?v=20240713)
 
 ### Step 10: Test Restarting the App after Login
 
@@ -167,7 +167,7 @@ xcrun simctl openurl booted https://mobile.authsamples.com/basicmobileapp/deepli
 
 We can use the *Expire Access Token* and *Reload Data* buttons to cause an invalid token to be sent to the API, resulting in a 401 response:
 
-![access token expiry](/images/550/access-token-expiry.jpg)
+![access token expiry](/images/550/access-token-expiry.jpg?v=20240713)
 
 After every API call the UI checks for 401 responses, and handles them by getting a new access token. The API request is then retried once with the new token, so that the user session is silently extended. Note that a mobile app is a public client and the refresh token is not protected with a client credential:
 
@@ -177,7 +177,7 @@ After every API call the UI checks for 401 responses, and handles them by gettin
 
 We can use *Expire Refresh Token* followed by *Reload Data* to simulate the end of a user session, which might occur if a user left the app running overnight:
 
-![refresh token expiry](/images/550/refresh-token-expiry.jpg)
+![refresh token expiry](/images/550/refresh-token-expiry.jpg?v=20240713)
 
 On the next request for data the attempt to renew the access token will fail, and the result of the refresh token grant message will be an *Invalid Grant* response:
 
@@ -193,7 +193,7 @@ AWS Cognito also uses a vendor specific logout solution and the logout request r
 
 When logout completes we are returned to the below post logout view within our app. In a real world app you could then test logging in as another user with different settings or permissions.
 
-![new user login](/images/550/new-user-login.jpg)
+![new user login](/images/550/new-user-login.jpg?v=20240713)
 
 ### Step 15: Test Failure Scenarios
 
@@ -206,11 +206,11 @@ Our mobile app runs multiple views which could fail concurrently, so we implemen
 
 Our error display looks as follows after concurrent view failures. The user can click a hyperlink to see details, or press the *Home* button to retry:
 
-![error summary](/images/550/error-summary.jpg)
+![error summary](/images/550/error-summary.jpg?v=20240713)
 
 The summary view uses an iOS modal sheet to display a view with error details, which would help to enable fast problem resolution:
 
-![error details](/images/550/error-details.jpg)
+![error details](/images/550/error-details.jpg?v=20240713)
 
 ### Where Are We?
 

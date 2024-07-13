@@ -89,11 +89,11 @@ The site then shows the following validated results:
 
 During installation of our app you can run the macOS *Console App* from *Finder / Applications / Utilities*. Select the simulator, ensure that tracing has started, and filter output on the *mobile.authsamples.com* domain name. A successful registration results in output like this:
 
-![ios debug success](/images/560/ios-debug-success.jpg)
+![ios debug success](/images/560/ios-debug-success.jpg?v=20240713)
 
 Yet some developers may experience errors when running the app. A failed registration results in output like this:
 
-![ios debug failure](/images/560/ios-debug-failure.jpg)
+![ios debug failure](/images/560/ios-debug-failure.jpg?v=20240713)
 
 ### Fix Deep Linking Registration Failures
 
@@ -132,7 +132,7 @@ You can study the script to see how it creates an SSL certificate and key, regis
 
 Finally, configure Xcode to use the same Apple Team ID to sign the app. Then re-run the app on the simulator:
 
-![code signing](/images/560/code-signing.jpg)
+![code signing](/images/560/code-signing.jpg?v=20240713)
 
 Since we are using [mode=developer](https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_developer_associated-domains) the app should now run successfully. This technique only works in development mode, and for a production app you would instead need to provide your own iOS infrastructure.
 

@@ -325,7 +325,7 @@ protocol Authenticator {
 
 Our app has two views that load concurrently and fire three concurrent API requests. The main view data is retrieved and there are also two additional API requests to get user info. OAuth user info is retrieved from the authorization server and additional user attributes are retrieved from the API.
 
-![concurrent views](/images/570/concurrent-views.jpg)
+![concurrent views](/images/570/concurrent-views.jpg?v=20240713)
 
 A *ViewModelCoordinator* object is used to wait for all views to load. In the event of any view receiving a permanent 401 response from the API, a single OAuth redirect is triggered by the main view:
 
@@ -427,13 +427,13 @@ AppAuth libraries produce outgoing authorization code flow (PKCE) request messag
 
 The libraries also select the type of login window, and the default option is to use an *ASWebAuthenticationSession* window:
 
-![aswebauthenticationsession](/images/570/aswebauthenticationsession.jpg)
+![aswebauthenticationsession](/images/570/aswebauthenticationsession.jpg?v=20240713)
 
 ### AppAuth Library – Login Responses
 
 Upon return from login we present the below *Web Hosted Post Login Page* in the system browser window. This screen receives the authorization code in a response query parameter.
 
-![login completion](/images/570/login-completion.jpg)
+![login completion](/images/570/login-completion.jpg?v=20240713)
 
 JavaScript code in the web page invokes the login receiver activity when the continue button is pressed. This forwards any received query parameters, including the authorization code, to the app:
 
@@ -489,7 +489,7 @@ private func isCancelledError(error: Error) -> Bool {
 
 For cancelled logins we return the user to the *Login Required View* so that they can retry the operation:
 
-![cancelled login](/images/570/cancelled-login.jpg)
+![cancelled login](/images/570/cancelled-login.jpg?v=20240713)
 
 ### AppAuth Library – Authorization Code Grant
 
@@ -691,7 +691,7 @@ func startLogoutRedirect(viewController: UIViewController) throws {
 
 Logout request messages include a *Post Logout Redirect URI* that points to our *Web Hosted Post Logout Page*:
 
-![logout completion](/images/570/logout-completion.jpg)
+![logout completion](/images/570/logout-completion.jpg?v=20240713)
 
 When the user continues, the web page again invokes the app’s claimed HTTPS scheme, which completes the operation in the same manner as for login redirects.
 

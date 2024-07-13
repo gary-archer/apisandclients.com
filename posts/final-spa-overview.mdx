@@ -24,7 +24,7 @@ In AWS, the API is implemented as <Link href='/posts/serverless-api-overview'>Se
 
 Any reader can log in to the AWS deployed version of the above architecture from this blog’s <Link href='/posts/quick-start'>Cloud Samples Quick Start</Link> page, then test OAuth lifecycle events via the demo app’s buttons:
 
-![online spa](/images/220/online-spa.jpg)
+![online spa](/images/220/online-spa.jpg?v=20240713)
 
 ### Local Execution
 
@@ -50,11 +50,11 @@ The current post summarises the main web behaviours, and the next post explains 
 
 In AWS Cognito the deployed SPA is registered as follows, to point to an AWS CloudFront web origin. The SPA is now registered as a confidential client, and its backend for front end uses a client credential in grant requests for tokens:
 
-![oauth client production](/images/220/oauth-client-production.jpg)
+![oauth client production](/images/220/oauth-client-production.jpg?v=20240713)
 
 A second entry exists for running the SPA during development, which is configured equivalently, except that in this case the configured web URLs use a development web origin, configured in the local computer’s hosts file.
 
-![oauth client development](/images/220/oauth-client-development.jpg)
+![oauth client development](/images/220/oauth-client-development.jpg?v=20240713)
 
 ### React Code
 
@@ -115,7 +115,7 @@ The React application then reads the base path from the index.html file when the
 
 Since the SPA is now deployed to the AWS cloud, we would expect it to be accessed on small mobile devices, so the final SPA has been made more presentable on smaller screens:
 
-![mobile view](/images/220/mobile-view.jpg)
+![mobile view](/images/220/mobile-view.jpg?v=20240713)
 
 ### Web Performance
 

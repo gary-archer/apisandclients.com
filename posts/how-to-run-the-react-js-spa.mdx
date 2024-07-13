@@ -110,13 +110,13 @@ You will then be prompted to sign in, and can do so with this test credential:
 
 After login the SPA sends an HttpOnly encrypted cookie containing an AWS Cognito access token to the AWS API gateway. The cookie is decrypted and the access token is forwarded to lambda-based APIs which validate the access token and use claims-based authorization. When the frontend is authorized it receives and renders data returned from the API:
 
-![spa data](/images/230/spa-data.jpg)
+![spa data](/images/230/spa-data.jpg?v=20240713)
 
 ### Step 9: View Secure Cookies
 
 The SPA no longer uses tokens in the browser and instead uses only the latest and most secure cookies. You can use browser tools to view secure cookies issued, which are for the API subdomain and not the web origin. The SPA does not require any cookies to download static content, and does not use cookies when the user performs navigation operations:
 
-![cookie properties](/images/230/cookie-properties.jpg)
+![cookie properties](/images/230/cookie-properties.jpg?v=20240713)
 
 ### Step 10: View Updated SPA Configuration
 

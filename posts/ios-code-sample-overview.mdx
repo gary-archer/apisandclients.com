@@ -29,11 +29,11 @@ The code for the mobile app can be downloaded from [here](https://github.com/gar
 
 The Mobile UI will provide the same <Link href='/posts/api-journey-client-side'>API Client Journey</Link> as for earlier Web UIs, with a list view as the home page:
 
-![home view](/images/540/home-view.jpg)
+![home view](/images/540/home-view.jpg?v=20240713)
 
 There will also be a details view, which exists primarily  to demonstrate navigation and deep linking:
 
-![details view](/images/540/details-view.jpg)
+![details view](/images/540/details-view.jpg?v=20240713)
 
 ### Single Page iOS Application
 
@@ -59,11 +59,11 @@ This prevents a fake app from receiving a login result, since the attacker would
 
 AppAuth user logins will be via an [ASWebAuthenticationSession](https://dev.to/robotsquidward/quick-guide-to-aswebauthenticationsession-api-changes-in-ios-13-4m8i) window, which first presents the below system window to inform the user which app and login domain are being signed into:
 
-![aswebauthenticationsession start](/images/540/aswebauthenticationsession-start.jpg)
+![aswebauthenticationsession start](/images/540/aswebauthenticationsession-start.jpg?v=20240713)
 
 The user is then presented with the main login window, which is external to the app and acts as a secure sandbox, so that the app itself never has access to the user’s password:
 
-![aswebauthenticationsession login](/images/540/aswebauthenticationsession-login.jpg)
+![aswebauthenticationsession login](/images/540/aswebauthenticationsession-login.jpg?v=20240713)
 
 Use of the system browser provides some useful login usability options. The result is that cookies and passwords can often be shared between apps, to improve usability:
 
@@ -84,7 +84,7 @@ The following problems exist if you perform login redirects on a normal mobile w
 
 Using an ASWebAuthenticationSession window will provide the best chance of password autofill working, so that the user does not need to continually remember their password:
 
-![password autofill](/images/540/password-autofill.jpg)
+![password autofill](/images/540/password-autofill.jpg?v=20240713)
 
 After login we will store the *OAuth Refresh Token* on the device, using secure operating system storage private to the app. This ensures that, on subsequent application restarts, the first thing the user sees is the app.
 
@@ -92,17 +92,17 @@ After login we will store the *OAuth Refresh Token* on the device, using secure 
 
 We need to ensure that the above usability features cannot be abused if the mobile device is stolen, so we require the device to have a *Secured Lock Screen*, and the user will see the below screen if this is not the case:
 
-![prerequisite screen](/images/540/prerequisite-screen.jpg)
+![prerequisite screen](/images/540/prerequisite-screen.jpg?v=20240713)
 
 The user must then set a *passcode* or *fingerprint* in order to resume using the app. These security features are not available on iOS simulators.
 
-![device security](/images/540/device-security.jpg)
+![device security](/images/540/device-security.jpg?v=20240713)
 
 ### Password Autofill Details
 
 To use password autofill it must first be enabled in system settings on the iOS device.
 
-![enable password autofill](/images/540/enable-password-autofill.jpg)
+![enable password autofill](/images/540/enable-password-autofill.jpg?v=20240713)
 
 On the initial login the user will need to type in their credentials. By default the ASWebAuthenticationSession window will immediately disappear after login and the user will be unable to use the system’s *Save Password* feature. We will resolve this problem by presenting a *Post Login Page* after authentication but before the browser window is closed.
 
@@ -112,13 +112,13 @@ On the initial login the user will need to type in their credentials. By default
 
 Logins can be cancelled by closing the system browser instead of successfully completing a login. We will handle this reliably and allow the user to retry:
 
-![cancelled login](/images/540/cancelled-login.jpg)
+![cancelled login](/images/540/cancelled-login.jpg?v=20240713)
 
 ### Reliable Session Management
 
 The demo app also has buttons to enable *Rehearsal of Expiry Events*, in order to verify that these do not cause any end user problems:
 
-![expiry testing](/images/540/expiry-testing.jpg)
+![expiry testing](/images/540/expiry-testing.jpg?v=20240713)
 
 ### Navigation with Expired Tokens
 
@@ -128,7 +128,7 @@ The session buttons help to ensure that navigation is reliable within the app as
 
 The sample also implements <Link href='/posts/logout'>Open ID Connect RP-Initiated Logout</Link>, to remove the authorization server’s session cookie. In a real-world app a logout capability enables you to test data access for different users with different settings or permissions. One annoyance is that the ASWebAuthenticationSession indicates *Sign In* during the logout redirect, rather then *Sign Out*:
 
-![logout prompt](/images/540/logout-prompt.jpg)
+![logout prompt](/images/540/logout-prompt.jpg?v=20240713)
 
 The usual way to resolve it is to avoid the logout redirect and instead simply drop tokens. Then use the *prompt=login* OpenID Connect request parameter on the next login. At the time of writing though, AWS Cognito does not yet support the *prompt* parameter.
 
@@ -160,7 +160,7 @@ In both cases our API will deny access gracefully by returning known error codes
 
 A common issue when first using AppAuth libraries is that the system browser may not return the deep link containing the authorization response to the app, and fall back to processing it as a web request in the browser, typically with a 404 not found error.
 
-![not found login response](/images/540/not-found-login-response.jpg)
+![not found login response](/images/540/not-found-login-response.jpg?v=20240713)
 
 This is due to a browser security requirement that there must be a [user gesture](https://forums.developer.apple.com/forums/thread/26760) before a deep link can be processed. Invoking a deep link immediately after a redirect can be unreliable.
 
@@ -185,8 +185,8 @@ In each case, there needs to be a screen before invoking the deep link. You may 
 
 This blog uses the following custom *AWS Hosted Web Pages* that are returned to after login / logout redirects. A real company could present its own branded pages instead.
 
-![login interstitial page](/images/540/login-interstitial-page.jpg)
-![logout interstitial page](/images/540/logout-interstitial-page.jpg)
+![login interstitial page](/images/540/login-interstitial-page.jpg?v=20240713)
+![logout interstitial page](/images/540/logout-interstitial-page.jpg?v=20240713)
 
 ### Test Cases
 

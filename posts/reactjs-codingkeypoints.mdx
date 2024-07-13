@@ -160,7 +160,7 @@ In our transactions view the following markup shows 3 items per row on large scr
 
 The transactions mobile view therefore looks like this when using a mobile resolution:
 
-![mobile transactions](/images/240/mobile-transactions.jpg)
+![mobile transactions](/images/240/mobile-transactions.jpg?v=20240713)
 
 The companies list becomes too squashed up for smaller sizes, so we have provided a different view of the data instead:
 
@@ -178,7 +178,7 @@ return  (
 
 At mobile dimensions the companies list now uses a card based layout rather than a grid based layout:
 
-![mobile companies](/images/240/mobile-companies.jpg)
+![mobile companies](/images/240/mobile-companies.jpg?v=20240713)
 
 ### Views, View Models and State
 
@@ -289,7 +289,7 @@ In previous samples we ensured that the page loaded in a sequential manner, and 
 - First the main view called the API to get the data and then update the UI’s main area
 - Next the userinfo view called the API, then displayed the user name in the top right
 
-![spa views](/images/240/spa-views.jpg)
+![spa views](/images/240/spa-views.jpg?v=20240713)
 
 It is more typical in an SPA for multiple API requests to be in flight at the same time, so we have updated to this model. Fetch requests are triggered when React renders the tree of views, and the ordering of API requests is not deterministic.
 
@@ -297,11 +297,11 @@ It is more typical in an SPA for multiple API requests to be in flight at the sa
 
 In the event of either view experiencing a problem they now render their own error. You can rehearse API errors by long pressing the *Reload Data* button for a few seconds, resulting in an *Error Summary* view being rendered for each view that made an API request:
 
-![error summary](/images/240/error-summary.jpg)
+![error summary](/images/240/error-summary.jpg?v=20240713)
 
 When clicked, a summary view uses a React modal dialog to display the *Error Detail* View from our earlier samples:
 
-![error details](/images/240/error-details.jpg)
+![error details](/images/240/error-details.jpg?v=20240713)
 
 ### Triggering Login Redirects
 
