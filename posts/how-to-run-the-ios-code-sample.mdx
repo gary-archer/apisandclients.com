@@ -29,7 +29,7 @@ In Xcode the project layout looks as follows, and our Swift code is under the *S
 
 ![project layout](/images/550/project-layout.jpg)
 
-You should be able to run the app on a simulator without any special *Signing & Capabilities* requirements, as shown here:
+Then run the app on a simulator, with your default *Signing and Capabilities* settings, which can be empty if required:
 
 ![emulator settings](/images/550/simulator-settings.jpg)
 
@@ -40,7 +40,8 @@ We are using the following external dependencies:
 | Library | Usage |
 | ------- | ----- |
 | <span style={{color:'green'}}>**AppAuth**</span> | Does the OAuth based authentication work for the app |
-| <span style={{color:'green'}}>**Swift Keychain Wrapper**</span> | Simplifies secure storage of OAuth tokens on devices |
+| <span style={{color:'green'}}>**Keychain Swift**</span> | Simplifies secure storage of OAuth tokens on devices |
+| <span style={{color:'green'}}>**SwiftUI-Tooltip**</span> | A utility to help display a tooltip containing user info |
 
 These references were added via the *Swift Package Manager* and are built as libraries:
 
@@ -61,9 +62,13 @@ Next save the password when prompted, then navigate between views by clicking an
 
 ![running app](/images/550/running-app.jpg)
 
+Logins require associated domain registration to work on your simulator. If registration fails, you will receive the following display. The cause is that a mobile deep link is incorrectly processed in the browser. The next post, on iOS infrastructure explains how you can resolve this problem, if it impacts you.
+
+![not found login response](/images/550/not-found-login-response.jpg)
+
 ### Step 5: Understand Configuration Settings
 
-When our app runs it uses the API and OAuth settings from an embedded JSON configuration file:
+When our app runs it uses the API and OAuth settings from an embedded JSON configuration file named *mobile_config.json*, which you can find in the root of the project:
 
 ```json
 {
@@ -72,16 +77,13 @@ When our app runs it uses the API and OAuth settings from an embedded JSON confi
   },
   "oauth": {
     "authority":              "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9",
-    "userInfoEndpoint":       "https://login.authsamples.com/oauth2/userInfo",
     "clientId":               "2vshs4gidsbpnjmsprhh607ege",
-    "webBaseUrl":             "https://authsamples.com",
-    "loginRedirectPath":      "/apps/basicmobileapp/postlogin.html",
-    "postLogoutRedirectPath": "/apps/basicmobileapp/postlogout.html",
-    "deepLinkBaseUrl":        "https://mobile.authsamples.com",
-    "loginActivatePath":      "/basicmobileapp/oauth/callback",
-    "postLogoutActivatePath": "/basicmobileapp/oauth/logoutcallback",
-    "scope":                  "openid profile email https://api.authsamples.com/investments",
-    "customLogoutEndpoint":   "https://login.authsamples.com/logout"
+    "redirectUri":            "https://authsamples.com/apps/basicmobileapp/postlogin.html",
+    "postLogoutRedirectUri":  "https://authsamples.com/apps/basicmobileapp/postlogout.html",
+    "scope":                  "openid profile https://api.authsamples.com/investments",
+    "userInfoEndpoint":       "https://login.authsamples.com/oauth2/userInfo",
+    "customLogoutEndpoint":   "https://login.authsamples.com/logout",
+    "deepLinkBaseUrl":        "https://mobile.authsamples.com"
   }
 }
 ```
@@ -105,8 +107,8 @@ The result of successful authorization is the following message, and note that t
 
 Two interstitial web pages are used with our iOS sample, hosted at the following URLs:
 
-- `https://authsamples.com/apps/basicmobileapp/postlogin.html`
-- `https://authsamples.com/apps/basicmobileapp/postlogout.html`
+- https://authsamples.com/apps/basicmobileapp/postlogin.html
+- https://authsamples.com/apps/basicmobileapp/postlogout.html
 
 If we use the *View Source* option in a desktop browser for one of the above URLs, we can see that they just forward query parameters from the login response using a deep linking URL:
 
@@ -114,9 +116,18 @@ If we use the *View Source* option in a desktop browser for one of the above URL
 
 For this to work we need to register the `https://mobile.authsamples.com` base URL as an *Associated Domain* in the *basicmobileapp.entitlements* file:
 
-![entitlements](/images/550/entitlements.jpg)
-
-Note that if the interstitial page is left for a couple of minutes before the user clicks *Return to the App*, the authorization code could time out, leading to a user error. The user can always retry and recover though.
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:mobile.authsamples.com?mode=developer</string>
+	</array>
+</dict>
+</plist>
+```
 
 ### Step 8: Understand Login Completion
 
