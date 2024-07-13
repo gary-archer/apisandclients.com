@@ -68,16 +68,16 @@ import {UserManager, UserManagerSettings} from 'oidc-client';
 import mustache from 'mustache';
 ```
 
-This blog’s APIs use Node.js 20 or later, with the following *tsconfig.json* configuration. Some of these settings are used for importing modules, and others for producing compiled code:
+This blog’s APIs use Node.js 20 or later, with the following *tsconfig.json* configuration. Some of these settings are used for importing modules, and others for building code:
 
 ```json
 {
   "compilerOptions": {
     "strict": true,
-    "target": "ES2022",
-    "lib": ["ES2022"],
+    "target": "ES2023",
+    "lib": ["ES2023"],
     "module":"ES2022",
-    "moduleResolution": "Node",
+    "moduleResolution": "Node16",
     "allowSyntheticDefaultImports": true,
     "outDir": "dist",
     "sourceMap": true
@@ -91,13 +91,12 @@ This blog’s APIs use Node.js 20 or later, with the following *tsconfig.json* c
 }
 ```
 
-The following settings are relevant to importing modules. I aim to use only the first two of these, for all projects, including SPAs:
+The following settings are relevant to importing modules:
 
 | Setting | Description |
 | ------- | ----------- |
-| [moduleResolution](https://www.typescriptlang.org/tsconfig#moduleResolution) | Use the most compatible rules when resolving external modules |
-| [allowSyntheticDefaultImports](https://www.typescriptlang.org/tsconfig#allowSyntheticDefaultImports) | Enable the cleanest import syntax for CommonJS modules |
-| [esModuleInterop](https://www.typescriptlang.org/tsconfig#esModuleInterop) | Provides stronger compatibility with CommonJS modules when needed |
+| [moduleResolution](https://www.typescriptlang.org/tsconfig#moduleResolution) | Use modern rules for the target environment when resolving external modules |
+| [allowSyntheticDefaultImports](https://www.typescriptlang.org/tsconfig#allowSyntheticDefaultImports) | Enable the cleanest import syntax when using older CommonJS modules |
 
 We also need to tell the compiler that the project’s own source files use ECMAScript modules. This is done by specifying *type=module* in the *package.json* file.
 
@@ -126,9 +125,9 @@ The *tsconfig.json* file for the SPA is a little different to that for the Node.
   "compilerOptions": {
     "strict": true,
     "target": "ES2017",
-    "lib": ["ES2022", "DOM"],
-    "module":"ES2015",
-    "moduleResolution": "Node",
+    "lib": ["ES2023", "DOM"],
+    "module":"ES2022",
+    "moduleResolution": "Bundler",
     "allowSyntheticDefaultImports": true,
     "outDir": "dist",
     "sourceMap": true
@@ -142,7 +141,7 @@ The *tsconfig.json* file for the SPA is a little different to that for the Node.
 }
 ```
 
-    These libraries are located under the *node_modules/typescript/lib* folder and include [web definitions](https://microsoft.github.io/PowerBI-JavaScript/modules/_node_modules_typedoc_node_modules_typescript_lib_lib_dom_d_.html) such as *HTMLInputElement*:
+These libraries are located under the *node_modules/typescript/lib* folder and include [web definitions](https://microsoft.github.io/PowerBI-JavaScript/modules/_node_modules_typedoc_node_modules_typescript_lib_lib_dom_d_.html) such as *HTMLInputElement*.
 
 ![typescript library](/images/90/typescript-lib.jpg)
 
@@ -408,12 +407,12 @@ app.bundle.js
 app.bundle.js.map
 ```
 
-For SPAs, we need to ensure that output works in older browsers, but we also want to produce clean production JavaScript code, without the need for excessive [polyfilling](https://javascript.info/polyfills). The following *tsconfig.json* output settings are used:
+For SPAs, we need to ensure that output works in mainstream browsers for the last 5 years or so, but we also want to produce clean production JavaScript code, without the need for excessive [polyfilling](https://javascript.info/polyfills). The following *tsconfig.json* output settings are used:
 
 | Setting | Description |
 | ------- | ----------- |
-| [target](https://www.typescriptlang.org/tsconfig#target) | Building to ES2017 means built code uses async await syntax |
-| [module](https://www.typescriptlang.org/tsconfig#module) | ES2015 means built code uses ECMAScript modules |
+| [target](https://www.typescriptlang.org/tsconfig#target) | Building to ES2017 means built code runs in all mainstream desktop and mobile browsers and await statements are output to the built code |
+| [module](https://www.typescriptlang.org/tsconfig#module) | ES2022 means bundled code uses the ECMAScript module format, which browser hosts support, and outputs top level await statements to the built code |
 
 Since we build to ES2017 JavaScript, the development build results remain close to the SPA’s TypeScript code, with types removed:
 
@@ -429,9 +428,10 @@ class CompaniesView {
 }
 ```
 
-All main mobile and desktop browsers have supported these features since around 2017, as shown by [online compatibility sites](https://caniuse.com/?search=await):
+All main mobile and desktop browsers have supported the ES2017 features since around 2017, as shown by online compatibility references:
 
-![compatibility](/images/90/compatibility.jpg)
+- [Can I use await in browser code?](https://caniuse.com/?search=await)
+- [Can I use top level await in browser code?](https://caniuse.com/?search=top-level%20await)
 
 ### Building Code: API Compilation
 
@@ -546,7 +546,7 @@ public static getErrorStack(error: UIError): ErrorLine | null {
 }
 ```
 
-The output is intentionally then rendered in a raw format from which it can be copied. In a production build you could use a Send Home feature rather than displaying the technical details:
+The output is intentionally then rendered in a raw format from which it can be copied. In a production build you might use a *Send Home* feature rather than rendering the technical details:
 
 ![exception](/images/90/exception.jpg)
 
