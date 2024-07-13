@@ -134,7 +134,7 @@ Finally, configure Xcode to use the same Apple Team ID to sign the app. Then re-
 
 ![code signing](/images/560/code-signing.jpg?v=20240713)
 
-Since we are using [mode=developer](https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_developer_associated-domains) the app should now run successfully. This technique only works in development mode, and for a production app you would instead need to provide your own iOS infrastructure.
+Since we are using [mode=developer](https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_developer_associated-domains) the app should now run successfully. This technique will only work for simulators, and for more complete testing you would instead need to provide your own iOS infrastructure.
 
 ### HTTP Debugging and Claimed HTTPS Schemes
 
