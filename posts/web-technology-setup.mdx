@@ -1,13 +1,13 @@
 # JavaScript Technology Setup
 
-Previously I explained an <Link href='/posts/oauth-infrastructure-setup'>OAuth Infrastructure Setup</Link>. In this post we will describe how this blog uses JavaScript technology, for Node.js APIs, browser based apps and Electron desktop apps. The goal is to focus on our own requirements rather than being dictated to be technology.
+Previously I described our <Link href='/posts/oauth-infrastructure-setup'>OAuth Infrastructure Setup</Link>. In this post I will explain how this blog uses JavaScript technology, for Node.js APIs, browser based apps and Electron desktop apps. The goal is to focus on our own requirements rather than being dictated to be technology.
 
 ### Goal: Modern Productive Code
 
 The main part of our SPA is the TypeScript logic, which can help to enable clean code with a great separation of concerns. I use TypeScript since I like the extensions to JavaScript in areas such as these:
 
 - **More Expressive Types**, including interfaces and private class members
-- **Types Exchanged with APIs** can be expressed in the frontend code
+- **Data Exchanged with APIs** is easier to understand in the frontend code
 - **Easier Refactoring** when items are renamed or moved
 
 ### Web Development Pipeline
@@ -30,18 +30,19 @@ I use the mainstream npm tool, where libraries we depend upon and their versions
 ```json
 {
   "dependencies": {
-    "axios": "^1.6.7",
+    "axios": "^1.7.2",
     "mustache": "^4.2.0",
-    "oidc-client-ts": "^2.4.0"
+    "oidc-client-ts": "^3.0.1"
   },
   "devDependencies": {
-    "@types/mustache": "^4.2.2",
-    "@typescript-eslint/eslint-plugin": "^6.9.0",
-    "@typescript-eslint/parser": "^6.9.0",
-    "eslint": "^8.52.0",
+    "@eslint/js": "^9.5.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/mustache": "^4.2.5",
+    "eslint": "^8.57.0",
     "ts-loader": "^9.5.0",
-    "typescript": "^5.3.3",
-    "webpack": "^5.89.0",
+    "typescript": "^5.5.2",
+    "typescript-eslint": "^7.14.1",
+    "webpack": "^5.91.0",
     "webpack-cli": "^5.1.4",
     "webpack-merge": "^5.10.0"
   }
@@ -60,7 +61,7 @@ Each library is consumed as JavaScript, even if it was originally coded in TypeS
 
 ### Writing Code: Resolving Imports
 
-We can import libraries in our own source files via one of the following syntaxes. The first of these imports a newer *ECMAScript* module, whereas the second uses the older *CommonJS* format.
+We can import libraries in our own source files via one of the following syntaxes. The first of these imports a newer *ECMAScript* module, whereas the second is often used to import older *CommonJS* modules.
 
 ```typescript
 import {UserManager, UserManagerSettings} from 'oidc-client';
@@ -100,7 +101,7 @@ The following settings are relevant to importing modules. I aim to use only the 
 
 We also need to tell the compiler that the project’s own source files use ECMAScript modules. This is done by specifying *type=module* in the *package.json* file.
 
-For Node.js APIs, a *.js* suffix is also required when importing other classes. During coding this is a TypeScript file, though it will become JavaScript when it is executed:
+For Node.js APIs that use *type=module*, a *.js* suffix is required when importing other classes. During coding this is a TypeScript file, though it becomes JavaScript when executed:
 
 ```typescript
 import {CompanyRepository} from '../repositories/companyRepository.js';
@@ -174,7 +175,7 @@ export class CompaniesView {
 }
 ```
 
-Strong typing during coding allows the environment to make more checks for us during development. When using ECMAScript modules, the compiled code will remain expressive, and close to  the original TypeScript syntax.
+Strong typing during coding allows the environment to make more checks for us during development. When using ECMAScript modules, the compiled code remains closest to the original TypeScript syntax.
 
 ### Writing Code: Styling
 
@@ -269,36 +270,33 @@ read -n 1
 
 ### Building Code: Linting
 
-The first build task is to check code quality. The [eslint](https://eslint.org/) library is used, which requires its own JSON configuration file containing rules:
+The first build task is to check code quality. The [typescript-eslint](https://github.com/typescript-eslint/typescript-eslint) library is used. The underlying [eslint](https://eslint.org/) library requires its own JavaScript configuration file. I import recommended rulesets as well as activating rules that reflect my own coding preferences:
 
-```json
-{
-    "root": true,
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-        "@typescript-eslint"
+```javascript
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config({
+    files: ['**/*.ts', '**/*.mjs'],
+    extends: [
+        eslint.configs.strict,
+        ...tseslint.configs.strict,
     ],
-    "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended"
-    ],
-    "rules": {
-        "@typescript-eslint/explicit-module-boundary-types": ["error", {
-            "allowArgumentsExplicitlyTypedAsAny": true
-        }],  
-        "@typescript-eslint/no-empty-function": "off",
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/quotes": ["error", "single", { "avoidEscape": true }],
-        "quotes": "off",
-        "semi": "error",
-        "indent": "error",
-        "max-len": ["error", { "code": 120 }],
-        "brace-style": ["error", "1tbs"],
-        "no-multiple-empty-lines": ["error", {"max": 1}],
-        "no-trailing-spaces": "error"
-    }
-}
+    rules: {
+        '@typescript-eslint/explicit-module-boundary-types': ['error', {
+            'allowArgumentsExplicitlyTypedAsAny': true,
+        }],
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-extraneous-class': 'off',
+        'brace-style': ['error', '1tbs'],
+        'indent': 'error',
+        'max-len': ['error', { 'code': 120 }],
+        'no-multiple-empty-lines': ['error', {'max': 1}],
+        'no-trailing-spaces': 'error',
+        'quotes': ['error', 'single'],
+        'semi': 'error',
+    },
+});
 ```
 
 This provides warnings, mostly about little things, that helps to keep code maintainable and consistent:
@@ -437,15 +435,13 @@ All main mobile and desktop browsers have supported these features since around 
 
 ### Building Code: API Compilation
 
-During development of TypeScript APIs, I prefer to avoid producing JavaScript files, since doing so adds confusion when searching the code base.
-
-Instead, Node.js can be asked to execute TypeScript files directly using the [tsx](https://github.com/privatenumber/tsx) tool. This results in the node runtime using ECMAScript modules built in-memory:
+During development of TypeScript APIs, I prefer to avoid producing JavaScript files, since doing so adds confusion when searching the code base. Instead, Node.js can be asked to execute TypeScript files directly using the [tsx](https://github.com/privatenumber/tsx) tool. This results in the node runtime using ECMAScript modules built in-memory:
 
 ```bash
 tsx watch src/host/startup/app.ts
 ```
 
-Deployed builds for Node.js APIs should instead include and run JavaScript code, which also ensures best startup times. The initial code sample uses an *npm run buildRelease* command to output to the *dist* folder. The most up to date Node.js options can be used for the API build.
+Deployed builds for Node.js APIs should instead include and run JavaScript code, to ensure best performance. The initial code sample uses an *npm run buildRelease* command to output to the *dist* folder. The most up to date Node.js options can be used for the API build.
 
 I avoid building API code to bundles. By keeping built code easier to read, you are better able to diagnose potential production problems, and understand exception stack traces.
 
