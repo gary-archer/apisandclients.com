@@ -2,9 +2,9 @@
 
 Previously we drilled into use of <Link href='/posts/web-technology-setup'>Modern JavaScript Technology</Link> for front end focused development. Next we will show how developers can visualize OAuth request and response messages.
 
-### Goal: Developer Productivity
+### Productive Troubleshooting
 
-We will run an HTTP Proxy on a development computer, to enable productive troubleshooting. For OAuth secured apps these messages are often a side effect of our code, often issued by a security library that we use.
+When I want to understand or troubleshoot OAuth requests, I look at the requests that are sent and the responses that are returned. The requests are often issued by a security library plugged into applications. To intercept the messages I place an *HTTP Forward Proxy* in front of application components when they call OAuth related URLs.
 
 ### Using Browser Tools
 
@@ -12,21 +12,20 @@ For some HTTP requests, the browser network trace works well, to capture message
 
 ![browser network tool](/images/100/browser-network-tool.jpg)
 
-Browser tools are often a suboptimal choice for capturing OAuth traffic. They do not include requests from non-browser components and may also be limited to a single browser tab. During navigation and window changes, such as when a popup or iframe is dismissed, traffic is sometimes lost.
+Browser tools are often a suboptimal choice for capturing OAuth traffic. They do not include requests from non-browser components and may also be limited to a single browser tab. During navigation and window changes, such as when a popup or iframe is dismissed, traffic is sometimes not shown.
 
-### Open Source HTTP Proxy Tools
+### Using mitmproxy
 
-A more powerful option during development is to use an HTTP proxy tool. In this post we will show how to get started with the open source and cross platform *MITM Proxy* tool.
-
-Follow the [installation guide](https://docs.mitmproxy.org/stable/overview-installation/), to use the package manager for your operating system, on either Linux, Windows or macOS. You can then run the proxy, and specify a *listen port* and a *web port*.
+A more powerful option during development is to use an HTTP proxy tool. In this post we will show how to use the open source and cross platform *mitmproxy* tool.
+By default, you can follow the [installation guides](https://docs.mitmproxy.org/stable/overview-installation/), to use the package manager for your operating system, on either Linux, Windows or macOS. You can then run the proxy, and specify a *listen port* and a *web port*.
 
 ```bash
 sudo mitmweb -p 8888 --web-port 8889 --ssl-insecure
 ```
 
-I also use the *–ssl-insecure* option when upstream components use my own OpenSSL generated certificates. Once the proxy is running you can browse to the web interface at `http://127.0.0.1:8889`, which will render traffic from both browser and non-browser components:
+I use the *–ssl-insecure* option when upstream components use my own OpenSSL generated certificates. Once the proxy is running you can browse to the web interface at `http://127.0.0.1:8889`, which will render traffic from both browser and non-browser components:
 
-![proxy web interface](/images/100/proxy-web-interface.jpg)
+![proxy web interface](/images/100/proxy-web-interface.jpg?v=20240714)
 
 Next, configure the operating system to use an HTTP proxy, with *host=127.0.0.1* and *port=8888*. Screenshots on how to do on Windows, macOS and Linux are provided a little later in this post.
 
@@ -34,49 +33,89 @@ Then browse to http://mitm.it, and follow the instructions so that your browser 
 
 ![mitm cert docs](/images/100/mitm-cert-docs.jpg)
 
-You will then be able to browse to internet sites and capture traffic, to prove that the proxy capturing is working. So far this is not very interesting, since you could also have achieved this with browser tools:
+You will then be able to browse to internet sites and capture traffic, to prove that the proxy capturing is working. For this blog's components, I set a filter expression of *~d authsamples|cognito* to limit the rendered traffic to those for this blog's domain names.
 
-![mitm trace](/images/100/mitm-trace.jpg)
+![mitm trace](/images/100/mitm-trace.jpg?v=20240714)
+
+Since the initial code sample uses HTTP, it is forced to use *localhost* URLs, due to restrictions caused by AWS Cognito and the oidc-client library. Yet *localhost* requests are typically not sent to proxy tools. Although it may be possible to get them working, the most productive option is to use HTTPS URLs with real-world domain names. We will update to better URLs for all future code samples.
+
+### Automated Setup
+
+I use my own wrapper scripts with mitmproxy, so that I can quickly get set up on a Windows, macOS or Linux computer, without manual steps. You can clone the repo with this command:
+
+```bash
+git clone https://github.com/gary-archer/oauth.httpproxy
+```
+
+When I want to run mitmproxy, I run the *start.sh* script, which performs the following actions if mitmproxy is not yet installed:
+
+- Download the mitmproxy binaries to a local folder and unpack them
+- Download the mitmproxy root certificate and add it to the system trust store
+
+It then continues to perform the following actions:
+
+- Run the mitmweb process
+- Activate mitmproxy as the system proxy
+- Open mitmweb in the default browser
+
+My automation runs the following command and includes a small python script:
+
+```bash
+sudo ./mitmweb -p 8888 --web-port 8889 --ssl-insecure --script init.py
+```
+
+The script sets a view filter to this blog's domains, which can be cleared using mitmweb's *Edit Options* dialog:
+
+```python
+from mitmproxy import ctx
+
+def load(loader):
+    ctx.options.view_filter = "~d authsamples|cognito"
+```
+
+Next I proceed to debug HTTP messages for the components of interest. In some cases, extra configuration steps may be necessary to trace particular messages. The details are explained in the following sections. Finally, when I have finished debugging HTTP requests, I run the *stop.sh* script to free resources.
 
 ### Debug the Initial SPA and API
 
-Next run this blog’s <Link href='/posts/basicspa-execution'>initial SPA and API code sample</Link>. First edit the API configuration file and set *useProxy=true*:
+First, edit the configuration for this blog’s <Link href='/posts/basicspa-execution'>initial SPA and API code sample</Link> and set *useProxy=true*:
 
 ```json
 {
     "api": {
         "port": 80,
         "trustedOrigins": [
-            "http://www.authsamples-dev.com",
             "http://localhost"
         ],
         "useProxy": true,
         "proxyUrl": "http://127.0.0.1:8888"
     },
     "oauth": {
-        "jwksEndpoint": "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_qqJgVeuTn/.well-known/jwks.json",
-        "algorithm": "RS256",
-        "issuer": "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_qqJgVeuTn",
-        "audience": ""
+        "jwksEndpoint": "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9/.well-known/jwks.json",
+        "algorithm":    "RS256",
+        "issuer":       "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9",
+        "audience":     ""
     }
 }
 ```
 
-Next set this environment variable, which is a quick way to get the sample’s Node.js API to also trust the proxy root certificate. Configuring SSL trust properly is covered in the next post:
+Then run the code sample with the following commands so that mitmproxy captures outgoing OAuth requests from the API. Setting *NODE_TLS_REJECT_UNAUTHORIZED* is a quick way to get the sample’s Node.js API to also trust the proxy root certificate. Configuring SSL trust properly is covered in the next post.
 
 ```bash
 export NODE_TLS_REJECT_UNAUTHORIZED=0
+git clone https://github.com/gary-archer/oauth.websample1
+cd oauth.websample1
+./start.sh
 ```
 
-Run the *start.sh* script to capture traffic from both the SPA and API. The following request is from the API’s JWT library to the JWKS endpoint of the authorization server, to download the token signing public key:
+After you log in you will see the following request from the API’s JWT library to the JWKS endpoint of the authorization server, to download the token signing public key:
 
 ![mitm jwks](/images/100/mitm-jwks.jpg)
 
 ### HTTP Proxying Mechanics
 
-The [MITM docs](https://docs.mitmproxy.org/stable/concepts-howmitmproxyworks/) provide a great explanation of how HTTP proxying works. The application’s HTTP client is instructed to route via the proxy, which can chain to an existing HTTP proxy when applicable, such as those often used by corporate networks.
+The [mitmproxy docs](https://docs.mitmproxy.org/stable/concepts-howmitmproxyworks/) provide a great explanation of how HTTP proxying works. The application’s HTTP client is instructed to route via the proxy, which can chain to an existing HTTP proxy when applicable, such as those often used by corporate networks.
 
-The proxy also performs clever manipulation of HTTPS traffic, which includes re-encrypting outgoing client traffic using the proxy root certificate and key. Consider the following JWKS URL, which uses an Amazon root certificate:
+The proxy also performs manipulation of HTTPS traffic, by re-encrypting outgoing client traffic using the proxy root certificate and key. Consider the following JWKS URL, which uses an Amazon root certificate:
 
 - https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9/.well-known/jwks.json
 
@@ -84,9 +123,9 @@ When the HTTP proxy is used, the root authority shown in browsers changes to tha
 
 ![mitm replaced root](/images/100/mitm-replaced-root.jpg)
 
-### Technical Challenges
+### Proxy Configuration
 
-The tricky part of using an HTTPS proxy is that use of the proxy is configured in different ways across tools and technologies. This page will explain the ways to configure an HTTP proxy for all of these clients:
+The tricky part of using an HTTPS proxy is knowing how to configure it across different tools and technologies. This page explains the ways to configure an HTTP proxy for all of these clients:
 
 - Chrome / Safari Browsers
 - Microsoft Browser
@@ -99,7 +138,7 @@ The tricky part of using an HTTPS proxy is that use of the proxy is configured i
 - Swift iOS Apps
 - Command Line Tools
 
-We will also explain differences across the following operating systems:
+I also explain differences across the following operating systems:
 
 - Windows
 - macOS
@@ -129,7 +168,7 @@ Browsers usually inherit the system proxy settings, though command line override
 
 ### Proxy Settings for Node.js APIs
 
-Our Node.js APIs use a small [proxy-agent library](https://github.com/TooTallNate/node-proxy-agent). HTTP libraries such as [axios](https://github.com/axios/axios) allow an *httpAgent* or *httpsAgent* property to be configured and you use the option that corresponds to the scheme of the target URL. When connecting to HTTPS URLs I assign the value of the agent property from the following utility class:
+Our Node.js APIs use a small [proxy-agent library](https://github.com/TooTallNate/proxy-agents). HTTP libraries such as [axios](https://github.com/axios/axios) allow an *httpAgent* or *httpsAgent* property to be configured and you use the option that corresponds to the scheme of the target URL. When connecting to HTTPS URLs I assign the value of the agent property from the following utility class:
 
 ```typescript
 import HttpsProxyAgent from 'https-proxy-agent';
@@ -249,28 +288,24 @@ It is also possible to override the system proxy settings via [Electron Command 
 
 ### Command Line Tools
 
-I commonly use the curl and openssl tools to make HTTP/S requests, for Windows, macOS and Linux operating systems:
-
-| Tool | Windows | macOS | Linux |
-| ---- | ------- | ----- | ----- |
-| <span style={{color:'green'}}>**Package Manager**</span> | [Chocolatey](https://chocolatey.org/) | [Homebrew](https://brew.sh/) | [apt](https://en.wikipedia.org/wiki/APT_(software)) |
-| <span style={{color:'green'}}>**Shell**</span> | [Git Bash](https://git-scm.com/download/win) | Pre-installed | Pre-installed |
-| [curl](https://curl.se/) | Installed with Git Bash | Pre-installed | Pre-installed |
-| [OpenSSL](https://www.openssl.org) | Installed with Git Bash | Pre-installed | Pre-installed |
-
-These command line tools look for one or both of the below environment variables, depending on the scheme of the target URL:
+I commonly use the curl and openssl tools to make HTTP/S requests, for Windows, macOS and Linux operating systems. These command line tools look for one or both of the below environment variables, depending on the scheme of the target URL:
 
 | Environment Variable | Used For |
 | -------------------- | -------- |
 | <span style={{color:'green'}}>**http_proxy**</span> | Browsing to HTTP URLs |
 | <span style={{color:'green'}}>**https_proxy**</span> | Browsing to HTTPS URLs |
 
-Example commands are shown below:
+To use curl to connect to an HTTP URL I use commands of this form:
 
 ```bash
 export http_proxy=http://127.0.0.1:8888
-export https_proxy=http://127.0.0.1:8888
 curl -H "Authorization Bearer xxx" http://api.authsamples-dev.com/api/companies
+```
+
+To use OpenSSL to connect to an HTTPS URL I use commands of this form:
+
+```bash
+export https_proxy=http://127.0.0.1:8888
 openssl s_client -connect api.authsamples-dev.com:443
 ```
 
@@ -293,13 +328,9 @@ This type of technique can be used to verify that OAuth clients handle error res
 
 ![breakpoint error result](/images/100/breakpoint-error-result.jpg)
 
-### Other Proxy Tools
-
-Many other HTTP proxy tools exist with equivalent behaviours. Most screenshots in this blog use my personal paid version of [Charles Proxy](https://www.charlesproxy.com/), and I have also often used the free [Fiddler](https://www.telerik.com/download/fiddler) tool on Windows.
-
 ### Where Are We?
 
-We have used an HTTPS proxy tool to enable capturing of HTTP/S messages from clients, regardless of technology. This provides good troubleshooting options when there are failures during development, and promotes a good understanding of the OAuth standards-based messages.
+We have used an HTTP proxy tool to enable capturing of HTTP/S messages from clients, regardless of technology. This provides good troubleshooting options when there are failures during development, and promotes a good understanding of the OAuth standards-based messages.
 
 ### Next
 
