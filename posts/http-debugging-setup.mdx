@@ -109,7 +109,7 @@ cd oauth.websample1
 
 After you log in you will see the following request from the API’s JWT library to the JWKS endpoint of the authorization server, to download the token signing public key:
 
-![mitm jwks](/images/100/mitm-jwks.jpg)
+![mitm jwks](/images/100/mitm-jwks.jpg?v=20240714)
 
 ### HTTP Proxying Mechanics
 
@@ -322,11 +322,11 @@ An HTTP proxy tool also enables us to [modify in-flight OAuth requests and respo
 
 In the following screenshot I used the expression *~u /token*, for a request from the SPA to the token endpoint. I then altered the client ID and submitted the request, to simulate an unexpected error condition:
 
-![proxy breakpoint](/images/100/proxy-breakpoint.jpg)
+![proxy breakpoint](/images/100/proxy-breakpoint.jpg?v=20240714)
 
 This type of technique can be used to verify that OAuth clients handle error responses, with the returned OAuth *error* and *error_description* fields, in a solid way. The sample SPA renders these details as shown here:
 
-![breakpoint error result](/images/100/breakpoint-error-result.jpg)
+![breakpoint error result](/images/100/breakpoint-error-result.jpg?v=20240714)
 
 ### Where Are We?
 
