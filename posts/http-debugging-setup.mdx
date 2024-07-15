@@ -41,7 +41,7 @@ Since the initial code sample uses HTTP, it is forced to use *localhost* URLs, d
 
 ### Automated Setup
 
-I use my own wrapper scripts with mitmproxy, so that I can quickly get set up on a Windows, macOS or Linux computer, without manual steps. You can clone the repo with this command:
+I use my own wrapper scripts with mitmproxy, so that I can consolidate usage across multiple platforms into a single place. You can clone the repo with this command:
 
 ```bash
 git clone https://github.com/gary-archer/oauth.httpproxy
@@ -50,18 +50,17 @@ git clone https://github.com/gary-archer/oauth.httpproxy
 When I want to run mitmproxy, I run the *start.sh* script, which performs the following actions if mitmproxy is not yet installed:
 
 - Download the mitmproxy binaries to a local folder and unpack them
-- Download the mitmproxy root certificate and add it to the system trust store
+- Run a command to trust the mitmproxy root certificate
 
 It then continues to perform the following actions:
 
-- Run the mitmweb process
-- Activate mitmproxy as the system proxy
-- Open mitmweb in the default browser
+- Run the mitmweb process in the default browser
+- Prompt the user to activate mitmproxy as the system proxy
 
 My automation runs the following command and includes a small python script:
 
 ```bash
-sudo ./mitmweb -p 8888 --web-port 8889 --ssl-insecure --script init.py
+./mitmweb -p 8888 --web-port 8889 --ssl-insecure --script init.py
 ```
 
 The script sets a view filter to this blog's domains, which can be cleared using mitmweb's *Edit Options* dialog:
@@ -73,7 +72,7 @@ def load(loader):
     ctx.options.view_filter = "~d authsamples|cognito"
 ```
 
-Next I proceed to debug HTTP messages for the components of interest. In some cases, extra configuration steps may be necessary to trace particular messages. The details are explained in the following sections. Finally, when I have finished debugging HTTP requests, I run the *stop.sh* script to free resources.
+Next I perform any environment specific configuration, as explained in the following sections. I then proceed to debug HTTP messages for the components of interest. Finally, when I have finished debugging HTTP requests, I run the *stop.sh* script to free resources.
 
 ### Debug the Initial SPA and API
 
