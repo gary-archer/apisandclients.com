@@ -91,7 +91,9 @@ The SPA then makes a direct HTTPS back-channel request to the authorization serv
 
 ![Authorization Code Grant](/images/40/authorization-code-grant.jpg)
 
-In OAuth there are multiple grant messages and this is just one of them. The result of all grant messages is to receive tokens, and we have configured Cognito to return access tokens with a short 15 minute expiry.
+In OAuth there are multiple grant messages and this is just one of them. The result of all grant messages is to receive tokens, and we have configured Cognito to return access tokens with a short 15 minute expiry:
+
+![Token Response](/images/40/token-response.jpg)
 
 An OAuth flow for SPAs should avoid returning refresh tokens to the browser, since it is a long-lived credential and the browser has nowhere secure to store it. Yet, at the time of writing, AWS Cognito does not allow the refresh token to be disabled.
 
@@ -113,13 +115,16 @@ Login requests can sometimes result in errors being returned, so let’s see an 
 ```json
 {
     "app": {
-        "apiBaseUrl":       "https://api.authsamples-dev.com/api"
+        "apiBaseUrl":             "https://api.authsamples-dev.com/api"
     },
     "oauth": {
-        "authority":        "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_qqJgVeuTn",
-        "clientId":         "6tg0qglddpvqh74k3jbf1mmj64",
-        "redirectUri":      "https://www.authsamples-dev.com/spa",
-        "scope":            "openid profile xxx"
+        "provider":               "cognito",
+        "authority":              "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9",
+        "clientId":               "hje94a2jj3lgkobkh57ikenhh",
+        "redirectUri":            "https://www.authsamples-dev.com/spa",
+        "postLogoutRedirectUri":  "https://www.authsamples-dev.com/spa/loggedout.html",
+        "scope":                  "openid profile https://api.authsamples.com/investments xxx",
+        "customLogoutEndpoint":   "https://login.authsamples.com/logout"
     }
 }
 ```
@@ -174,9 +179,13 @@ After login the SPA stores tokens and userinfo in session storage, so that if th
 
 ### Step 15. SPA Calls API with Access Token
 
-Next the SPA calls the API and, because this is a cross domain call, the browser first triggers a pre-flight HTTP OPTIONS request. The API response to the pre-flight request grants API access to the web origin:
+Next the SPA calls the API and, because this is a cross domain call, the browser first triggers a pre-flight HTTP OPTIONS request:
 
 ![API options request](/images/40/api-options-request.jpg)
+
+The API response to the pre-flight request grants API access to the web origin:
+
+![API options response](/images/40/api-options-response.jpg)
 
 The actual API request then looks like this, and the access token is sent in the *HTTP Authorization Header* as a bearer credential. Any party that can intercept a valid access token can call the API like this:
 
@@ -193,9 +202,9 @@ When the API receives the token it is the API’s job to validate it, which typi
 | <span style={{color:'green'}}>**Digital Signature**</span> | The token has not been tampered with since issued |
 | <span style={{color:'green'}}>**Active**</span> | The token is valid at the current time and not expired |
 
-To verify the access token’s digital signature, the API must download token signing public keys from AWS Cognito. This is done when the JOSE security library calls Cognito's JWKS endpoint:
+To verify the access token’s digital signature, the API must download token signing public keys from AWS Cognito. This is done when the JOSE security library calls Cognito's JSON Web Key Set (JWKS) endpoint:
 
-![Access token key identifier](/images/40/access-token-key-identifier.jpg)
+![JSON Web Key Set](/images/40/jwks.jpg)
 
 The response contains public keys in the *JSON Web Key* format, and the security library selects the one that matches the key identifier (*kid*) in the access token’s JWT header. The library then uses the public key to digitally verify the JWT.
 
@@ -214,17 +223,21 @@ I recommend testing these scenarios to ensure that the API returns useful error 
 {
     "api": {
         "port": 443,
+        "sslCertificateFileName": "./certs/authsamples-dev.ssl.p12",
+        "sslCertificatePassword": "Password1",
         "trustedOrigins": [
             "https://www.authsamples-dev.com"
         ],
-        "useProxy": false,
+        "useProxy": true,
         "proxyUrl": "http://127.0.0.1:8888"
     },
     "oauth": {
-        "jwksEndpoint": "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_qqJgVeuTn/.well-known/jwks.jsonxxx",
-        "algorithm": "RS256",
-        "issuer": "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_qqJgVeuTn",
-        "audience": ""
+        "jwksEndpoint":                  "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9/.well-known/jwks.xxx",
+        "userInfoEndpoint":              "https://login.authsamples.com/oauth2/userInfo",
+        "issuer":                        "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9",
+        "audience":                      "",
+        "scope":                         "https://api.authsamples.com/investments",
+        "claimsCacheTimeToLiveMinutes":  15
     }
 }
 ```
@@ -260,7 +273,7 @@ The SPA is coded to expect 401 responses and deal with them without end user pro
 
 Due to the SSO session cookie issued earlier, a single sign-on event occurs and new tokens are issued to the SPA automatically. The SPA can then continue to call the API with the new access token.
 
-### Trace Messages to Understand any OAuth Flow
+### Trace any OAuth Flow
 
 Only a basic login flow is described above. The [OpenID Connect Core Specification](https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest) provides a number of additional request parameters that can be used to control how authentication works and the values published to ID tokens.
 
