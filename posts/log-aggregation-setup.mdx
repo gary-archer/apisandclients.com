@@ -59,7 +59,7 @@ Next run the following script to download a development SSL certificate for this
 Then follow instructions to configure <Link href='/posts/developer-ssl-setup'>Browser SSL Trust</Link> for the following root certificate, so that we can run the Kibana UI later:
 
 ```markdown
-./deployment/docker-local/certs/authsamples-dev.ca.pem
+./deployment/docker-local/certs/authsamples-dev.ca.crt
 ```
 
 ### Step 3: Understand Elasticsearch Deployment
@@ -73,7 +73,7 @@ elasticsearch:
   ports:
     - 9200:9200
   volumes:
-    - ./certs/authsamples-dev.ca.pem:/usr/share/elasticsearch/config/certs/authsamples-dev.ca.crt
+    - ./certs/authsamples-dev.ca.crt:/usr/share/elasticsearch/config/certs/authsamples-dev.ca.crt
     - ./certs/authsamples-dev.ssl.p12:/usr/share/elasticsearch/config/certs/authsamples-dev.ssl.p12
   environment:
     discovery.type: 'single-node'
@@ -105,7 +105,7 @@ kibana:
   ports:
     - 5601:5601
   volumes:
-    - ./certs/authsamples-dev.ca.pem:/usr/share/kibana/config/certs/authsamples-dev.ca.crt
+    - ./certs/authsamples-dev.ca.crt:/usr/share/kibana/config/certs/authsamples-dev.ca.crt
     - ./certs/authsamples-dev.ssl.p12:/usr/share/kibana/config/certs/authsamples-dev.ssl.p12
   environment:
     ELASTICSEARCH_HOSTS: 'https://elasticsearch-internal.authsamples-dev.com:9200'
@@ -132,7 +132,7 @@ filebeat:
   hostname: filebeat-internal.authsamples-dev.com
   volumes:
     - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
-    - ./certs/authsamples-dev.ca.pem:/usr/share/filebeat/certs/authsamples-dev.ca.crt
+    - ./certs/authsamples-dev.ca.crt:/usr/share/filebeat/certs/authsamples-dev.ca.crt
     - ../../../oauth.apisample.nodejs/logs:/var/log/api
   environment:
     ELASTICSEARCH_USERNAME: '${ELASTIC_USER}'

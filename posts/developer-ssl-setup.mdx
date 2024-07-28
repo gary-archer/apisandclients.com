@@ -1,35 +1,134 @@
 # SSL Trust Configuration
 
-Previously we discussed the basics of our <Link href='/posts/http-debugging-setup'>HTTP Proxy Setup</Link>, and next we will deal with HTTPS connections securely. All future code samples will then use SSL for all connections. I use *SSL* as the colloquial term, to represent [transport level security (TLS) v1.3](https://en.wikipedia.org/wiki/Transport_Layer_Security#TLS_1.3).
+Previously we discussed the basics of our <Link href='/posts/http-debugging-setup'>HTTP Proxy Setup</Link>. Next, I explain how to enable HTTPS connections for development. All future code samples use SSL for all connections. I use *SSL* as the colloquial term, to represent [transport level security (TLS) v1.3](https://en.wikipedia.org/wiki/Transport_Layer_Security#TLS_1.3).
 
-### Goal: Developer Productivity
+### SSL for Cloud Environments
 
-When working with OAuth secured UIs and APIs, SSL messages tend to be required in development environments:
+Later in this blog I create a <Link href="/posts/cloud-domain-setup">Cloud Domain Setup</Link> for a deployed domain of *authsamples.com*, which runs in AWS. I then use [AWS Certificate Manager](https://aws.amazon.com/certificate-manager/) to create AWS issued certificates for these subdomains, that are trusted by clients that call the SSL endpoints.
 
-- Messages to the Authorization Server often must use HTTPS
-- Some vendors also require HTTPS URLs for Web Redirect URIs
+![managed certificates](/images/110/managed-certificates.jpg)
 
-In some setups, being able to view HTTPS messages in flight can be highly useful, both for learning  OAuth standards, and troubleshooting failed messages.
+In this post I explain an equivalent setup for a development computer, where an *authsamples-dev.com* domain is used.
 
-### Goal: Real World Development URLs
+### Productive OAuth Development
 
-For the first code sample we created custom domain names for local PC hosting, and in the next sample these will be updated to HTTPS URLs:
+When using OAuth, security components may require you to run an SSL setup on your local computer. Even when this is not the case, I prefer to do run with SSL, since it is a more real-world setup and closer to production environments. When required, I can then verify that my code deal correctly with certificates.
 
-- `https://www.authsamples-dev.com/spa`
-- `https://api.authsamples-dev.com/api`
+### Certificate Issuance Approach
 
-Code samples will download and use development certificates and keys precreated by the [openssl command line tool](https://www.openssl.org/). We will take a closer look at how the creation script works at the end of this post.
+Some online tutorials create standalone self-signed certificates for *localhost* in a way that does not match real-world certificates. I prefer to instead follow these main steps:
 
-### SSL Trust Model
+- Create a root certificate authority for development
+- Create SSL server certificates issued by the root CA, with real-world domain names
 
-I avoid standalone SSL certificates for local development. Instead I follow a public key infrastructure approach, in the same way as for real internet certificates. Each development certificate has a root authority, whose public key can be distributed and which components can be configured to trust.
+The advantage of doing so is that you can enable trust more easily, by deploying the root CA to trust stores. This also encourages you to learn about public key infrastructures (PKI). Later, when your apps are deployed to production, certificate trust works in the same way.
 
-### Technical Challenges
+### Creating SSL Certificates and Keys
 
-Getting SSL Trust working can be problematic in some cases, since it requires different settings across tools and technologies. We will describe configuration for all of the following clients:
+I use the OpenSSL 3 command line tool to create certificates for development. This starts with creating an asymmetric private key and long-lived public certificate for a root authority:
+
+```bash
+DOMAIN=example
+
+openssl genpkey -algorithm EC \
+    -pkeyopt ec_paramgen_curve:prime256v1 \
+    -out $DOMAIN.ca.key
+
+openssl req \
+    -x509 \
+    -new \
+    -key $DOMAIN.ca.key \
+    -out $DOMAIN.ca.crt \
+    -subj "/CN=Example Development CA" \
+    -days 3650 \
+    -addext 'basicConstraints=critical,CA:TRUE'
+```
+
+Your backend components can use development domain names by adding them to your */etc/hosts* file. To ensure that these domains will be trusted when called over SSL, include them in the *subjectAltName* extension. Then run some commands to create a second asymmetric private key and public certificate. You use the root certificate to issue the SSL server certificate.
+
+```bash
+openssl genpkey -algorithm EC \
+    -pkeyopt ec_paramgen_curve:prime256v1 \
+    -out $DOMAIN.ssl.key
+
+openssl req \
+    -x509 \
+    -new \
+    -CA $DOMAIN.ca.crt \
+    -CAkey $DOMAIN.ca.key \
+    -key $DOMAIN.ssl.key \
+    -out $DOMAIN.ssl.crt \
+    -subj "/CN=*.$DOMAIN.com" \
+    -days 365 \
+    -addext 'basicConstraints=critical,CA:FALSE' \
+    -addext 'extendedKeyUsage=serverAuth' \
+    -addext "subjectAltName=DNS:$DOMAIN.com,DNS:www.$DOMAIN.com,DNS:api.$DOMAIN.com"
+
+openssl pkcs12 \
+    -export \
+    -inkey $DOMAIN.ssl.key \
+    -in $DOMAIN.ssl.crt \
+    -name *.$DOMAIN.com \
+    -out $DOMAIN.ssl.p12 \
+    -passout pass:Password1
+```
+
+In total this results in the following files:
+
+| File | Deployed To |
+| ---- | ----------- |
+| <span style={{color:'green'}}>**example.ca.crt**</span> | The root CA, deployed to various trust stores |
+| <span style={{color:'green'}}>**example.ca.key**</span> | The root CA's private key |
+| <span style={{color:'green'}}>**example.ssl.crt**</span> | The SSL certificate |
+| <span style={{color:'green'}}>**example.ssl.key**</span> | The SSL certificate's private key |
+| <span style={{color:'green'}}>**example.ssl.p12**</span> | The password protected file deployed to backend components |
+
+You can use an [Online Certificate Decoder](https://certlogik.com/decoder/) and paste in the *example.ssl.crt* contents to see how recipients view the server's SSL certificate:
+
+![certificate properties](/images/110/wildcard-development-cert.jpg)
+
+### This Blog's SSL Code Samples
+
+To make my code samples easy to run, I store development certificates and keys in a [public GitHub repository](https://github.com/gary-archer/oauth.developmentcertificates) so that they can be easily downloaded and used in my code samples. You should of course never store real private keys in a source code repository like this. When backend components start, they download certificate files and load the password-protected P12 file, then listen on SSL port 443:
+
+```typescript
+public async startListening(): Promise<void> {
+
+    const port = this._configuration.api.port;
+    if (this._configuration.api.sslCertificateFileName && this._configuration.api.sslCertificatePassword) {
+
+        const pfxFile = await fs.readFile(this._configuration.api.sslCertificateFileName);
+        const sslOptions = {
+            pfx: pfxFile,
+            passphrase: this._configuration.api.sslCertificatePassword,
+        };
+
+        const httpsServer = https.createServer(sslOptions, this._expressApp);
+        httpsServer.listen(port, () => {
+            console.log(`API is listening on HTTPS port ${port}`);
+        });
+
+    } else {
+
+        this._expressApp.listen(port, () => {
+            console.log(`API is listening on HTTP port ${port}`);
+        });
+    }
+}
+```
+
+This enables you to upgrade your local connections to SSL, without adding much complexity. Some tools may also show you the strength of the client to server connection. For example, the Google Chrome browser enables you to view SSL strength from *More Tools / Developer Tools / Security*, where you can verify that the connection uses TLS 1.3. 
+
+![local ssl](/images/110/local-ssl.jpg)
+
+By default though, on a development workstation, certificates are not trusted. In the following sections I show how to resolve that both when running applications normally and when using an HTTP proxy tool.
+
+### SSL Trust Configuration
+
+The tricky part of managing SSL trust is knowing how to configure it across different tools and technologies, which can include all of these clients:
 
 - Chrome / Safari Browsers
-- Microsoft Browser
+- Edge Browser
 - Firefox Browser
 - Electron Desktop Apps
 - Node.js APIs
@@ -54,12 +153,6 @@ HTTP proxy tools use a man in the middle technique to replace the root of the ta
 ![mitm cert](/images/110/mitm-cert.jpg)
 
 Some corporate networks use their own SSL Proxy / Firewall Filter that works in a similar manner way, injecting root certificates that replace the root authority of any non-whitelisted external URLs.
-
-### Development SSL Certificates
-
-The next code sample will use a *Wildcard SSL Certificate* issued by a development root certificate authority. The wildcard certificate will use this blog’s custom domain names as *Subject Alternative Names*:
-
-![wildcard development cert](/images/110/wildcard-development-cert.jpg)
 
 ### Identity the Root Authority to Trust
 
@@ -190,8 +283,8 @@ openssl s_client -connect api.authsamples-dev.com:443
 It is also possible to use a different certificate bundle file via an override, which may be required in some cases, and is useful for troubleshooting:
 
 ```bash
-curl --cacert ~/certs/trusted.ca.pem https://api.authsamples-dev.com/api/companies
-openssl s_client -CAfile ~/certs/trusted.ca.pem -connect api.authsamples-dev.com:443
+curl --cacert ~/certs/trusted.ca.crt https://api.authsamples-dev.com/api/companies
+openssl s_client -CAfile ~/certs/trusted.ca.crt -connect api.authsamples-dev.com:443
 ```
 
 The results include some technical output after which a trusted certificate has a zero return code:
@@ -205,70 +298,11 @@ Mobile SSL Trust as its own complexities, which are covered in the later posts o
 - <Link href='/posts/android-https-debugging'>Android HTTPS Debugging</Link>
 - <Link href='/posts/ios-https-debugging'>iOS HTTPS Debugging</Link>
 
-### Creating Development Certificates with OpenSSL
-
-Our first code sample uses port 80 but all subsequent samples listen on SSL port 443. The server will use a wildcard certificate whose root is the below self issued authority:
-
-![development certs](/images/110/development-certs.jpg)
-
-If required, the domain names listed in the *server.ext* file can be replaced with your own values and you can then run the *makeCerts.sh* script to create your own certificates:
-
-![cert creation script](/images/110/cert-creation-script.jpg)
-
-The end result is a *pkcs#12 file*, which combines the public certificate and private key, along with a password to protect the private key. You can view the PEM file properties in an [online certificate viewer](https://ssltools.godaddy.com/views/certDecoder), to understand issuer and DNS details:
-
-![cert decoder](/images/110/cert-decoder.jpg)
-
-<span style={{color:'red'}}>For convenience I store these certificates and keys in a [public GitHub repository](https://github.com/gary-archer/oauth.developmentcertificates) so that they are easily downloaded and used in my code examples. In a real solution you should of course not check private keys into a public repository like this.</span>
-
-### Running UIs and APIs over SSL
-
-When our API samples start up, the pkcs#12 file is read and used to listen on SSL port 443:
-
-```typescript
-public async startListening(): Promise<void> {
-
-    const port = this._configuration.api.port;
-    if (this._configuration.api.sslCertificateFileName && this._configuration.api.sslCertificatePassword) {
-
-        const pfxFile = await fs.readFile(this._configuration.api.sslCertificateFileName);
-        const sslOptions = {
-            pfx: pfxFile,
-            passphrase: this._configuration.api.sslCertificatePassword,
-        };
-
-        const httpsServer = https.createServer(sslOptions, this._expressApp);
-        httpsServer.listen(port, () => {
-            console.log(`API is listening on HTTPS port ${port}`);
-        });
-
-    } else {
-
-        this._expressApp.listen(port, () => {
-            console.log(`API is listening on HTTP port ${port}`);
-        });
-    }
-}
-```
-
-The host process then serves content securely for both of these base URLs:
-
-- API JSON data from `https://api.authsamples-dev.com`
-- Web static content from `https://www.authsamples-dev.com`
-
-I always issue the full DNS API and web domain names in the *Subject Alternative Names* of the certificate to avoid any client errors due to mismatched host names:
-
-![development cert spa](/images/110/development-cert-spa.jpg)
-
-The Google Chrome browser has some useful tools under *Main Menu / More Tools / Developer Tools / Security*. We can use them to view SSL strength details, and it shows that our scripts produce TLS 1.3 certificates:
-
-![certificate strength](/images/110/certificate-strength.jpg)
-
 ### Where Are We?
 
-We have improved our development setup, so that our future UIs and APIs will run over *Real World SSL URLs*. We are also able to view all OAuth messages sent over SSL URLs on a development computer.
+We have upgraded the development setup so that this blog's code samples can use real-world SSL URLs. We also know how to configure trust and can view all OAuth messages sent over SSL URLs on a development computer.
 
 ### Next
 
-- Next we will focus on <Link href='/posts/user-data'>User Data Management</Link> in an OAuth Architecture
+- Next I provide some design articles, starting with <Link href='/posts/user-data'>User Data Management</Link> in an OAuth Architecture
 - For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>

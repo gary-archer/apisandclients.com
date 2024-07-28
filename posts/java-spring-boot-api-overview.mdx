@@ -80,7 +80,7 @@ Tests will make HTTPS requests to the Java API, and scripts require a *JAVA_HOME
 The root certificate used in HTTPS requests must be trusted by the Java runtime. This is done via the following command:
 
 ```bash
-sudo "$JAVA_HOME/bin/keytool" -import -alias authsamples.ca -cacerts -file ./certs/authsamples-dev.ca.pem -storepass changeit -noprompt
+sudo "$JAVA_HOME/bin/keytool" -import -alias authsamples.ca -cacerts -file ./certs/authsamples-dev.ca.crt -storepass changeit -noprompt
 ```
 
 You can revoke trust for the root CA later if required, using this command:
