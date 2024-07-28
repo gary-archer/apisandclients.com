@@ -67,11 +67,13 @@ Next run the following script, which downloads some OpenSSL generated developmen
 
 ### Step 2: Configure SSL Trust
 
-The API runs over SSL using a development certificate, and to prevent trust problems from tests or the browser you will need to trust the highlighted root certificate below, by <Link href='/posts/developer-ssl-setup'>Configuring Browser Trust</Link>:
+The API runs over SSL and when you run it for the first time it downloads some development certificates. To prevent SSL trust problems from tests or the browser you may need to <Link href='/posts/developer-ssl-setup'>Configure Java and Browser Trust</Link> for the root certificate at the following location. 
 
-![certs](/images/350/certs.jpg)
+```markdown
+certs/authsamples-dev.ca.crt
+```
 
-Tests will make HTTPS requests to the Java API, and scripts require a *JAVA_HOME* environment variable to be configured, which will be a value similar to the following, depending on your operating system:
+Tests make HTTPS requests to the Java API, and scripts require a *JAVA_HOME* environment variable to be configured, which will be a value similar to the following, depending on your operating system:
 
 ```markdown
 /usr/lib/jvm/zulu-21-amd64

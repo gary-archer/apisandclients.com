@@ -104,11 +104,11 @@ First run the build script to prepare the SPA and API, which mostly just runs *n
 
 ### Configure SSL Browser Trust
 
-The build script also downloads OpenSSL generated certificates from a [Development Certificates](https://github.com/gary-archer/oauth.developmentcertificates) repository to a subdirectory of the API:
+The build script also downloads OpenSSL generated certificates from a [Development Certificates](https://github.com/gary-archer/oauth.developmentcertificates) repository to a subdirectory of the API. The API and web static content hosting uses SSL so you must ensure that your browser trusts the root certificate at the below location, as explained in the <Link href='/posts/developer-ssl-setup'>Developer SSL Setup</Link> post.
 
-![web host certs](/images/170/web-host-certs.jpg)
-
-The *authsamples-dev.ca.crt* file is a root certificate authority that must be added to your system trust store in order for the browser to use SSL without warnings. See the <Link href='/posts/developer-ssl-setup'>Browser SSL Trust</Link> instructions for further information.
+```markdown
+api/certs/authsamples-dev.ca.crt
+```
 
 ### Run the SPA and API
 

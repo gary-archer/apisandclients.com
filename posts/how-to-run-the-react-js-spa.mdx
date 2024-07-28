@@ -87,11 +87,11 @@ This runs the frontend in watch mode, so that it can be developed with a pure SP
 
 ### Step 6: Configure SSL Trust
 
-The build script downloads some development certificates:
+The web host uses SSL and downloads some development certificates, so you must ensure that your browser trusts the root certificate at the below location, as explained in the <Link href='/posts/developer-ssl-setup'>Developer SSL Setup</Link> post.
 
-![certs](/images/230/certs.jpg)
-
-To make the browser trust the certificate’s issuer you need to import the *authsamples-dev.ca.crt* root certificate into your Browser’s Trust Store:
+```markdown
+certs/authsamples-dev.ca.crt
+```
 
 ### Step 7: Run the App
 

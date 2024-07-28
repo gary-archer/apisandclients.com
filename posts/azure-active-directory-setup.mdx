@@ -253,9 +253,11 @@ Next run the following script, which will download some OpenSSL generated certif
 
 ### Step 13. Configure SSL Trust
 
-Our sample runs over SSL using self signed certificates, the root certificate authsamples-dev.ca.crt needs to be trusted by your browser, as covered in the <Link href='/posts/developer-ssl-setup'>Developer SSL Setup</Link> post.
+The API and web static content hosting uses SSL so you must ensure that your browser trusts the root certificate at the below location, as explained in the <Link href='/posts/developer-ssl-setup'>Developer SSL Setup</Link> post.
 
-![ssl certs](/images/190/ssl-certs.jpg)
+```markdown
+api/certs/authsamples-dev.ca.crt
+```
 
 ### Step 14. Run the SPA
 
