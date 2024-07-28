@@ -218,7 +218,7 @@ On macOS we instead add the root certificate(s) to the *Keychain Access* applica
 On Ubuntu Linux I configure a root certificate to be trusted by copying a file with a *.crt* extension to the system's *ca-certificates* folder, then run the command to update trusted certificate authorities:
 
 ```bash
-sudo cp myroot.ca.crt /usr/local/share/ca-certificates/
+sudo cp ~/trusted-ca-certs.crt /usr/local/share/ca-certificates/
 sudo update-ca-certificates
 ```
 
