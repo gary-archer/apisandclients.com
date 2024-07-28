@@ -2,19 +2,19 @@
 
 Previously we discussed the basics of our <Link href='/posts/http-debugging-setup'>HTTP Proxy Setup</Link>. Next, I explain how to enable HTTPS connections for development. All future code samples use SSL for all connections. I use *SSL* as the colloquial term, to represent [transport level security (TLS) v1.3](https://en.wikipedia.org/wiki/Transport_Layer_Security#TLS_1.3).
 
-### SSL for Cloud Environments
-
-Later in this blog I create a <Link href="/posts/cloud-domain-setup">Cloud Domain Setup</Link> for a deployed domain of *authsamples.com*, which runs in AWS. I then use [AWS Certificate Manager](https://aws.amazon.com/certificate-manager/) to create AWS issued certificates for these subdomains, that are trusted by clients that call the SSL endpoints.
-
-![managed certificates](/images/110/managed-certificates.jpg)
-
-In this post I explain an equivalent setup for a development computer, where an *authsamples-dev.com* domain is used.
-
 ### Productive OAuth Development
 
 When using OAuth, security components may require you to run an SSL setup on your local computer. Even when this is not the case, I prefer to do run with SSL, since it is a more real-world setup and closer to production environments. When required, I can then verify that my code deal correctly with certificates.
 
-### Certificate Issuance Approach
+### SSL for Cloud Environments
+
+Later in this blog I create a <Link href="/posts/cloud-domain-setup">Cloud Domain Setup</Link> for a deployed domain of *authsamples.com*, which runs in AWS. I then use [AWS Certificate Manager](https://aws.amazon.com/certificate-manager/) to create AWS issued certificates for these subdomains, that are trusted by clients that call the SSL endpoints.
+
+![managed certificates](/images/110/managed-certificates.jpg?v=20240728)
+
+In this blog I use a similar approach for a development computer, where an *authsamples-dev.com* domain is used. I show how to create a wildcard certificate for the domain and its subdomains.
+
+### Development Certificate Issuance
 
 Some online tutorials create standalone self-signed certificates for *localhost* in a way that does not match real-world certificates. I prefer to instead follow these main steps:
 
@@ -85,7 +85,7 @@ In total this results in the following files:
 
 You can use an [Online Certificate Decoder](https://certlogik.com/decoder/) and paste in the *example.ssl.crt* contents to see how recipients view the server's SSL certificate:
 
-![certificate properties](/images/110/wildcard-development-cert.jpg)
+![certificate properties](/images/110/wildcard-development-cert.jpg?v=20240728)
 
 ### This Blog's SSL Code Samples
 
@@ -119,7 +119,7 @@ public async startListening(): Promise<void> {
 
 This enables you to upgrade your local connections to SSL, without adding much complexity. Some tools may also show you the strength of the client to server connection. For example, the Google Chrome browser enables you to view SSL strength from *More Tools / Developer Tools / Security*, where you can verify that the connection uses TLS 1.3. 
 
-![local ssl](/images/110/local-ssl.jpg)
+![local ssl](/images/110/local-ssl.jpg?v=20240728)
 
 By default though, on a development workstation, certificates are not trusted. In the following sections I show how to resolve that both when running applications normally and when using an HTTP proxy tool.
 
@@ -148,56 +148,89 @@ In this blog we will run multiple UI and API code samples, then view OAuth messa
 
 ### HTTP Proxy Root Certificates
 
-HTTP proxy tools use a man in the middle technique to replace the root of the target URL’s SSL certificate. This enables the traffic to be viewed as HTTP, then re-encrypted using the proxy’s own certificate:
+HTTP proxy tools use a man in the middle technique to replace the root of the target URL’s SSL certificate. This enables the traffic to be viewed as HTTP, then re-encrypted using the proxy’s own certificate. The following screenshot shows MITM proxy replacing the root of the development certificates issued earlier. It also replaces the root of internet websites.
 
-![mitm cert](/images/110/mitm-cert.jpg)
+![mitm cert](/images/110/mitm-cert.jpg?v=20240728)
 
-Some corporate networks use their own SSL Proxy / Firewall Filter that works in a similar manner way, injecting root certificates that replace the root authority of any non-whitelisted external URLs.
+Some corporate networks use their own SSL proxy / firewall filter that works in a similar manner way, injecting root certificates that replace the root authority of any non-whitelisted external URLs.
 
-### Identity the Root Authority to Trust
+### Trust Bundles
 
-When running this blog’s code samples, the root authority to trust when tracing HTTPS requests will depend whether an HTTP proxy is being used.
+To configure root certificate trust, I start by creating a local trust bundle file at *~/trusted-ca-certs.crt*. This contains root CAs that I need to frequently trust. When running this blog’s code samples, the root authority to trust when tracing HTTPS requests will depend whether an HTTP proxy is being used.
 
 | Scenario | Trust Configuration |
 | -------- | ------------------- |
 | <span style={{color:'green'}}>**HTTP Proxy Running**</span>  | Trust the proxy root certificate |
 | <span style={{color:'green'}}>**HTTP Proxy Not Running**</span> | Trust the development root certificate |
 
-The following sections describe how to trust the proxy root certificate across various components. The steps to trust the development root certificate are equivalent.
+The bundle file has multiple entries as shown here:
+
+```markdown
+# authsamples-dev.com
+-----BEGIN CERTIFICATE-----
+MIIBtzCCAV2gAwIBAgIUFRYc14tuDPpAdLwLO03ymIO4LbIwCgYIKoZIzj0EAwIw
+MTEvMC0GA1UEAwwmRGV2ZWxvcG1lbnQgQ0EgZm9yIGF1dGhzYW1wbGVzLWRldi5j
+b20wHhcNMjQwNzI4MTA1MDAyWhcNMzQwNzI2MTA1MDAyWjAxMS8wLQYDVQQDDCZE
+ZXZlbG9wbWVudCBDQSBmb3IgYXV0aHNhbXBsZXMtZGV2LmNvbTBZMBMGByqGSM49
+AgEGCCqGSM49AwEHA0IABLWdcD8PVN1P2zzWnFrGbsIxv4UPLjlhjOkoVLM4cMWf
+p3mEuLqESjcl4ubhhzogHUeM1LiSTDfbjCfmeiGK1SijUzBRMB0GA1UdDgQWBBTW
+Kjs/nyzGMGmeopMCuKgVXLlSiTAfBgNVHSMEGDAWgBTWKjs/nyzGMGmeopMCuKgV
+XLlSiTAPBgNVHRMBAf8EBTADAQH/MAoGCCqGSM49BAMCA0gAMEUCID5aZcJTqCJa
+lZ1wQguqkNeyJuHFaCitkcse5FTEVK7eAiEAuTXZrXqw0CyLOVZiVr731qP9Fz9t
+QolgY/292vkXZnE=
+-----END CERTIFICATE-----
+
+# mitmproxy
+-----BEGIN CERTIFICATE-----
+MIIDNTCCAh2gAwIBAgIUKTNBqOPuWpWSz4XGnHu9Tj8XN3owDQYJKoZIhvcNAQEL
+BQAwKDESMBAGA1UEAwwJbWl0bXByb3h5MRIwEAYDVQQKDAltaXRtcHJveHkwHhcN
+MjQwNzEzMTkzODMzWhcNMzQwNzEzMTkzODMzWjAoMRIwEAYDVQQDDAltaXRtcHJv
+eHkxEjAQBgNVBAoMCW1pdG1wcm94eTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCC
+AQoCggEBAMWykNHhMMaA2cZBW3ABu74doWbB9/QZ/ZQncDEeqyer2qLtEcYDKqcA
+ETvffitye9RI+baypjhWVevSM39O7oTrSJoRdxR2QYUwnr2U3k+xfr46FmS1xKAo
+fS804E5CjBgjQ0s0KJ8rjwVwmiZ+mbmHd8nVdu8RGBTCq6t02pzrWhRmdcginTL4
+xw05Z1aUDEMsBMx4E9gv0MvMjumIeCV8HxzbLSg75DUdaUgx+1piVX3FKD8TErAg
+M+YmzMltiFBV6cj6i4C3ipxqRO1hFLDULFxo9WrT5LxsKyoX1GvfDgTxdLmpPlR5
+VUi3OmbHaY2Fws9Kwjr+mOrTaR9E4+MCAwEAAaNXMFUwDwYDVR0TAQH/BAUwAwEB
+/zATBgNVHSUEDDAKBggrBgEFBQcDATAOBgNVHQ8BAf8EBAMCAQYwHQYDVR0OBBYE
+FJj2sZ5sjkaMKCY2ReE4loFmcWWhMA0GCSqGSIb3DQEBCwUAA4IBAQAFuT1b22Aa
+kNORbg5mN5nri9kkZ2I4JH0/CUddrRLceM2t9SMwOPNWJqdj0cwSiR8dBTiRcUca
+6zoNOHy4TUJrqK6LDi4rVtDVwiM0m6LmQ+naSxZc2IfS/JlxQUYG8mrzkRXUl5hG
+R3NYp9Y/09x6Hrbf7RrzAibTvUJy1mJ1NXVbo+fA5H2xUNUUvZPkZ/H/f4hr+WC6
+qHs5C2v6poK9bQGWJFYbPu+MtWpVZ61RQnjpsZnKodDnRTLo1Rce2e2jx+QELyCM
+oc/h/rJrRCeoxjX5/wksOiXL1MR4TY2Ytf2KyBoJSkunUdT7dKS/K+mNymS9rfvI
+BX7fkMNWSqIR
+-----END CERTIFICATE-----
+```
+
+When you need to update certificate trust, you can either add the entire trust bundle or you can trust just a particular root CA. The following sections show where trust is added.
 
 ### Configure Operating System Trust
 
-On Windows we must run the *Microsoft Management Console (MMC.EXE)*, then select the *Certificate Snap In* and import the root certificate under *Local Computer / Trusted Root Certification Authorities*:
+On Windows we must run the *Microsoft Management Console (MMC.EXE)*, then select the *Certificate Snap In* and import the root certificate(s) under *Local Computer / Trusted Root Certification Authorities*:
 
-![windows trust](/images/110/windows-trust.jpg)
+![windows trust](/images/110/windows-trust.jpg?v=20240728)
 
-On macOS we instead add the root certificate to the *Keychain Access* application under *System / Certificates*, then enable the *Always Trust* option:
+On macOS we instead add the root certificate(s) to the *Keychain Access* application under *System / Certificates*, then enable the *Always Trust* option:
 
-![macos trust](/images/110/macos-trust.jpg)
+![macos trust](/images/110/macos-trust.jpg?v=20240728)
 
-On Linux I configure a root certificate to be trusted by copying it to one of the following folders, depending on which distribution I am using. I also ensure that the file uses a *.crt* extension rather than *.pem*:
+On Ubuntu Linux I configure a root certificate to be trusted by copying a file with a *.crt* extension to the system's *ca-certificates* folder, then run the command to update trusted certificate authorities:
 
-- /usr/local/share/ca-certificates
-- /etc/pki/ca-trust/source/anchors
-
-Then I run one of these commands, and the one to use again depends on the Linux distribution:
-
-- sudo update-ca-certificates
-- sudo update-ca-trust
+```bash
+sudo cp myroot.ca.crt /usr/local/share/ca-certificates/
+sudo update-ca-certificates
+```
 
 ### Trusting a Root Certificate in Browsers
 
-Browsers generally inherit SSL trust from one of the operating system default trust stores above. There may be some exceptions though, such as Google Chrome on Linux having its own certificate store, similar to that described for Firefox below.
+Browsers often inherit SSL trust from the operating system default trust store, though there are some exceptions. On Firefox, you must navigate to *Options / Privacy & Security / Certificates / View Certificates / Authorities / Import* to import the root certificates. You must also do so if you run Google Chrome on Linux. When adding trust, select the option to *Trust this CA to identify websites*.
 
-### Trusting a Root Certificate in the Firefox Browser
-
-The Firefox browser has its own trust store, under *Options / Privacy & Security / Certificates / View Certificates / Authorities / Import*, and we can import root certificates here:
-
-![firefox trust](/images/110/firefox-trust.jpg)
+![firefox trust](/images/110/firefox-trust.jpg?v=20240728)
 
 ### Trusting a Root Certificate in Node.js APIs
 
-In the previous post we used a hack to get Node.js to trust a root certificate by setting this environment variable:
+In the previous HTTP proxy post we used a hack to get Node.js to trust a root certificate by setting this environment variable:
 
 ```bash
 export NODE_TLS_REJECT_UNAUTHORIZED=0
@@ -206,42 +239,7 @@ export NODE_TLS_REJECT_UNAUTHORIZED=0
 A more correct option is to only trust whitelisted root CAs using the following environment variable, which I set permanently on my PC:
 
 ```bash
-export NODE_EXTRA_CA_CERTS=<path to bundle file>
-```
-
-The environment variable points to a CA bundle file that contains the public keys of multiple root certificates, and I use a local file containing a number of entries:
-
-```markdown
-# authsamples-dev.com
------BEGIN CERTIFICATE-----
-MIIDZzCCAk+gAwIBAgIJAN7ZkzJkHq8DMA0GCSqGSIb3DQEBCwUAMCsxKTAnBgNV
-BAMTIFNlbGYgU2lnbmVkIENBIGZvciBteWNvbXBhbnkuY29tMB4XDTIxMTIwNjE4
-MTU0MVoXDTMxMTIwNDE4MTU0MVowKzEpMCcGA1UEAxMgU2VsZiBTaWduZWQgQ0Eg
-Zm9yIG15Y29tcGFueS5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB
-AQCcstoGEwgoCNp4uJjyquvbFtMjlFEMrRBXKiiC/cF5u/qWUaOnCc2Yg6kyD9rf
-eyQTVhjvxt4CrlZJqDeW/+EUY1NdMaztji9lGMv3YqtKRlYL8JzpiWQNHn7qeQhx
-OmJJKEPF8XhriqjOBXVA2RefgKngbq6bv3xOvpplEjXBaiEC8ukHU7T0itplWEsu
-RV9aY+o2odslkoTITEqkW9WFrNXwLwVH05tNb+5f7Jw/WE8uF+vPY5/9D98/LgZM
-8wYQ0tvv+37FdJl25vk29zFaLEQf5iNO+IH1WtLDHdesCNYHq8CIluFC0o3Jf9ti
-kz6Z5p2wiXrN+hkCnDsvOI29AgMBAAGjgY0wgYowHQYDVR0OBBYEFJ1scXlGbEsP
-/+P6XNOq3x39eLqvMFsGA1UdIwRUMFKAFJ1scXlGbEsP/+P6XNOq3x39eLqvoS+k
-LTArMSkwJwYDVQQDEyBTZWxmIFNpZ25lZCBDQSBmb3IgbXljb21wYW55LmNvbYIJ
-AN7ZkzJkHq8DMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBAFnAxVG9
-28nMEh3oYkvWCodGrAR8r0Vb2ck0FVOEeper78YhtvzzhW1mMhwnONo83PVpKmIf
-6YlQC3XAb3y/0bVc/FtoN40Qh+zHL+WkOx8zqdE4fyRhq1AcGhFQ5Ccx7g+2GbcL
-wVO3T+8FjR8Zc+9CWxdE4sDx9RB+34fq6f/6fJTIYp97F/A1FjLGS19rmm09VadL
-c708yePaEAOjDCo47t3Y2myO6gGZCPgPsvdP3osxf6QfXLkTwGlrO07+DL0LNDZz
-hfnsSjWkqnYf/gqyt00xplaP8vGsoidaSrwAXjGsqwt7rPFQRSoi8elE+3m5/Zaw
-+Wmf3vgbiKxlTwY=
------END CERTIFICATE-----
-
-# Charles Proxy
-```
-
-Some Windows tools provide root certificates in a binary DER format. These will need to be translated to PEM format, via the below command, then added to the bundle file:
-
-```bash
-openssl x509 -inform der -in myRoot.cer -out myRoot.pem
+export NODE_EXTRA_CA_CERTS=~/trusted-ca-certs.crt
 ```
 
 ### Trusting a Root Certificate in .NET APIs
@@ -250,26 +248,26 @@ Later we will provide an <Link href='/posts/net-core-code-sample-overview/'>OAut
 
 ### Trusting a Root Certificate in Java APIs
 
-We will also provide an <Link href='/posts/java-spring-boot-api-overview'>OAuth Secured Sample Java API</Link>, and each Java installation has its own certificate trust store in a cacerts file. This is located under the Java install location in a lib/security folder. On macOS this is at the following type of location, for a Java 21 installation:
+Later in this blog I provide an <Link href='/posts/java-spring-boot-api-overview'>OAuth Secured Sample Java API</Link>, and each Java installation has its own certificate trust store in a *cacerts* file under the Java install location. For example, on macOS this is at the following location when running Java 21:
 
 - /Library/Java/JavaVirtualMachines/zulu-21.jdk/Contents/Home/lib/security
 
 Operations to manage certificates use the [keytool utility](https://www.techquintal.com/java-keytool-keystore-commands), and I use the following commands to add, find and remove a trusted root:
 
 ```bash
-sudo "$JAVA_HOME/bin/keytool" -import -alias charlesroot -cacerts -file ~/Desktop/charlesroot.pem -storepass changeit -noprompt
-sudo "$JAVA_HOME/bin/keytool" -list -alias charlesroot -cacerts -storepass changeit -noprompt
-sudo "$JAVA_HOME/bin/keytool" -delete -alias charlesroot -cacerts -storepass changeit -noprompt
+sudo "$JAVA_HOME/bin/keytool" -import -alias mitmroot -cacerts -file ~/trusted-ca-certs.crt -storepass changeit -noprompt
+sudo "$JAVA_HOME/bin/keytool" -list -alias mitmroot -cacerts -storepass changeit -noprompt
+sudo "$JAVA_HOME/bin/keytool" -delete -alias mitmroot -cacerts -storepass changeit -noprompt
 ```
 
 ### Trusting a Root Certificate in Electron Apps
 
-Later we will provide some <Link href='/posts/desktop-apps-overview'>OAuth Secured Desktop Apps</Link>, where there are two processes, which determine certificate trust differently:
+Later in this blog I also provide some <Link href='/posts/desktop-apps-overview'>OAuth Secured Desktop Apps</Link>, where there are two processes, which determine certificate trust with different rules:
 
 | Area | Trust Behaviour |
 | ---- | --------------- |
-| <span style={{color:'green'}}>**Main Process**</span> | For requests from the main side of the app, extra root CAs [cannot be trusted using NODE_EXTRA_CA_CERTS](https://github.com/electron/electron/issues/10257). For development purposes you have to use the environment variable *NODE_TLS_REJECT_UNAUTHORIZED=0*. |
-| <span style={{color:'green'}}>**Renderer Process**</span> | The Chromium browser uses the system trust store on macOS or Windows, or you must import certificates into the browser on Linux desktops. |
+| <span style={{color:'green'}}>**Main Process**</span> | For requests from the main side of the app, extra root CAs [may not be trustable using NODE_EXTRA_CA_CERTS](https://github.com/electron/electron/issues/10257). During development you may have to use the environment variable *NODE_TLS_REJECT_UNAUTHORIZED=0*. |
+| <span style={{color:'green'}}>**Renderer Process**</span> | The Chromium browser uses the same trust store as the Google Chrome browser. |
 
 ### Trusting a Root Certificate in Command Line Tools
 
@@ -280,16 +278,12 @@ curl https://api.authsamples-dev.com/api/companies
 openssl s_client -connect api.authsamples-dev.com:443
 ```
 
-It is also possible to use a different certificate bundle file via an override, which may be required in some cases, and is useful for troubleshooting:
+It is also possible to use a different certificate bundle file via an override, which may be required in some cases, or can be useful for troubleshooting. The OpenSSL output can provide detailed output on any trust errors.
 
 ```bash
-curl --cacert ~/certs/trusted.ca.crt https://api.authsamples-dev.com/api/companies
-openssl s_client -CAfile ~/certs/trusted.ca.crt -connect api.authsamples-dev.com:443
+curl --cacert ~/trusted-ca-certs.crt https://api.authsamples-dev.com/api/companies
+openssl s_client -CAfile ~/trusted-ca-certs.crt -connect api.authsamples-dev.com:443
 ```
-
-The results include some technical output after which a trusted certificate has a zero return code:
-
-![openssl verified](/images/110/openssl-verified.jpg)
 
 ### Trusting a Root Certificate in iOS and Android
 
