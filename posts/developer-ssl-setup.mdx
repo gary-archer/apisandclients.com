@@ -1,10 +1,10 @@
 # SSL Trust Configuration
 
-Previously we discussed the basics of our <Link href='/posts/http-debugging-setup'>HTTP Proxy Setup</Link>. Next, I explain how to enable HTTPS connections for development. All future code samples use SSL for all connections. I use *SSL* as the colloquial term, to represent [transport level security (TLS) v1.3](https://en.wikipedia.org/wiki/Transport_Layer_Security#TLS_1.3).
+Previously we discussed how to use an <Link href='/posts/http-debugging-setup'>HTTP Proxy</Link> to trace OAuth-related requests. Next, I explain how to enable HTTPS connections for development. Future code samples use SSL for all backend connections. I use *SSL* as the colloquial term, to represent [transport level security (TLS) v1.3](https://en.wikipedia.org/wiki/Transport_Layer_Security#TLS_1.3).
 
 ### Productive OAuth Development
 
-When using OAuth, security components may require you to run an SSL setup on your local computer. Even when this is not the case, I prefer to do run with SSL, since it is a more real-world setup and closer to production environments. When required, I can then verify that my code deal correctly with certificates.
+When using OAuth, security components may require you to run an SSL setup on your local computer. Even when this is not the case, I prefer to do run with SSL, since it is a more real-world setup and closer to production environments.
 
 ### SSL for Cloud Environments
 
@@ -14,6 +14,8 @@ Later in this blog I create a <Link href="/posts/cloud-domain-setup">Cloud Domai
 
 In this blog I use a similar approach for a development computer, where an *authsamples-dev.com* domain is used. I show how to create a wildcard certificate for the domain and its subdomains.
 
+Be aware though that in real deployed environments, your APIs may not need to deal with SSL certificates directly. Instead, an SSL certificate is often provided by an API gateway rather than the API itself.
+
 ### Development Certificate Issuance
 
 Some online tutorials create standalone self-signed certificates for *localhost* in a way that does not match real-world certificates. I prefer to instead follow these main steps:
@@ -21,7 +23,7 @@ Some online tutorials create standalone self-signed certificates for *localhost*
 - Create a root certificate authority for development
 - Create SSL server certificates issued by the root CA, with real-world domain names
 
-The advantage of doing so is that you can enable trust more easily, by deploying the root CA to trust stores. This also encourages you to learn about public key infrastructures (PKI). Later, when your apps are deployed to production, certificate trust works in the same way.
+The advantage of doing so is that you can enable trust more easily, by deploying root CAs to trust stores. This also encourages you to learn about public key infrastructures (PKI). Later, when your apps are deployed to production, certificate trust works in the same way.
 
 ### Creating SSL Certificates and Keys
 
@@ -44,7 +46,7 @@ openssl req \
     -addext 'basicConstraints=critical,CA:TRUE'
 ```
 
-Your backend components can use development domain names by adding them to your */etc/hosts* file. To ensure that these domains will be trusted when called over SSL, include them in the *subjectAltName* extension. Then run some commands to create a second asymmetric private key and public certificate. You use the root certificate to issue the SSL server certificate.
+Your backend components can use development domain names by adding them to your */etc/hosts* file. To ensure that these domains will be trusted when called over SSL, include them in the *subjectAltName* extension field. Then run commands to create a second asymmetric private key and public certificate. You use the root certificate to issue the SSL server certificate.
 
 ```bash
 openssl genpkey -algorithm EC \
@@ -81,7 +83,7 @@ In total this results in the following files:
 | <span style={{color:'green'}}>**example.ca.key**</span> | The root CA's private key |
 | <span style={{color:'green'}}>**example.ssl.crt**</span> | The SSL certificate |
 | <span style={{color:'green'}}>**example.ssl.key**</span> | The SSL certificate's private key |
-| <span style={{color:'green'}}>**example.ssl.p12**</span> | The password protected file deployed to backend components |
+| <span style={{color:'green'}}>**example.ssl.p12**</span> | The protected key and certificate, used by APIs |
 
 You can use an [Online Certificate Decoder](https://certlogik.com/decoder/) and paste in the *example.ssl.crt* contents to see how recipients view the server's SSL certificate:
 
@@ -117,7 +119,7 @@ public async startListening(): Promise<void> {
 }
 ```
 
-This enables you to upgrade your local connections to SSL, without adding much complexity. Some tools may also show you the strength of the client to server connection. For example, the Google Chrome browser enables you to view SSL strength from *More Tools / Developer Tools / Security*, where you can verify that the connection uses TLS 1.3. 
+This enables you to upgrade your local connections to SSL, as shown in the following screenshot. Some tools may also show you the strength of the client to server connection. For example, the Google Chrome browser enables you to view SSL strength from *More Tools / Developer Tools / Security*, where you can verify that the connection uses TLS 1.3.
 
 ![local ssl](/images/110/local-ssl.jpg?v=20240728)
 
@@ -203,7 +205,7 @@ BX7fkMNWSqIR
 -----END CERTIFICATE-----
 ```
 
-When you need to update certificate trust, you can either add the entire trust bundle or you can trust just a particular root CA. The following sections show where trust is added.
+When you need to update certificate trust, you can either add trust for the entire bundle or just a particular root CA. The following sections show where trust is added.
 
 ### Configure Operating System Trust
 
@@ -211,7 +213,7 @@ On Windows we must run the *Microsoft Management Console (MMC.EXE)*, then select
 
 ![windows trust](/images/110/windows-trust.jpg?v=20240728)
 
-On macOS we instead add the root certificate(s) to the *Keychain Access* application under *System / Certificates*, then enable the *Always Trust* option:
+On macOS you instead add the root certificate(s) to the *Keychain Access* application under *System / Certificates*, then enable the *Always Trust* option:
 
 ![macos trust](/images/110/macos-trust.jpg?v=20240728)
 
@@ -244,13 +246,15 @@ export NODE_EXTRA_CA_CERTS=~/trusted-ca-certs.crt
 
 ### Trusting a Root Certificate in .NET APIs
 
-Later we will provide an <Link href='/posts/net-core-code-sample-overview/'>OAuth Secured .NET API</Link> and trust will be inherited from the operating system SSL trust store.
+For this blog's <Link href='/posts/net-core-code-sample-overview/'>OAuth Secured .NET API</Link> trust is inherited from the operating system SSL trust store.
 
 ### Trusting a Root Certificate in Java APIs
 
-Later in this blog I provide an <Link href='/posts/java-spring-boot-api-overview'>OAuth Secured Sample Java API</Link>, and each Java installation has its own certificate trust store in a *cacerts* file under the Java install location. For example, on macOS this is at the following location when running Java 21:
+For this blog's <Link href='/posts/java-spring-boot-api-overview'>OAuth Secured Sample Java API</Link> trust derives from the Java trust store. For example, on macOS this is at the following location when running Java 21:
 
-- /Library/Java/JavaVirtualMachines/zulu-21.jdk/Contents/Home/lib/security
+```markdown
+/Library/Java/JavaVirtualMachines/zulu-21.jdk/Contents/Home/lib/security/cacerts
+```
 
 Operations to manage certificates use the [keytool utility](https://www.techquintal.com/java-keytool-keystore-commands), and I use the following commands to add, find and remove a trusted root:
 
@@ -262,7 +266,7 @@ sudo "$JAVA_HOME/bin/keytool" -delete -alias mitmroot -cacerts -storepass change
 
 ### Trusting a Root Certificate in Electron Apps
 
-Later in this blog I also provide some <Link href='/posts/desktop-apps-overview'>OAuth Secured Desktop Apps</Link>, where there are two processes, which determine certificate trust with different rules:
+For this blog's <Link href='/posts/desktop-apps-overview'>OAuth Secured Desktop Apps</Link> there are two processes, which determine certificate trust with different rules:
 
 | Area | Trust Behaviour |
 | ---- | --------------- |
