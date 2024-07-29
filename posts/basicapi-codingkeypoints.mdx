@@ -31,27 +31,24 @@ Only a handful of third-party libraries are used, and the most interesting depen
 When *npm start* is run, the *startup/app.ts* class executes, which configures the Express HTTP server and then starts listening for requests:
 
 ```typescript
-(async () => {
+const logger = new ApiLogger();
+try {
 
-    const logger = new ApiLogger();
-    try {
+    const configBuffer = await fs.readFile('api.config.json');
+    const configuration = JSON.parse(configBuffer.toString()) as Configuration;
 
-        const configBuffer = await fs.readFile('api.config.json');
-        const configuration = JSON.parse(configBuffer.toString()) as Configuration;
+    const expressApp = express();
+    const httpServer = new HttpServerConfiguration(expressApp, configuration, logger);
+    await httpServer.initializeApi();
 
-        const expressApp = express();
-        const httpServer = new HttpServerConfiguration(expressApp, configuration, logger);
-        await httpServer.initializeApi();
+    httpServer.initializeWebStaticContentHosting();
+    httpServer.startListening();
 
-        httpServer.initializeWebStaticContentHosting();
-        httpServer.startListening();
+} catch (e) {
 
-    } catch (e) {
-
-        const error = ErrorFactory.fromServerError(e);
-        logger.startupError(error);
-    }
-})();
+    const error = ErrorFactory.fromServerError(e);
+    logger.startupError(error);
+}
 ```
 
 The startup logic is in the *HttpServerConfiguration* class, whose main role is to express how API requests are processed:
