@@ -32,9 +32,7 @@ I use the OpenSSL 3 command line tool to create certificates for development. Th
 ```bash
 DOMAIN=example
 
-openssl genpkey -algorithm EC \
-    -pkeyopt ec_paramgen_curve:prime256v1 \
-    -out $DOMAIN.ca.key
+openssl ecparam -name prime256v1 -genkey -noout -out $DOMAIN.ca.key
 
 openssl req \
     -x509 \
@@ -49,9 +47,7 @@ openssl req \
 Your backend components can use development domain names by adding them to your */etc/hosts* file. To ensure that these domains will be trusted when called over SSL, include them in the *subjectAltName* extension field. Then run commands to create a second asymmetric private key and public certificate. You use the root certificate to issue the SSL server certificate.
 
 ```bash
-openssl genpkey -algorithm EC \
-    -pkeyopt ec_paramgen_curve:prime256v1 \
-    -out $DOMAIN.ssl.key
+openssl ecparam -name prime256v1 -genkey -noout -out $DOMAIN.ssl.key
 
 openssl req \
     -x509 \
