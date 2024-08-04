@@ -172,9 +172,9 @@ Finally, remove the *LogoutRedirectUriReceiverActivity* entry from the *AndroidM
 
 During development, I use an HTTP proxy as follows when I want to view OAuth or API messages for the Android app. The mobile OS only registers App Links when the app is first installed, and not when it is redeployed from Android Studio:
 
-- First install the app without using an HTTP proxy
+- First install the app without running an HTTP proxy
 - Deep linking registration will then succeed
-- Start the HTTP proxy on the host PC
+- Start the HTTP proxy on the host computer
 - Next configure the Android emulator to use the HTTP proxy
 - Then redeploy the app from Android Studio
 - Messages from the app will then be captured successfully

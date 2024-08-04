@@ -140,7 +140,7 @@ Since we are using [mode=developer](https://developer.apple.com/documentation/bu
 
 During development, I proceed as follows when I want to view OAuth or API messages for the iOS app. The mobile OS re-registers universal links every time the app is redeployed from Xcode:
 
-- Deploy the app from Xcode without using an HTTP proxy
+- Deploy the app from Xcode without running an HTTP proxy on the host MacBook
 - Deep linking registration will then succeed
 - Next start the HTTP proxy on the host MacBook
 - Messages from the app will then be captured successfully
