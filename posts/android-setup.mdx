@@ -70,7 +70,7 @@ From Android Studio. navigate to *Device Manager*, then create an emulator if re
 
 Run the app using the emulator, which will result in this display:
 
-![emulator app](/images/460/emulator-app.jpg)
+![emulator app](/images/460/emulator-app.jpg?v=20240804)
 
 When prompted you can login with this blog’s cloud test credential:
 
@@ -79,11 +79,11 @@ When prompted you can login with this blog’s cloud test credential:
 
 During login the system browser is invoked as a [Chrome Custom Tab](https://developer.chrome.com/multidevice/android/customtabs), which renders the AWS Cognito login screen:
 
-![chrome custom tab](/images/460/chrome-custom-tab.jpg)
+![chrome custom tab](/images/460/chrome-custom-tab.jpg?v=20240804)
 
 After login you will be returned to the app, which displays information about tokens. You can also send the access token to Cognito’s User Info endpoint, to get name details for the test user account:
 
-![logged in](/images/460/logged-in.jpg)
+![logged in](/images/460/logged-in.jpg?v=20240804)
 
 To get the refresh token on some authorization servers, an additional scope called *offline_access* may need to be specified in both the OAuth client registration and the app’s JSON configuration.
 

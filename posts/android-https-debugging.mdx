@@ -4,92 +4,73 @@ Previously we enabled an initial Android setup by running the <Link href='/posts
 
 ### Run the HTTP Proxy on the Host
 
-First configure and run the HTTP proxy on the host computer, as described in our earlier write up on <Link href='/posts/http-debugging-setup'>HTTPS Debugging</Link>:
-
-![host proxy](/images/470/host-proxy.jpg)
-
-We also need to instruct the proxy to decrypt SSL traffic, as covered in our page on <Link href='/posts/developer-ssl-setup'>SSL Trust Configuration</Link>:
-
-![host proxy ssl](/images/470/host-proxy-ssl.jpg)
+First configure and run the HTTP proxy on the host computer, as described in our earlier write up on <Link href='/posts/http-debugging-setup'>HTTPS Debugging</Link>. We also need to instruct the proxy to decrypt SSL traffic, as covered in our page on <Link href='/posts/developer-ssl-setup'>SSL Trust Configuration</Link>:
 
 ### Determine the Computer’s IP Address
 
-This value will vary depending on whether you are using an emulator or a device connected via USB. With Android emulator networking, the host computer’s IP address is always the special value *10.0.2.2*.
+This value may vary depending on whether you are using an emulator or a device connected via USB. Some Android emulators may use the special value *10.0.2.2* whereas others may use the computer's network IP v4 address, which you can find in various ways, such as by running the following command:
 
-For a real device I use the Charles menu item *Help / Local IP Address* to find my Macbook’s IP address, since I usually run on a WiFi network where the IP address is auto assigned:
-
-![host ip](/images/470/host-ip.jpg)
+```markdown
+ifconfig | grep inet
+```
 
 ### Configure Android WiFi Proxy Settings
 
-When running on a WiFi network, select *Settings / Network & Internet / Wi-Fi*, then choose the specific network connection and click the pencil icon to edit it, then provide proxy details:
+When running on a WiFi network, select *Settings / Network & Internet / Internet*, then choose the in-use network connection. Then click the pencil icon to edit it. In the following screenshot I am connecting a real device to a proxy running on the host computer, using the host computer's IP address:
 
-![network proxy](/images/470/network-proxy.jpg)
+![network proxy](/images/470/network-proxy.jpg?v=20240804)
 
-### Force Use of WiFi Network
+Android emulators may alternate connectivity between WiFi and cellular. This can cause confusion when getting an HTTP proxy working, so I usually disable *Mobile Data* so that only WiFi is used:
 
-The Android emulator may alternate connectivity between WiFi and cellular. This can cause confusion when getting an HTTP Proxy working, so I usually disable *Mobile Data* so that only WiFi is used:
-
-![cellular off](/images/470/cellular-off.jpg)
+![cellular off](/images/470/cellular-off.jpg?v=20240804)
 
 ### Android Cellular Proxy Settings
 
-If you do need to proxy over a cellular network you need to select *Settings / Network & Internet / Mobile Network*, then choose *Advanced / Access Point Names* and add a new entry:
+If you do need to capture cellular traffic then browse to *Settings / Network & Internet / Internet* and edit the cellular network's properties. Under *Access Point Names / APNs* click the plus icon and add a new entry with the connection details. In the following screenshot I connect an emulator to a proxy running on the host computer, using the emulator's special IP address for the host:
 
-![cellular apn](/images/470/cellular-apn.jpg)
-
-The details for the new entry can then be added in the below screen. Be sure to click the menu in the top right and select the *Save* item to avoid losing edited details.
-
-![cellular apn settings](/images/470/cellular-apn-settings.jpg)
+![cellular apn settings](/images/470/cellular-apn-settings.jpg?v=20240804)
 
 ### Understand Initial SSL Errors
 
-If we now run the system browser or the AppAuth code sample on the Android device, there will be an attempt to proxy the traffic over SSL, and this will result in SSL trust errors:
+If we now run the system browser or a mobile app on the Android device, any SSL requests will result in trust errors:
 
-![ssl trust error](/images/470/ssl-trust-error.jpg)
+![ssl trust error](/images/470/ssl-trust-error.jpg?v=20240804)
 
 This is because the HTTP proxy is intercepting SSL requests at runtime and replacing the root certificate authority. To fix this we need to configure emulators and devices to trust the HTTP proxy’s root certificate.
 
-![proxy root ca](/images/470/proxy-root-ca.jpg)
+![proxy root ca](/images/470/proxy-root-ca.jpg?v=20240804)
 
 ### Deploy the HTTP Proxy Root Certificate
 
-If you are using the MITM proxy tool, you can just browse from a mobile browser on the device or emulator to http://mitm.it. Then download the certificate to the device’s downloads folder. Otherwise, there will be an export option similar to that shown below, so use it to save the HTTP proxy root certificate to the local computer.
+To resolve the trust error you must get the certificate's root certificate authority file to the emulator or device. This can be down in various ways, such as by emailing the file. For the MITM proxy root CA you can just browse to a URL of *http://mitm.it* from the device or emulator.
 
-![get proxy root ca](/images/470/get-proxy-root-ca.jpg)
+Yet it is useful to have a general process that will work for any root certificate. First, the certificate must be converted to the *.der* format, using a command of the following form:
 
-Rename the file so that it has a *.crt* extension. If using an emulator, you can drag the root certificate into the downloads folder:
+```bash
+openssl x509 -in mitmproxy.ca.crt -out mitmproxy.ca.der -outform DER
+```
 
-![downloads folder](/images/470/downloads-folder.jpg)
+You can then make the CA file available for download by placing the resulting certificate file in a folder and then running an HTTP server that exposes its files. For example, the following command uses NGINX to share a host folder at `http://localhost:8000`, and allows files to be browsed using the NGINX *autoindex* feature:
 
-Alternatively you can email the certificate to the device, or run an HTTP server to download the file using a mobile browser. The following steps do this using this blog’s initial code sample:
+```bash
+docker run -it --rm -p 80:80 -v ./fileshare:/var/lib/nginx/html:ro dceoy/nginx-autoindex
+```
 
-- git clone `https://github.com/gary-archer/oauth.websample1`
-- cd oauth.websample1/api
-- cp ~/Desktop/charlesroot.pem ../spa
-- npm install
-- npm start
-- Run the Chrome browser on the emulator
-- Get the local computer’s IP address, such as 10.0.2.2
-- Browse to a URL such as `http://10.0.2.2/spa/charlesroot.pem`
+From an emulator or device you can open Chrome and type the IP address of the host. Click a certificate file to save it to the device’s *Downloads* folder:
+
+![get proxy root ca](/images/470/get-proxy-root-ca.jpg?v=20240804)
 
 ### Configure Android SSL Trust
 
-Next, navigate to *Settings / Security / Encryption & Credentials / Install a Certificate / CA Certificate*, then select the below *Install Anyway* option:
+Next, navigate to *Settings / Security & privacy / Encryption & credentials / Install a certificate / CA certificate*, then select the *Install Anyway* option. Navigate to the *Downloads* folder and select the certificate. You will then see the certificate under *Settings / Security & privacy / Encryption & credentials / User credentials*:
 
-![install root ca](/images/470/install-root-ca.jpg)
-
-Next navigate to the downloads folder and select the certificate. You may be prompted to set a PIN to secure the device, You will then see the certificate under *Settings / Security / Encryption & Credentials / User Credentials*:
-
-![user credentials](/images/470/user-credentials.jpg)
+![user credentials](/images/470/user-credentials.jpg?v=20240804)
 
 ### Configure SSL Trust for Mobile Apps
 
-After these changes, the Chrome Browser will trust the Charles root certificate, but mobile apps will not and we will continue to get a trust error, since Android has its own [trusted certificate rules](https://android-developers.googleblog.com/2016/07/changes-to-trusted-certificate.html).
+After these changes, the Chrome Browser will trust the root certificate, but mobile apps will not and we will continue to get a trust error, since Android has its own [trusted certificate rules](https://android-developers.googleblog.com/2016/07/changes-to-trusted-certificate.html).
 
-![app trust error](/images/470/app-trust-error.jpg)
-
-To overcome this we need to edit the Android manifest to reference an additional [network_security_config.xml](https://developer.android.com/training/articles/security-config.html) file, which will only be active in debug mode by default.This indicates that the app will trust all *User Certificates* installed on the device or emulator:
+To overcome this, first edit the Android manifest to reference an additional [network_security_config.xml](https://developer.android.com/training/articles/security-config.html) file when running in debug mode. This authorizes the app to trust all user certificates installed on the device or emulator:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -106,15 +87,17 @@ To overcome this we need to edit the Android manifest to reference an additional
 
 During mobile development it can be useful to also run a local API. To support this with a real-world domain name I add a local DNS entry on my local computer:
 
-![dns](/images/470/dns.jpg)
+```markdown
+127.0.0.1 api.authsamples-dev.com
+```
 
-By default, devices and emulators will not be able to connect to this domain. If an HTTP proxy is used however, requests to the *api.authsamples-dev.com* domain occur on the host computer, so DNS resolution succeeds.
+By default, devices and emulators will not recognise this domain name. If an HTTP proxy is used however, domain name resolution for *api.authsamples-dev.com* runs on the host computer and succeeds.
 
-### OAuth and API HTTPS Traffic is Now Viewable
+### View OAuth and API HTTPS Traffic
 
-On all simulators and devices we can now view OAuth and API HTTPS messages, which can be a big help when we need to troubleshoot.
+On all simulators and devices we can now view OAuth and API HTTPS messages, to view OAuth-related requests, such as those produced by the AppAuth library:
 
-![traced messages](/images/470/traced-messages.jpg)
+![traced messages](/images/470/traced-messages.jpg?v=20240804)
 
 ### Where Are We?
 

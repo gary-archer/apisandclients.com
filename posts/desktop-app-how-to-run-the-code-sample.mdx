@@ -121,7 +121,7 @@ Our desktop app is registered as an OAuth client in AWS Cognito, with the follow
 
 ![oauth client](/images/420/oauth-client.jpg)
 
-According to RFC 8252, it should be possible to register a redirect URI of `http://localhost` and any port should then be allowed at runtime. Not all authorization servers support this, and for AWS Cognito I had to register all possible redirect URI values.
+According to RFC 8252, it should be possible to register a redirect URI of `http://127.0.0.1` and any port should then be allowed at runtime. Yet some authorization servers do not support this. AWS Cognito required an `http://localhost` base URL instead of the loopback IP address, and I also had to register all possible redirect URI values.
 
 ![loopback behaviour](/images/420/loopback-behaviour.jpg)
 
