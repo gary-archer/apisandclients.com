@@ -1,30 +1,22 @@
 # iOS HTTPS Debugging Setup
 
-Previously we put in place an initial iOS Setup and ran the <Link href='/posts/ios-setup'>AppAuth iOS Code Sample</Link>. Next we will focus on viewing HTTPS mobile traffic from simulators and devices on a development computer.
+Previously we put in place an initial iOS Setup and ran the <Link href='/posts/ios-setup'>AppAuth iOS Code Sample</Link>. Next I will explain a way to view HTTPS mobile traffic from iOS simulators and devices on a development computer.
 
 ### Run the HTTP Proxy on the Host
 
-First configure and run the HTTP proxy on the host computer, as described in our earlier write up on <Link href='/posts/http-debugging-setup'>HTTPS Debugging</Link>:
-
-![host proxy](/images/490/host-proxy.jpg)
-
-We also need to instruct the proxy to decrypt SSL traffic, as covered in our post on <Link href='/posts/developer-ssl-setup'>SSL Trust Configuration</Link>:
-
-![host proxy ssl](/images/490/host-proxy-ssl.jpg)
+First configure and run the HTTP proxy on the host computer, as described in our earlier write up on <Link href='/posts/http-debugging-setup'>HTTPS Debugging</Link>. We also need to instruct the proxy to decrypt SSL traffic, as covered for other environments in the blog post on <Link href='/posts/developer-ssl-setup'>SSL Trust Configuration</Link>:
 
 ### Determine the Computer’s IP Address
 
-I use the Charles menu item *Help / Local IP Address* to find my local computer’s IP address, since I usually run on a WiFi network where the IP address is auto assigned:
+You can find the computer's network IP v4 address in various ways, such as by running the following command:
 
-![local ip](/images/490/local-ip.jpg)
+```markdown
+ifconfig | grep inet
+```
 
 ### Configure iOS Simulator Proxy Settings
 
-With iOS Simulators there are quite a few places where we cannot emulate a real device. One of these is network settings, where the simulator instead always uses the local computer’s network:
-
-![ios simulator](/images/490/ios-simulator.jpg)
-
-An HTTP proxy running on the local computer automatically comes into effect for the app on the simulator, which as long as the proxy is started before the simulator.
+With iOS Simulators there are quite a few places where we cannot emulate a real device. One of these is network settings, where the simulator instead always uses the local computer’s network. An HTTP proxy running on the local computer automatically comes into effect for the app on the simulator, as long as the HTTP proxy is started before the simulator.
 
 ### Configure iOS WiFi Proxy Settings
 
@@ -40,32 +32,27 @@ If you ever need to proxy over a cellular network you need to first select *Sett
 
 ### Understand Initial SSL Errors
 
-If we now run the system browser or the AppAuth Sample on the iOS device, there will be an attempt to proxy the traffic over HTTPS, and this will result in SSL Trust errors:
+If we now run the system browser or a mobile app on the Android device, any SSL requests will result in trust errors:
 
 ![ssl trust error](/images/490/ssl-trust-error.jpg)
 
 This is because the HTTP proxy is intercepting SSL requests at runtime and replacing the root certificate authority. To fix this we need to configure simulators and devices to trust the HTTP Proxy’s root certificate.
 
-### Deploy the HTTP Proxy Root Certificate
-
-If you are using the MITM proxy tool, you can just browse from a mobile browser on the device or simulator to http://mitm.it. Then download the certificate to the device’s Downloads folder. Otherwise, there will be an export option similar to that shown below, so use it to save the HTTP proxy root certificate to the local computer.
-
 ![proxy root ca](/images/490/proxy-root-ca.jpg)
 
-Rename the file so that it has a *.crt* extension. You can then email the certificate to the device. Alternatively you can run an HTTP server to download the file using a mobile browser. The following steps do this using this blog’s initial code sample:
+### Deploy the HTTP Proxy Root Certificate
 
-- git clone `https://github.com/gary-archer/oauth.websample1`
-- cd oauth.websample1/api
-- cp ~/Desktop/charlesroot.pem ../spa
-- npm install
-- npm start
-- Run the Safari browser on the simulator
-- Get the local computer’s IP address, such as 192.168.42.37
-- Browse to a URL such as `http://192.168.42.37/spa/charlesroot.pem`
+To resolve the trust error you must get the certificate's root certificate authority file to the emulator or device. This can be down in various ways, such as by emailing the file. For the MITM proxy root CA you can just browse to a URL of *http://mitm.it* from the device or emulator.
 
-However you deliver the certificate, save it to the *Downloads* folder. In the following example I used the *Save to files* option:
+Yet it is useful to have a general process that will work for any root certificate. First, ensure that the certificate is in the *.pem* format. You can then make the CA file available for download by placing the resulting certificate file in a folder and then running an HTTP server that exposes its files. For example, the following command uses NGINX to share a host folder at `http://localhost:8000`, and allows files to be browsed using the NGINX *autoindex* feature:
 
-![save to ios files](/images/490/save-to-ios-files.jpg)
+```bash
+docker run -it --rm -p 80:80 -v ./fileshare:/var/lib/nginx/html:ro dceoy/nginx-autoindex
+```
+
+From an emulator or device you can open Safari and type the IP address of the host. Click a certificate file and save it to the device’s *Downloads* folder:
+
+![proxy root ca](/images/490/proxy-root-ca.jpg)
 
 ### Configure iOS SSL Trust
 
@@ -87,15 +74,17 @@ Finally switch to *Settings / General / About / Certificate Trust Settings* and 
 
 ### Understand Domain Name Service Lookup
 
-During mobile development it can be useful to also run a local API, with a real world API URL such as `https://api.authsamples-dev.com/api`. To support this I add a local DNS entry on my local computer:
+During mobile development it can be useful to also run a local API. To support this with a real-world domain name I add a local DNS entry on my local computer:
 
-![local dns](/images/490/local-dns.jpg)
+```markdown
+127.0.0.1 api.authsamples-dev.com
+```
 
-On iOS the DNS settings from the host computer are automatically used by simulators so DNS resolution succeeds, whether or not the proxy tool is running.
+On iOS the DNS settings from the host computer are automatically used by simulators so domain name resolution succeeds, whether or not an HTTP proxy is running.
 
-### OAuth and API HTTPS Traffic is Now Viewable
+### View OAuth and API HTTPS Traffic
 
-On all simulators and devices we can now view OAuth and API HTTPS messages, which can be a big help when we need to troubleshoot.
+On all simulators and devices we can now view OAuth and API HTTPS messages, to view OAuth-related requests, such as those produced by the AppAuth library:
 
 ![traced messages](/images/490/traced-messages.jpg)
 

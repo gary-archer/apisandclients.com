@@ -1,10 +1,10 @@
 # Android HTTPS Debugging Setup
 
-Previously we enabled an initial Android setup by running the <Link href='/posts/android-setup'>AppAuth Android Code Sample</Link>. Next we will focus on viewing HTTPS mobile traffic from emulators and devices on a development computer.
+Previously we enabled an initial Android setup by running the <Link href='/posts/android-setup'>AppAuth Android Code Sample</Link>. Next I will explain a way to view HTTPS mobile traffic from iOS simulators and devices on a development computer.
 
 ### Run the HTTP Proxy on the Host
 
-First configure and run the HTTP proxy on the host computer, as described in our earlier write up on <Link href='/posts/http-debugging-setup'>HTTPS Debugging</Link>. We also need to instruct the proxy to decrypt SSL traffic, as covered in our page on <Link href='/posts/developer-ssl-setup'>SSL Trust Configuration</Link>:
+First configure and run the HTTP proxy on the host computer, as described in our earlier write up on <Link href='/posts/http-debugging-setup'>HTTPS Debugging</Link>. We also need to instruct the proxy to decrypt SSL traffic, as covered for other environments in the blog post on <Link href='/posts/developer-ssl-setup'>SSL Trust Configuration</Link>:
 
 ### Determine the Computer’s IP Address
 
@@ -56,7 +56,7 @@ You can then make the CA file available for download by placing the resulting ce
 docker run -it --rm -p 80:80 -v ./fileshare:/var/lib/nginx/html:ro dceoy/nginx-autoindex
 ```
 
-From an emulator or device you can open Chrome and type the IP address of the host. Click a certificate file to save it to the device’s *Downloads* folder:
+From an emulator or device you can open Chrome and type the IP address of the host. Click a certificate file and save it to the device’s *Downloads* folder:
 
 ![get proxy root ca](/images/470/get-proxy-root-ca.jpg?v=20240804)
 
