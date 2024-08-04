@@ -50,7 +50,7 @@ Yet it is useful to have a general process that will work for any root certifica
 openssl x509 -in mitmproxy.ca.crt -out mitmproxy.ca.der -outform DER
 ```
 
-You can then make the CA file available for download by placing the resulting certificate file in a folder and then running an HTTP server that exposes its files. For example, the following command uses NGINX to share a host folder at `http://localhost:8000`, and allows files to be browsed using the NGINX *autoindex* feature:
+You can then make the CA file available for download by placing the resulting certificate file in a folder and then running an HTTP server that exposes its files. For example, the following command uses NGINX to share a host folder at `http://localhost`, and allows files to be browsed using the NGINX *autoindex* feature:
 
 ```bash
 docker run -it --rm -p 80:80 -v ./fileshare:/var/lib/nginx/html:ro dceoy/nginx-autoindex
@@ -95,7 +95,7 @@ By default, devices and emulators will not recognise this domain name. If an HTT
 
 ### View OAuth and API HTTPS Traffic
 
-On all simulators and devices we can now view OAuth and API HTTPS messages, to view OAuth-related requests, such as those produced by the AppAuth library:
+On all simulators and devices we can now view OAuth and API HTTPS messages such as those produced by the AppAuth library:
 
 ![traced messages](/images/470/traced-messages.jpg?v=20240804)
 

@@ -22,55 +22,45 @@ With iOS Simulators there are quite a few places where we cannot emulate a real 
 
 For a real iOS device we need to first click the specific network under *Settings / Wi-Fi*. Next select the *Configure Proxy* option, then select *Manual* and enter details similar to the below screenshot:
 
-![ios network](/images/490/ios-network.jpg)
+![ios network](/images/490/ios-network.jpg?v=20240804)
 
 ### iOS Device Cellular Proxy Settings
 
-If you ever need to proxy over a cellular network you need to first select *Settings / Mobile Data / Mobile Data Options / Mobile Network*. Then add an *Access Point Name* along with its proxy host and port details:
-
-![ios cellular](/images/490/ios-cellular.jpg)
+If you need to capture cellular traffic you need to first select *Settings / Mobile Data / Mobile Data Options / Mobile Network*. Then add an *Access Point Name* with the same proxy host and port details.
 
 ### Understand Initial SSL Errors
 
-If we now run the system browser or a mobile app on the Android device, any SSL requests will result in trust errors:
+If we now run the system browser or a mobile app on the iOS device, any SSL requests will result in trust errors:
 
-![ssl trust error](/images/490/ssl-trust-error.jpg)
+![ssl trust error](/images/490/ssl-trust-error.jpg?v=20240804)
 
 This is because the HTTP proxy is intercepting SSL requests at runtime and replacing the root certificate authority. To fix this we need to configure simulators and devices to trust the HTTP Proxy’s root certificate.
 
-![proxy root ca](/images/490/proxy-root-ca.jpg)
+![proxy root ca](/images/490/proxy-root-ca.jpg?v=20240804)
 
 ### Deploy the HTTP Proxy Root Certificate
 
-To resolve the trust error you must get the certificate's root certificate authority file to the emulator or device. This can be down in various ways, such as by emailing the file. For the MITM proxy root CA you can just browse to a URL of *http://mitm.it* from the device or emulator.
+To resolve the trust error you must get the certificate's root certificate authority file to the simulator or device. This can be down in various ways, such as by emailing the file. For the MITM proxy root CA you can just browse to a URL of *http://mitm.it* from the device or simulator.
 
-Yet it is useful to have a general process that will work for any root certificate. First, ensure that the certificate is in the *.pem* format. You can then make the CA file available for download by placing the resulting certificate file in a folder and then running an HTTP server that exposes its files. For example, the following command uses NGINX to share a host folder at `http://localhost:8000`, and allows files to be browsed using the NGINX *autoindex* feature:
+Yet it is useful to have a general process that will work for any root certificate. First, ensure that the certificate is in the *.pem* format. You can then make the CA file available for download by placing the resulting certificate file in a folder and then running an HTTP server that exposes its files. For example, the following command uses NGINX to share a host folder at `http://localhost`, and allows files to be browsed using the NGINX *autoindex* feature:
 
 ```bash
 docker run -it --rm -p 80:80 -v ./fileshare:/var/lib/nginx/html:ro dceoy/nginx-autoindex
 ```
 
-From an emulator or device you can open Safari and type the IP address of the host. Click a certificate file and save it to the device’s *Downloads* folder:
+From a simulator or device you can open Safari and type the IP address of the host. Click a certificate file and, when prompted, allow the download of a configuration profile.
 
-![proxy root ca](/images/490/proxy-root-ca.jpg)
+![get proxy root ca](/images/490/get-proxy-root-ca.jpg?v=20240804)
 
 ### Configure iOS SSL Trust
 
-Next open the *Files app* and navigate to the certificate. When you tap the file you will then see a prompt that a profile has downloaded:
+Under *Settings / General / VPN & Device Management* there will now be a *Profile* option, and when opened you will see the root certificate:
 
-![profile download](/images/490/profile-download.jpg)
+![installing cert](/images/490/installing-cert.jpg?v=20240804)
 
-Under *Settings / General / Device Management* there will now be a *Profile* option, and when opened we will see our root certificate:
+Select the *Install* option and follow the prompts. Finally switch to *Settings / General / About / Certificate Trust Settings* and activate the certificate:
 
-![installing cert](/images/490/installing-cert.jpg)
-
-Select the Install option and follow prompts:
-
-![installed cert](/images/490/installed-cert.jpg)
-
-Finally switch to *Settings / General / About / Certificate Trust Settings* and activate the certificate:
-
-![activated cert](/images/490/activated-cert.jpg)
+![activated cert](/images/490/activated-cert.jpg?v=20240804)
 
 ### Understand Domain Name Service Lookup
 
@@ -80,11 +70,11 @@ During mobile development it can be useful to also run a local API. To support t
 127.0.0.1 api.authsamples-dev.com
 ```
 
-On iOS the DNS settings from the host computer are automatically used by simulators so domain name resolution succeeds, whether or not an HTTP proxy is running.
+On iOS the DNS settings from the host computer are automatically used by simulators, so domain name resolution succeeds, whether or not an HTTP proxy is running.
 
 ### View OAuth and API HTTPS Traffic
 
-On all simulators and devices we can now view OAuth and API HTTPS messages, to view OAuth-related requests, such as those produced by the AppAuth library:
+On all simulators and devices we can now view OAuth and API HTTPS messages such as those produced by the AppAuth library:
 
 ![traced messages](/images/490/traced-messages.jpg)
 
