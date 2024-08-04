@@ -1,6 +1,6 @@
 # iOS Setup and AppAuth Sample
 
-Previously we completed our <Link href='/posts/android-https-debugging'>Android HTTP Debugging Setup</Link>. Next we will get a basic iOS OAuth Setup working, via the AppAuth iOS code sample.
+Previously we completed our <Link href='/posts/android-https-debugging'>Android HTTP Debugging Setup</Link>. Next we will get a basic iOS OAuth setup working, via the AppAuth iOS code sample.
 
 ### Step 1: Sign up with Apple
 
@@ -26,16 +26,16 @@ From Xcode’s home screen, select *File / Open* and navigate to the *AppAuth-iO
 
 ### Step 4: Add the AppAuth Dependency
 
-By default the code sample uses the Carthage dependency tool, which is problematic with more recent Xcode versions. Therefore I start with some cleanup, by removing the following items:
+By default the code sample uses the Carthage dependency tool, which I prefer to avoid. Therefore, I start with some cleanup, by removing the following items:
 
 - The *Example_Extension* folder
-- The AppAuth entries under *Frameworks*
-- The Carthage section under *Build Phases*
+- The *AppAuth* entries under *Frameworks*
+- The *Carthage* section under *Build Phases*
 - The project should then look like this:
 
 ![xcode project](/images/480/xcode-project.jpg)
 
-I then add AppAuth using the Swift dependency manager, from the above screen, by typing in the URL to the AppAuth repo. When prompted I select the package product named AppAuth:
+I then add AppAuth using the Swift dependency manager, from the above screen, by providing the URL of the AppAuth iOS repo. When prompted, I add the *AppAuth* and *AppAuthCore* packages to the code sample's target:
 
 ![xcode dependencies](/images/480/xcode-dependencies.jpg)
 
@@ -58,7 +58,7 @@ The AppAuth settings are summarised below:
 
 ### Step 6: Update OAuth Client Settings
 
-Before running the app,  we need to make the edits from the [Example README](https://github.com/openid/AppAuth-iOS/tree/master/Examples/Example-iOS_Swift-Carthage), so first change the *AppAuthExampleViewController.swift* source file and edit the below settings to match those in the above table:
+Before running the app, make the edits documented in the [Example README](https://github.com/openid/AppAuth-iOS/tree/master/Examples/Example-iOS_Swift-Carthage), to change the below settings in the *AppAuthExampleViewController.swift* module:
 
 ```swift
 let kIssuer: String = "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9";
@@ -66,7 +66,7 @@ let kClientID: String? = "53osemtot8tp3n3qct5r2hijk3";
 let kRedirectURI: String = "net.openid.appauthdemo:/oauth2redirect";
 ```
 
-We will also need to register the *Redirect URI Scheme* in the mobile app’s *info.plist* file:
+You must also register the *Redirect URI Scheme* in the mobile app’s *info.plist* file:
 
 ![info plist](/images/480/info-plist.jpg)
 
