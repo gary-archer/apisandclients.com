@@ -1,6 +1,6 @@
 # Android Setup and AppAuth Sample
 
-Previously we discussed <Link href='/posts/final-desktop-app-coding-key-points'>Coding Key Points</Link> for the final desktop code sample. Next we will get a basic Android OAuth Setup working, via the AppAuth Android code sample.
+Previously we discussed <Link href='/posts/final-desktop-app-coding-key-points'>Coding Key Points</Link> for the final desktop code sample. Next we will get a basic Android OAuth setup working, by running the AppAuth Android code sample.
 
 ### Step 1: Install Android Studio
 
@@ -86,6 +86,8 @@ After login you will be returned to the app, which displays information about to
 ![logged in](/images/460/logged-in.jpg)
 
 To get the refresh token on some authorization servers, an additional scope called *offline_access* may need to be specified in both the OAuth client registration and the app’s JSON configuration.
+
+At the time of writing, you will get an error if you try to use the *Sign Out* option when using AWS Cognito, since it uses a vendor specific logout solution, as described in the <Link href='/posts/logout'>Logout</Link> post.
 
 ### Where Are We?
 

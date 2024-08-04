@@ -27,6 +27,15 @@ This involves an HTTP redirect to the *End Session Endpoint*, and the request me
 | <span style={{color:'green'}}>**post_logout_redirect_uri**</span> | An unsecured location to return to in the app once logout completes |
 | <span style={{color:'green'}}>**state**</span> | An optional field to allow the response to be correlated to the request |
 
+### Vendor Specific Behaviour
+
+To add to the complexity, some authorization servers use non-standard logout solutions. At the time of writing this includes AWS Cognito, which requires a non-standard parameter name. Although this is a minor difference, it prevents the logout function of OAuth libraries from working, so your code needs to implement a workaround.
+
+| Field | Description |
+| ----- | ----------- |
+| <span style={{color:'green'}}>**client_id**</span> | The client can send its ID to identify itself to the authorization server |
+| <span style={{color:'green'}}>**logout_uri**</span> | The *post_logout_redirect_uri* must be provided in a parameter with a different name |
+
 ### Allowed Post Logout Redirect URIs
 
 Some providers do not allow post logout redirect URIs to include a hash location so you may instead need to redirect to a small logout HTML page, then manage this redirect within the app. The next SPA code example will follow this approach:
