@@ -137,6 +137,37 @@ This will result in the following undesired behaviour, where the system browser 
 
 ![deep link failure](/images/520/deep-link-failure.jpg)
 
+
+### Fix Deep Linking Registration Failures
+
+If you experience deep linking registration failures, a quick way to get a working app is to switch to using private URI scheme based redirect URIs. Do so by updating the *mobile_config.json* file with the following settings:
+
+```json
+{
+  "app": {
+    "apiBaseUrl":             "https://api.authsamples.com/investments"
+  },
+  "oauth": {
+    "authority":              "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9",
+    "clientId":               "2vshs4gidsbpnjmsprhh607ege",
+    "redirectUri":            "com.authsamples.basicmobileapp:/callback",
+    "postLogoutRedirectUri":  "com.authsamples.basicmobileapp:/logoutcallback",
+    "scope":                  "openid profile https://api.authsamples.com/investments",
+    "userInfoEndpoint":       "https://login.authsamples.com/oauth2/userInfo",
+    "customLogoutEndpoint":   "https://login.authsamples.com/logout",
+    "deepLinkBaseUrl":        "https://mobile.authsamples.com"
+  }
+}
+```
+
+Also update *appAuthRedirectScheme* in the *app/build.gradle.kts* file as follows:
+
+```markdown
+manifestPlaceholders["appAuthRedirectScheme"] = "com.authsamples.basicmobileapp"
+```
+
+Finally, remove the *LogoutRedirectUriReceiverActivity* entry from the *AndroidManifest.xml* file. You will then be able to sign in and sign out without a dependency on deep linking registration succeeding:
+
 ### HTTP Debugging and Claimed HTTPS Schemes
 
 During development, I use an HTTP proxy as follows when I want to view OAuth or API messages for the Android app. The mobile OS only registers App Links when the app is first installed, and not when it is redeployed from Android Studio:
@@ -199,5 +230,5 @@ We have explained some infrastructure plumbing needed for our Android code sampl
 
 ### Next
 
-- Next we will describe some <Link href='/posts/'>Android Coding Key Points</Link>
+- Next we will describe some <Link href='/posts/android-coding-key-points'>Android Coding Key Points</Link>
 - For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>

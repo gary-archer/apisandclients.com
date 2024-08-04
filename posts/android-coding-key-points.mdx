@@ -367,14 +367,13 @@ At runtime the properties of AppAuth objects are set based on our OAuth configur
   },
   "oauth": {
     "authority":              "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9",
-    "userInfoEndpoint":       "https://login.authsamples.com/oauth2/userInfo",
     "clientId":               "2vshs4gidsbpnjmsprhh607ege",
-    "webBaseUrl":             "https://authsamples.com",
-    "loginRedirectPath":      "/apps/basicmobileapp/postlogin.html",
-    "postLogoutRedirectPath": "/apps/basicmobileapp/postlogout.html",
-    "scope":                  "openid profile email https://api.authsamples.com/investments",
-    "deepLinkBaseUrl":        "https://mobile.authsamples.com",
-    "customLogoutEndpoint":   "https://login.authsamples.com/logout"
+    "redirectUri":            "https://authsamples.com/apps/basicmobileapp/postlogin.html",
+    "postLogoutRedirectUri":  "https://authsamples.com/apps/basicmobileapp/postlogout.html",
+    "scope":                  "openid profile https://api.authsamples.com/investments",
+    "userInfoEndpoint":       "https://login.authsamples.com/oauth2/userInfo",
+    "customLogoutEndpoint":   "https://login.authsamples.com/logout",
+    "deepLinkBaseUrl":        "https://mobile.authsamples.com"
   }
 }
 ```
