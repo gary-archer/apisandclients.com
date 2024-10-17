@@ -1,6 +1,6 @@
 # .NET API – Code Details
 
-In our previous post we described our <Link href='/posts/net-core-api-oauth-integration'>.NET API OAuth Integration</Link>. We will now drill into some final implementation details.
+In our previous post we described our <a href='net-core-api-oauth-integration.mdx'>.NET API OAuth Integration</a>. We will now drill into some final implementation details.
 
 ### Code Structure
 
@@ -128,7 +128,7 @@ public async Task<T> ReadDataAsync<T>(string filePath)
 
 ### Logging Implementation
 
-API logging is also implemented via plumbing code, and the end goal is to enable <Link href='/posts/api-technical-support-analysis'>platform wide technical support queries by people</Link>.
+API logging is also implemented via plumbing code, and the end goal is to enable <a href='api-technical-support-analysis.mdx'>platform wide technical support queries by people</a>.
 
 <div className='smallimage'>
     <img src='../images/340/logging-classes.jpg' alt='logging classes' />
@@ -187,7 +187,7 @@ public class CompanyRepository
 }
 ```
 
-Logging classes writes to a JSON log file and, if the <Link href='/posts/log-aggregation-setup'>Log Aggregation Setup</Link> is followed, logs will automatically flow to Elasticsearch:
+Logging classes writes to a JSON log file and, if the <a href='log-aggregation-setup.mdx'>Log Aggregation Setup</a> is followed, logs will automatically flow to Elasticsearch:
 
 ![log queries](../images/340/log-queries.jpg)
 
@@ -195,7 +195,7 @@ The sample API uses fixed appenders and fixed JSON output formats. In a real API
 
 ### Error Handling Implementation
 
-The API implements our <Link href='/posts/error-handling-and-supportability'>Error Handling and Supportability</Link> design. By default all errors escape to the global exception handler, whose role is to log errors and return an error response to the caller:
+The API implements our <a href='error-handling-and-supportability.mdx'>Error Handling and Supportability</a> design. By default all errors escape to the global exception handler, whose role is to log errors and return an error response to the caller:
 
 ```csharp
 public ClientError HandleException(Exception exception, HttpContext context)
@@ -279,5 +279,5 @@ We have implemented some foundational code in .NET without any blocking issues, 
 
 ### Next
 
-- Next we will implement our <Link href='/posts/java-spring-boot-api-overview'>API Architecture in Java</Link>
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>
+- Next we will implement our <a href='java-spring-boot-api-overview.mdx'>API Architecture in Java</a>
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>

@@ -1,10 +1,10 @@
 # Java API – Overview
 
-Previously I explained the <Link href='/posts/final-nodeapi-coding-key-points'>Final .NET API Code Details</Link>, including some behaviours from this blog’s <Link href='/posts/api-journey-server-side'>API Journey – Server Side</Link> blog post. Next I provide an equivalent API in Java and Spring.
+Previously I explained the <a href='final-nodeapi-coding-key-points.mdx'>Final .NET API Code Details</a>, including some behaviours from this blog's <a href='api-journey-server-side.mdx'>API Journey - Server Side</a> blog post. Next I provide an equivalent API in Java and Spring.
 
 ### Final API Code Sample Overview
 
-This blog's API has a couple of simple endpoints that return mock data for a money-based theme of investments. The API aims to be visual and serves this blog’s apps, such as the <Link href='/posts/how-to-run-the-react-js-spa'>Final SPA</Link> below. Running both together ensures that the API is client-focused and enables you to focus on API logs that the client generates.
+This blog's API has a couple of simple endpoints that return mock data for a money-based theme of investments. The API aims to be visual and serves this blog’s apps, such as the <a href='how-to-run-the-react-js-spa.mdx'>Final SPA</a> below. Running both together ensures that the API is client-focused and enables you to focus on API logs that the client generates.
 
 ![spa and api](../images/350/spa-and-api.jpg?v=20240915)
 
@@ -65,7 +65,7 @@ Run the following command, which downloads some OpenSSL development certificates
 
 ### Step 2: Configure SSL Trust
 
-The API runs over SSL and when you run it for the first time it downloads some development certificates. To prevent SSL trust problems from tests or the browser you may need to <Link href='/posts/developer-ssl-setup'>Configure Java and Browser Trust</Link> for the root certificate at the following location. 
+The API runs over SSL and when you run it for the first time it downloads some development certificates. To prevent SSL trust problems from tests or the browser you may need to <a href='developer-ssl-setup.mdx'>Configure Java and Browser Trust</a> for the root certificate at the following location. 
 
 ```markdown
 certs/authsamples-dev.ca.crt
@@ -113,16 +113,16 @@ The test fires batches of 5 concurrent requests at a time and also intentionally
 
 ![load test](../images/350/load-test.jpg?v=20240915)
 
-The <Link href='/post/api-automated-tests'>API Automated Tests</Link> post explains how tests get user level tokens without running a full authorization code flow.
+The <a href='api-automated-tests.mdx'>API Automated Tests</a> post explains how tests get user level tokens without running a full authorization code flow.
 
 ### Step 5: Run the SPA Client
 
 You can run any of this blog's final frontend clients against the API:
 
-- <Link href='/posts/final-spa-overview'>Final SPA</Link>
-- <Link href='/posts/final-desktop-sample-overview'>Final Desktop App</Link>
-- <Link href='/posts/android-code-sample-overview'>Final Android App</Link>
-- <Link href='/posts/ios-code-sample-overview'>Final iOS App</Link>
+- <a href='final-spa-overview.mdx'>Final SPA</a>
+- <a href='final-desktop-sample-overview.mdx'>Final Desktop App</a>
+- <a href='android-code-sample-overview.mdx'>Final Android App</a>
+- <a href='ios-code-sample-overview.mdx'>Final iOS App</a>
 
 To run the final SPA as an API client, start in the API's folder, then run the SPA from a parallel folder:
 
@@ -144,8 +144,8 @@ The *run.sh* script invokes the default browser at *https://www.authsamples-dev.
 
 The API implements its security according to these two blog posts, using a JOSE library and some custom claims handling:
 
-- <Link href='/posts/jwt-access-token-validation'>JWT Access Token Validation</Link>
-- <Link href='/posts/api-authorization-design'>API Authorization Design</Link>
+- <a href='jwt-access-token-validation.mdx'>JWT Access Token Validation</a>
+- <a href='api-authorization-design.mdx'>API Authorization Design</a>
 
 The overall behaviour manages OAuth security correctly while setting up the API’s business logic with the authorization values it needs. These values may originate from multiple data sources and may not always be issued to tokens:
 
@@ -191,7 +191,7 @@ Meanwhile, the API also writes text files to its *logs* folder in a bare JSON fo
 
 ![bare logs](../images/350/bare-logs.jpg)
 
-Optionally, you can follow the <Link href='/posts/log-aggregation-setup'>Log Aggregation Setup</Link> to run a Docker-based deployment of the Elastic Stack. You can then run <Link href='/posts/api-technical-support-analysis'>Technical Support Queries</Link> against the API's logs. This would be useful in a production system, to make sense of large volumes of API requests.
+Optionally, you can follow the <a href='log-aggregation-setup.mdx'>Log Aggregation Setup</a> to run a Docker-based deployment of the Elastic Stack. You can then run <a href='api-technical-support-analysis.mdx'>Technical Support Queries</a> against the API's logs. This would be useful in a production system, to make sense of large volumes of API requests.
 
 ### Cloud Native Deployment
 
@@ -209,5 +209,5 @@ I summarised the key productivity behaviours of this blog's final APIs. This sta
 
 ### Next
 
-- I explain this blog's <Link href='/posts/spring-boot-api-oauth-integration'>Java API OAuth Integration</Link>.
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- I explain this blog's <a href='spring-boot-api-oauth-integration.mdx'>Java API OAuth Integration</a>.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.

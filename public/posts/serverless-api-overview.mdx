@@ -1,6 +1,6 @@
 # Serverless API Overview
 
-Previously we explained this blog’s <Link href='/posts/cdn-static-content-delivery'>Web Content Delivery</Link> to AWS. Next we will provide an overview of an API implemented with the [Serverless Framework](https://github.com/serverless/serverless), and show how to run its lambda functions locally.
+Previously we explained this blog’s <a href='cdn-static-content-delivery.mdx'>Web Content Delivery</a> to AWS. Next we will provide an overview of an API implemented with the [Serverless Framework](https://github.com/serverless/serverless), and show how to run its lambda functions locally.
 
 ### API Features
 
@@ -34,7 +34,7 @@ git clone https://github.com/gary-archer/oauth.apisample.serverless
 
 ### View the Code
 
-We will take a closer look at the code in a couple of posts time, but for now, notice that the code structure matches that used in all of this blog’s earlier APIs, for <Link href='/posts/api-architecture-node'>Node.js</Link>, <Link href='/posts/net-core-code-sample-overview'>.NET</Link> and <Link href='/posts/java-spring-boot-api-overview'>Java</Link>:
+We will take a closer look at the code in a couple of posts time, but for now, notice that the code structure matches that used in all of this blog’s earlier APIs, for <a href='api-architecture-node.mdx'>Node.js</a>, <a href='net-core-code-sample-overview.mdx'>.NET</a> and <a href='java-spring-boot-api-overview.mdx'>Java</a>:
 
 <div className='smallimage'>
     <img src='../images/620/code-layout.jpg' alt='code layout' />
@@ -75,7 +75,7 @@ With the Serverless Framework, these are run on a development computer using the
 
 ### Test the API
 
-Our earlier page on <Link href='/posts/api-automated-tests'>API Automated Tests</Link> covered some techniques for testing OAuth secured APIs. Providing the input for an API request is tricky, since a user level access token is required, containing a subject claim.
+Our earlier page on <a href='api-automated-tests.mdx'>API Automated Tests</a> covered some techniques for testing OAuth secured APIs. Providing the input for an API request is tricky, since a user level access token is required, containing a subject claim.
 
 The Serverless API tests use a technique of mocking the authorization server. The same [mocha](https://mochajs.org) based integration tests as the earlier Node.js API are used, with some code to wire up *sls invoke* with request and response payloads. This enables the API to be tested productively.
 
@@ -95,11 +95,11 @@ This enables the API’s OAuth security code paths to be tested productively, th
 
 In AWS it is common to read about solutions that use [Lambda Authorizers](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-jwt-authorizer.html) to implement security only at the internet entry point. Secure values such as claims are then simply forwarded to lambdas in HTTP headers, over a trusted connection.
 
-A more cutting edge security option in line with OAuth best practices is for each lambda to receive and <Link href='/posts/jwt-access-token-validation'>Validate the JWT Access Token</Link>. This also helps to keep the API’s code closer to OAuth standards.
+A more cutting edge security option in line with OAuth best practices is for each lambda to receive and <a href='jwt-access-token-validation.mdx'>Validate the JWT Access Token</a>. This also helps to keep the API’s code closer to OAuth standards.
 
 ### API Authorization
 
-The overall authorization used by the Serverless API was summarised earlier in our <Link href='/posts/api-authorization-design'>API Authorization Behaviour</Link>. The API collects both token claims and extra claims into a claims principal, then caches extra claims for future requests with the same access token:
+The overall authorization used by the Serverless API was summarised earlier in our <a href='api-authorization-design.mdx'>API Authorization Behaviour</a>. The API collects both token claims and extra claims into a claims principal, then caches extra claims for future requests with the same access token:
 
 ![claims](../images/620/claims.jpg)
 
@@ -117,13 +117,13 @@ This is awkward though, since the code becomes more complex, and the Serverless 
 
 ### Client Specific Security Differences
 
-The API serves this blog’s final frontend code samples which you can run as explained in the <Link href='/posts/quick-start'>Quick Start</Link> page. Each frontend has its own client best practices. The SPA uses *HttpOnly SameSite=strict Secure* cookies when calling the Serverless API.
+The API serves this blog’s final frontend code samples which you can run as explained in the <a href='quick-start.mdx'>Quick Start</a> page. Each frontend has its own client best practices. The SPA uses *HttpOnly SameSite=strict Secure* cookies when calling the Serverless API.
 
-The Serverless API does not contain any cookie logic though, so that its usage is identical for web and native clients. Instead, cookies during API requests are dealt with by an *OAuth Proxy* component, as described in the <Link href='/posts/spa-back-end-for-front-end'>SPA Backend for Frontend</Link> post.
+The Serverless API does not contain any cookie logic though, so that its usage is identical for web and native clients. Instead, cookies during API requests are dealt with by an *OAuth Proxy* component, as described in the <a href='spa-back-end-for-front-end.mdx'>SPA Backend for Frontend</a> post.
 
 ### API Request Logging
 
-The API uses our <Link href='/posts/effective-api-logging'>Effective API Logging</Link> design, and writes JSON logs that are shipped to Elasticsearch. When tests are run, the logging output is redirected to a *lambdatest.log* file:
+The API uses our <a href='effective-api-logging.mdx'>Effective API Logging</a> design, and writes JSON logs that are shipped to Elasticsearch. When tests are run, the logging output is redirected to a *lambdatest.log* file:
 
 ```json
 {
@@ -144,11 +144,11 @@ The API uses our <Link href='/posts/effective-api-logging'>Effective API Logging
 }
 ```
 
-In AWS these log entries are output to CloudWatch, then could be aggregated to a cloud log aggregation system, to enable <Link href='/posts/api-technical-support-analysis'>Technical Support Queries</Link> on the log data.
+In AWS these log entries are output to CloudWatch, then could be aggregated to a cloud log aggregation system, to enable <a href='api-technical-support-analysis.mdx'>Technical Support Queries</a> on the log data.
 
 ### API Supportability
 
-As for other APIs, we also implement this blog’s <Link href='/posts/error-handling-and-supportability'>Error Handling and Supportability</Link> design. One interesting behaviour is the ability to perform error rehearsal, by sending in a custom header that allows testers to *choose an API to break*.
+As for other APIs, we also implement this blog’s <a href='error-handling-and-supportability.mdx'>Error Handling and Supportability</a> design. One interesting behaviour is the ability to perform error rehearsal, by sending in a custom header that allows testers to *choose an API to break*.
 
 The final test exercises this behaviour, and results in the following log entry. The error returned to the API client includes a *fairly unique error identifier*. This enables fast lookup of API logs, to reduce problem resolution times:
 
@@ -220,5 +220,5 @@ We have explained the Serverless API’s key behaviour, which follows the same p
 
 ### Next
 
-- Next we will explain the <Link href='/posts/serverless-api-deployment'>Serverless API Deployment</Link>
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>
+- Next we will explain the <a href='serverless-api-deployment.mdx'>Serverless API Deployment</a>
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>

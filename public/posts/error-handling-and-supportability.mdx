@@ -1,6 +1,6 @@
 # Error Handling and Supportability
 
-In the previous post I explained this blog's <Link href='/posts/effective-api-logging'>Effective API Logging</Link> design. This post covers some error design patterns for APIs and clients, with a focus on *API Responses*, *API Logs*, *Error Presentation* and *Incident Resolution*.
+In the previous post I explained this blog's <a href='effective-api-logging.mdx'>Effective API Logging</a> design. This post covers some error design patterns for APIs and clients, with a focus on *API Responses*, *API Logs*, *Error Presentation* and *Incident Resolution*.
 
 ### Fast Problem Resolution
 
@@ -359,7 +359,7 @@ export class CustomHeaderMiddleware {
 
 ### Reliability Over Time
 
-Not all errors are so deterministic and occasionally software has deeper bugs that occur intermittently. The best way to deal with these is to assign them an error code, then measure them. The <Link href='/posts/api-technical-support-analysis'>Technical Support Analysis</Link> post explains how structured logs can enable a report with a breakdown of API errors by type and frequency. Once you have visibility you can plan actions for any unexpected error occurrences, such as by adding extra details to logs.
+Not all errors are so deterministic and occasionally software has deeper bugs that occur intermittently. The best way to deal with these is to assign them an error code, then measure them. The <a href='api-technical-support-analysis.mdx'>Technical Support Analysis</a> post explains how structured logs can enable a report with a breakdown of API errors by type and frequency. Once you have visibility you can plan actions for any unexpected error occurrences, such as by adding extra details to logs.
 
 ```markdown
 clientName|    apiName    |    operationName     |  statusCode   |     errorCode      |   frequency   
@@ -526,5 +526,5 @@ I explained some scalable techniques that I use in this blog when working with e
 
 ### Next
 
-- I summarise the behaviour of this blog’s <Link href='/posts/api-architecture-node'>Final Node.js API</Link>.
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- I summarise the behaviour of this blog’s <a href='api-architecture-node.mdx'>Final Node.js API</a>.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.

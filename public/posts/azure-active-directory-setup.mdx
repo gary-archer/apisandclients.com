@@ -1,10 +1,10 @@
 # Microsoft Entra ID SPA and API Setup
 
-The previous post provided some <Link href='/posts/updated-api-coding-key-points'>API Code Details</Link> for the second code sample. Next I port the code sample to [Microsoft Entra ID](https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id) and use the same libraries in the SPA and API.
+The previous post provided some <a href='updated-api-coding-key-points.mdx'>API Code Details</a> for the second code sample. Next I port the code sample to [Microsoft Entra ID](https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id) and use the same libraries in the SPA and API.
 
 ### Main Objective
 
-The goal of the Entra ID code sample is to match the <Link href='/posts/improved-spa-code-sample-overview'>Second SPA and API Code Sample</Link>, ideally with exactly the same code. Only the configuration should need changing:
+The goal of the Entra ID code sample is to match the <a href='improved-spa-code-sample-overview.mdx'>Second SPA and API Code Sample</a>, ideally with exactly the same code. Only the configuration should need changing:
 
 | Area | Description |
 | ---- | ----------- |
@@ -20,9 +20,9 @@ The components remain those that I used with this blog's default authorization s
 
 ### SPAs in 2021
 
-This sample uses the traditional SPA solution, with OpenID Connect implemented solely in JavaScript. In 2021 the best practice is to upgrade to a <Link href='/posts/spa-back-end-for-front-end'>Backend for Frontend</Link> approach.
+This sample uses the traditional SPA solution, with OpenID Connect implemented solely in JavaScript. In 2021 the best practice is to upgrade to a <a href='spa-back-end-for-front-end.mdx'>Backend for Frontend</a> approach.
 
-The traditional SPA flow remains useful to represent a pure SPA architecture and to learn about Entra ID integration. This blog’s <Link href='/posts/final-spa-overview'>Final SPA</Link> provides a BFF based solution, but requires a more complex flow.
+The traditional SPA flow remains useful to represent a pure SPA architecture and to learn about Entra ID integration. This blog’s <a href='final-spa-overview.mdx'>Final SPA</a> provides a BFF based solution, but requires a more complex flow.
 
 ### Code Download
 
@@ -129,7 +129,7 @@ I made my personal account the owner of this application registration and again 
 
 ### Step 6. Populate Custom User Attributes
 
-Next I defined two custom attributes to store against user accounts in the identity data, to match the setup from the <Link href='/posts/user-data'>User Data</Link> post. Once populated against user accounts, these attributes are included in access tokens issued to the SPA client:
+Next I defined two custom attributes to store against user accounts in the identity data, to match the setup from the <a href='user-data.mdx'>User Data</a> post. Once populated against user accounts, these attributes are included in access tokens issued to the SPA client:
 
 | User Attribute | Description |
 | -------------- | ----------- |
@@ -231,11 +231,11 @@ For the API configuration, replace the *Tenant ID* with your own value, and also
 }
 ```
 
-This configuration is equivalent to that of the earlier <Link href='/posts/improved-spa-code-sample-overview'>Updated SPA and API</Link>, which ran against AWS Cognito. The Graph details in the configuration are explained in the next post.
+This configuration is equivalent to that of the earlier <a href='improved-spa-code-sample-overview.mdx'>Updated SPA and API</a>, which ran against AWS Cognito. The Graph details in the configuration are explained in the next post.
 
 ### Step 11. Configure DNS
 
-Update the hosts file on your computer to include this blog’s local development domains, described in the earlier <Link href='/posts/oauth-infrastructure-setup'>OAuth Infrastructure Setup</Link> post:
+Update the hosts file on your computer to include this blog’s local development domains, described in the earlier <a href='oauth-infrastructure-setup.mdx'>OAuth Infrastructure Setup</a> post:
 
 ```markdown
 127.0.0.1 www.authsamples-dev.com api.authsamples-dev.com
@@ -251,7 +251,7 @@ Next run the following script, which downloads some  OpenSSL generated certifica
 
 ### Step 13. Configure SSL Trust
 
-The API and web static content hosting uses SSL so you must ensure that your browser trusts the root certificate at the below location, as explained in the <Link href='/posts/developer-ssl-setup'>SSL Trust Configuration</Link> post.
+The API and web static content hosting uses SSL so you must ensure that your browser trusts the root certificate at the below location, as explained in the <a href='developer-ssl-setup.mdx'>SSL Trust Configuration</a> post.
 
 ```markdown
 api/certs/authsamples-dev.ca.crt
@@ -273,5 +273,5 @@ I have provided a working Entra ID setup and in the next post I explain further 
 
 ### Next
 
-- I  walk through the <Link href='/posts/azure-ad-troubleshooting'>Entra ID SPA and API OAuth Flow</Link>.
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- I  walk through the <a href='azure-ad-troubleshooting.mdx'>Entra ID SPA and API OAuth Flow</a>.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.

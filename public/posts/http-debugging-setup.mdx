@@ -1,6 +1,6 @@
 # HTTP Proxy Setup
 
-Previously I explained this blog's <Link href='/posts/web-technology-setup'>Web Technology Setup</Link> for modern frontend development. Next I show how developers can visualize OAuth-related request and response messages.
+Previously I explained this blog's <a href='web-technology-setup.mdx'>Web Technology Setup</a> for modern frontend development. Next I show how developers can visualize OAuth-related request and response messages.
 
 ### Productive Troubleshooting
 
@@ -76,7 +76,7 @@ Next, I perform any environment specific configuration, explained in the followi
 
 ### Debug the Initial SPA and API
 
-First, edit the API configuration for this blog’s <Link href='/posts/basicspa-execution'>initial SPA and API code sample</Link> and set *useProxy=true*:
+First, edit the API configuration for this blog’s <a href='basicspa-execution.mdx'>initial SPA and API code sample</a> and set *useProxy=true*:
 
 ```json
 {
@@ -191,7 +191,7 @@ export class HttpProxy {
 
 ### Proxy Settings for .NET APIs
 
-In later posts I provide an <Link href='/posts/net-core-code-sample-overview'>OAuth Secured .NET API</Link>. Outbound calls use a custom *HttpClientHandler* to support HTTP proxy integration:
+In later posts I provide an <a href='net-core-code-sample-overview.mdx'>OAuth Secured .NET API</a>. Outbound calls use a custom *HttpClientHandler* to support HTTP proxy integration:
 
 ```csharp
 public sealed class HttpProxy
@@ -251,7 +251,7 @@ public async Task<IEnumerable<Claim>> GetUserInfoAsync(string accessToken)
 
 ### Proxy Settings for Java APIs
 
-In later posts I provide an <Link href='/posts/java-spring-boot-api-overview'>OAuth Secured Java API</Link>. You can activate the proxy with standard system properties at startup, based on the API’s configuration settings. For HTTP URLs the properties use an *http* prefix, and for HTTPS URLs they use an *https* prefix:
+In later posts I provide an <a href='java-spring-boot-api-overview.mdx'>OAuth Secured Java API</a>. You can activate the proxy with standard system properties at startup, based on the API’s configuration settings. For HTTP URLs the properties use an *http* prefix, and for HTTPS URLs they use an *https* prefix:
 
 ```java
 private void configureHttpDebugging(final ApiConfiguration configuration) {
@@ -274,7 +274,7 @@ private void configureHttpDebugging(final ApiConfiguration configuration) {
 
 ### Proxy Settings for Electron Desktop Apps
 
-In later posts I use [Electron](https://electronjs.org/) to develop <Link href='/posts/desktop-apps-overview'>OAuth-Secured Cross Platform Desktop Apps</Link>, where there are two code areas:
+In later posts I use [Electron](https://electronjs.org/) to develop <a href='desktop-apps-overview.mdx'>OAuth-Secured Cross Platform Desktop Apps</a>, where there are two code areas:
 
 | Area | Proxy Behaviour |
 | ---- | --------------- |
@@ -312,8 +312,8 @@ openssl s_client -connect api.authsamples-dev.com:443
 
 Use of HTTP proxy tools for mobile apps is more intricate, involving quirks of both simulators and devices. I explain the techniques that I use in these later posts:
 
-- <Link href='/posts/android-https-debugging'>Android HTTPS Debugging</Link>
-- <Link href='/posts/ios-https-debugging'>iOS HTTPS Debugging</Link>
+- <a href='android-https-debugging.mdx'>Android HTTPS Debugging</a>
+- <a href='ios-https-debugging.mdx'>iOS HTTPS Debugging</a>
 
 ### Advanced Features
 
@@ -333,5 +333,5 @@ I showed how to use an HTTP proxy tool to capture HTTP/S messages from clients a
 
 ### Next
 
-- I explain how to manage <Link href='/posts/developer-ssl-setup'>SSL Trust Configuration</Link> during development.
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- I explain how to manage <a href='developer-ssl-setup.mdx'>SSL Trust Configuration</a> during development.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.

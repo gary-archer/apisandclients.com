@@ -1,6 +1,6 @@
 # API Technical Support Analysis
 
-Previously I provided a <Link href='/posts/log-aggregation-setup'>Log Aggregation Setup</Link> to deploy tooling that enables log queries. This post shows how different technical stakeholders could then query the log aggregation system productively to support APIs. You could enable such a solution with this blog's <Link href='/posts/effective-api-logging'>Effective API Logging</Link> design.
+Previously I provided a <a href='log-aggregation-setup.mdx'>Log Aggregation Setup</a> to deploy tooling that enables log queries. This post shows how different technical stakeholders could then query the log aggregation system productively to support APIs. You could enable such a solution with this blog's <a href='effective-api-logging.mdx'>Effective API Logging</a> design.
 
 If you run an API and client you can use the client to initiate multiple requests to the API, then use the Kibana system to query the API logs you generate. The main focus of this post is control over log data, so I only use the *Dev Tools* console. I consider log queries for three roles of log user: *DevOps*, *Testers* and *Developers*.
 
@@ -350,7 +350,7 @@ When a new person joins a development team, they can run a client to quickly lea
 
 ### 3.3. Concurrency Testing
 
-Sometimes APIs are coded with concurrency bugs. This blog's final APIs include a <Link href='/posts/api-automated-tests'>basic load test</Link> that fires many API requests in concurrent batches and intentionally send some requests with invalid input, to rehearse API errors:
+Sometimes APIs are coded with concurrency bugs. This blog's final APIs include a <a href='api-automated-tests.mdx'>basic load test</a> that fires many API requests in concurrent batches and intentionally send some requests with invalid input, to rehearse API errors:
 
 ![load test](../images/400/load-test.jpg)
 
@@ -358,7 +358,7 @@ If a load test identifies any multi-threaded bugs, you can use the same query te
 
 ### 3.4. Error Rehearsal
 
-API developers are sometimes *on call* to help resolve production incidents. You take most of the pain out of this process when you do early rehearsal of failure scenarios. The <Link href='/posts/error-handling-and-supportability'>Error Handling and Supportability</Link> post explains some techniques.
+API developers are sometimes *on call* to help resolve production incidents. You take most of the pain out of this process when you do early rehearsal of failure scenarios. The <a href='error-handling-and-supportability.mdx'>Error Handling and Supportability</a> post explains some techniques.
 
 Rehearsal often involves throwing exceptions temporarily, at various places in the API code, after which you check API logs and ensure that the logged details explain the cause in a clear way. Such tests should be done as a part of normal coding.
 
@@ -368,5 +368,5 @@ This blog's final APIs and clients have a strong focus on supportability. You ge
 
 ### Next
 
-- I begin a new theme by discussing <Link href='/posts/native-architecture-goals'>Native Architecture Goals</Link>.
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- I begin a new theme by discussing <a href='native-architecture-goals.mdx'>Native Architecture Goals</a>.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.

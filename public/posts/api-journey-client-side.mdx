@@ -1,11 +1,11 @@
 # API Journey – Client Side
 
-Previously I summarised some backend technical behaviours in <Link href='/posts/api-journey-server-side'>API Journey – Server Side</Link>. Next I summarize some end-to-end technical behaviours for OAuth-secured applications, which this blog’s final frontend code samples implement in multiple technologies:
+Previously I summarised some backend technical behaviours in <a href='api-journey-server-side.mdx'>API Journey – Server Side</a>. Next I summarize some end-to-end technical behaviours for OAuth-secured applications, which this blog’s final frontend code samples implement in multiple technologies:
 
-- <Link href='/posts/final-spa-overview'>Final SPA</Link>
-- <Link href='/posts/final-desktop-sample-overview'>Final Desktop App</Link>
-- <Link href='/posts/android-code-sample-overview'>Final Android App</Link>
-- <Link href='/posts/ios-code-sample-overview'>Final iOS App</Link>
+- <a href='final-spa-overview.mdx'>Final SPA</a>
+- <a href='final-desktop-sample-overview.mdx'>Final Desktop App</a>
+- <a href='android-code-sample-overview.mdx'>Final Android App</a>
+- <a href='ios-code-sample-overview.mdx'>Final iOS App</a>
 
 ### Configuration
 
@@ -91,7 +91,7 @@ The API uses the following user attributes and frontend views visualise the use 
 | Name | Clients download data from the OpenID Connect userinfo endpoint, then display the *given_name* and *family_name* fields. |
 | Title | The title is an example product-specific user attribute which clients display in a tooltip. |
 
-This use of claims is similar to that in any moderately complex real-world system, with some <Link href='/posts/user-data'>user attributes</Link> stored in the identity data and others in the business data. Clients and APIs operate on both types of user attribute, in a way that you can easily extend.
+This use of claims is similar to that in any moderately complex real-world system, with some <a href='user-data.mdx'>user attributes</a> stored in the identity data and others in the business data. Clients and APIs operate on both types of user attribute, in a way that you can easily extend.
 
 ### Views, Models and Data Loading
 
@@ -205,7 +205,7 @@ For a desktop client, the app renders a *login in progress* window, while the us
 
 After login, the frontend client has an API message credential and can make API requests. The final SPA transports access tokens using cookies that expire when the user closes all browser windows. Native apps instead save tokens using operating system secure storage, to avoid a re-login on every application restart.
 
-Although I only demonstrate password logins, use of a code flow means that all of this blog's clients support <Link href='/posts/federated-logins'>any form of user authentication</Link> that the authorization server supports.  Changing authentication should usually require zero code changes to applications.
+Although I only demonstrate password logins, use of a code flow means that all of this blog's clients support <a href='federated-logins.mdx'>any form of user authentication</a> that the authorization server supports.  Changing authentication should usually require zero code changes to applications.
 
 ### Concurrent API Requests
 
@@ -289,7 +289,7 @@ These commands initiate views which in turn initiate API requests. APIs return 4
 
 ### Clients and APIs are Supportable
 
-Clients and APIs follow this blog’s approach to <Link href='/posts/error-handling-and-supportability'>Error Handling and Supportability</Link>. API or OAuth requests could fail, in which case the view renders an *Error Summary* link. You can rehearse API 500 errors by long-pressing the *Reload Data* button for a few seconds:
+Clients and APIs follow this blog’s approach to <a href='error-handling-and-supportability.mdx'>Error Handling and Supportability</a>. API or OAuth requests could fail, in which case the view renders an *Error Summary* link. You can rehearse API 500 errors by long-pressing the *Reload Data* button for a few seconds:
 
 ![error summary](../images/270/error-summary.jpg?v=20240911)
 
@@ -297,7 +297,7 @@ Clicking an *Error Summary* link invokes an *Error Details* dialog that provides
 
 ![error detail](../images/270/error-detail.jpg?v=20240911)
 
-The *API Session ID* shown in the browser is nothing to do with OAuth or security. Instead, it enables a technical user of the SPA to query the API logs their session generates. See the <Link href='/posts/api-technical-support-analysis'>Technical Support Analysis</Link> post for details.
+The *API Session ID* shown in the browser is nothing to do with OAuth or security. Instead, it enables a technical user of the SPA to query the API logs their session generates. See the <a href='api-technical-support-analysis.mdx'>Technical Support Analysis</a> post for details.
 
 ### Clients Handle Advanced Failures
 
@@ -329,5 +329,5 @@ I summarised a non-functional journey for clients, where OAuth does not create t
 
 ### Next
 
-- Next I explain this blog’s <Link href='/posts/effective-api-logging'>Effective API Logging</Link> design.
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- Next I explain this blog’s <a href='effective-api-logging.mdx'>Effective API Logging</a> design.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.

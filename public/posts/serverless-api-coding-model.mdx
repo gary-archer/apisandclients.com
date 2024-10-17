@@ -1,6 +1,6 @@
 # Serverless API Code Details
 
-Previously I described this blog’s <Link href='/posts/serverless-api-deployment'>Serverless API Deployment</Link>. Next we will explain how we have coded this blog’s lambda based APIs, to include the behaviours from this blog’s <Link href='/posts/api-journey-server-side'>API Journey – Server Side</Link> blog post.
+Previously I described this blog’s <a href='serverless-api-deployment.mdx'>Serverless API Deployment</a>. Next we will explain how we have coded this blog’s lambda based APIs, to include the behaviours from this blog's <a href='api-journey-server-side.mdx'>API Journey – Server Side</a> blog post.
 
 ### Portable Code
 
@@ -144,7 +144,7 @@ In AWS, the entire API is spun up on every single HTTP request. There is no need
 
 ### JWT Access Token Validation
 
-Previously we explained this blog’s approach to <Link href='/posts/jwt-access-token-validation'>JWT Access Token Validation</Link>, which involves caching the token signing public keys in-memory. For the Serverless API I needed to provide a custom key retriever to the JOSE library:
+Previously we explained this blog’s approach to <a href='jwt-access-token-validation.mdx'>JWT Access Token Validation</a>, which involves caching the token signing public keys in-memory. For the Serverless API I needed to provide a custom key retriever to the JOSE library:
 
 ```typescript
 const result = await jwtVerify(accessToken, this._jwksRetriever.getKey, options);
@@ -212,7 +212,7 @@ export class AwsCache implements Cache {
 
 ### OAuth Middleware Customisation
 
-The API authorizes using this blog’s <Link href='/posts/api-authorization-design'>API Authorization Behaviour</Link>. This involves looking up and caching the following extra claims when an access token is first received.
+The API authorizes using this blog’s <a href='api-authorization-design.mdx'>API Authorization Behaviour</a>. This involves looking up and caching the following extra claims when an access token is first received.
 
 ```typescript
 export class SampleExtraClaims extends ExtraClaims {
@@ -221,7 +221,7 @@ export class SampleExtraClaims extends ExtraClaims {
 }
 ```
 
-The earlier <Link href='/posts/updated-api-coding-key-points'>Updated API Code Sample</Link> blog post described how this was implemented in Node.js. To cache extra authorization values not included in the access token, the *AwsCache* class is again used.
+The earlier <a href='updated-api-coding-key-points.mdx'>Updated API Code Sample</a> blog post described how this was implemented in Node.js. To cache extra authorization values not included in the access token, the *AwsCache* class is again used.
 
 Although DynamoDB caching works well enough for my demo purposes, it would be suboptimal for a real company, and also adds to code complexity. The ability to easily cache data in-memory between requests is an important API behaviour.
 
@@ -301,5 +301,5 @@ We have a productive setup for our cloud API, with modern techniques for coding,
 
 ### Next
 
-- Next we will discuss some future <Link href='/posts/cloud--native-updates'>Cloud Native Updates</Link> to this blog
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>
+- Next we will discuss some future <a href='cloud--native-updates.mdx'>Cloud Native Updates</a> to this blog
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>

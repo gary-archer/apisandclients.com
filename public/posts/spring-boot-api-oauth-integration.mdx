@@ -1,6 +1,6 @@
-# Java API – OAuth Integration
+# Java API - OAuth Integration
 
-In our previous post we explained how to run this blog’s <Link href='/posts/java-spring-boot-api-overview'>Final Java Code Sample</Link> and explained its main behaviours. Next we will explain the main  details of the OAuth integration.
+In our previous post we explained how to run this blog's <a href='java-spring-boot-api-overview.mdx'>Final Java Code Sample</a> and explained its main behaviours. Next we will explain the main  details of the OAuth integration.
 
 ### Spring API Defaults
 
@@ -137,7 +137,7 @@ In this blog’s architecture, web specific concerns are not dealt with in APIs.
 
 ### OAuth and Claims Code
 
-A number of small classes are used to implement the desired behaviour from this blog’s <Link href='/posts/api-authorization-design'>API Authorization Design</Link>. The main work is to validate the JWT received in the HTTP request, then return a *ClaimsPrincipal* that is useful to the rest of the API’s code.
+A number of small classes are used to implement the desired behaviour from this blog’s <a href='api-authorization-design.mdx'>API Authorization Design</a>. The main work is to validate the JWT received in the HTTP request, then return a *ClaimsPrincipal* that is useful to the rest of the API’s code.
 
 <div className='smallimage'>
     <img src='../images/360/oauth-classes.jpg' alt='oauth classes' />
@@ -287,7 +287,7 @@ If so, this is one possible way to ensure a stable access token and avoid needin
 
 ### OAuth Error Responses
 
-The API implements this blog’s <Link href='/posts/error-handling-and-supportability'>Error Handling Design</Link>, starting by handling invalid tokens in the standard way. We can simulate a 401 error by clicking our UI’s *Expire Access Token* button followed by the *Reload Data* button:
+The API implements this blog’s <a href='error-handling-and-supportability.mdx'>Error Handling Design</a>, starting by handling invalid tokens in the standard way. We can simulate a 401 error by clicking our UI’s *Expire Access Token* button followed by the *Reload Data* button:
 
 ![expiry testing](../images/360/expiry-testing.jpg)
 
@@ -307,7 +307,7 @@ In total the following security related HTTP status codes may be returned:
 | 404 | A *Not Found for User* error is returned if a resource is requested that domain specific claims do not allow |
 | 500 | A technical problem during OAuth processing, such as a network error downloading JWKS keys |
 
-A 500 error is shown below in an <Link href='/posts/http-debugging-setup'>HTTP Proxy Tool</Link>, and this type of error includes additional fields to help enable fast problem resolution:
+A 500 error is shown below in an <a href='http-debugging-setup.mdx'>HTTP Proxy Tool</a>, and this type of error includes additional fields to help enable fast problem resolution:
 
 ![500 error](../images/360/500-error.jpg)
 
@@ -346,7 +346,7 @@ API logs include details about OAuth errors, which helps when there is a configu
 }
 ```
 
-Once a JWT is validated, its generated subject claim, most commonly a UUID, is also written to logs. This can potentially help to track users in benign ways, for technical support purposes. This requires care, and is discussed further in the <Link href='/posts/effective-api-logging'>Effective API Logging</Link> post.
+Once a JWT is validated, its generated subject claim, most commonly a UUID, is also written to logs. This can potentially help to track users in benign ways, for technical support purposes. This requires care, and is discussed further in the <a href='effective-api-logging.mdx'>Effective API Logging</a> post.
 
 ### Where Are We?
 
@@ -354,5 +354,5 @@ We have implemented Java API Security in a requirements first manner, to impleme
 
 ### Next
 
-- Next we will describe other details of our <Link href='/posts/spring-boot-api-coding-model'>Java API Code Details</Link>
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>
+- Next we will describe other details of our <a href='spring-boot-api-coding-model.mdx'>Java API Code Details</a>
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>

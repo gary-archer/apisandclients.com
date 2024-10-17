@@ -1,6 +1,6 @@
 # .NET API – OAuth Integration
 
-In our previous post we explained how to run this blog’s <Link href='/posts/net-core-code-sample-overview'>Final .NET API</Link> and its main behaviours. Next we will explain the custom OAuth integration.
+In our previous post we explained how to run this blog’s <a href='net-core-code-sample-overview.mdx'>Final .NET API</a> and its main behaviours. Next we will explain the custom OAuth integration.
 
 ### .NET API Defaults
 
@@ -55,8 +55,8 @@ In .NET our OAuth code will follow the same phases that are used by all of this 
 
 | Task | Description |
 | ---- | ----------- |
-| <Link href='/posts/jwt-access-token-validation'>JWT Access Token Validation</Link> | Downloading a JSON Web Key Set and verifying received JWTs |
-| <Link href='/posts/api-authorization-design'>API Authorization</Link> | Creating a ClaimsPrincipal that includes useful claims, then applying them during authorization |
+| <a href='jwt-access-token-validation.mdx'>JWT Access Token Validation</a> | Downloading a JSON Web Key Set and verifying received JWTs |
+| <a href='api-authorization-design.mdx'>API Authorization</a> | Creating a ClaimsPrincipal that includes useful claims, then applying them during authorization |
 
 ### Your .NET Secured API?
 
@@ -304,7 +304,7 @@ If so, this is one possible way to ensure a stable access token and avoid needin
 
 ### OAuth Error Responses
 
-The API implements this blog’s <Link href='/posts/error-handling-and-supportability'>Error Handling Design</Link>, starting by handling invalid or expired tokens. In a test client we can simulate a 401 error by clicking *Expire Access Token* followed by *Reload Data*:
+The API implements this blog’s <a href='error-handling-and-supportability.mdx'>Error Handling Design</a>, starting by handling invalid or expired tokens. In a test client we can simulate a 401 error by clicking *Expire Access Token* followed by *Reload Data*:
 
 ![expiry testing](../images/330/expiry-testing.jpg)
 
@@ -324,7 +324,7 @@ In total the following security related HTTP status codes may be returned:
 | 404 | A *Not Found for User* error is returned if a resource is requested that claims do not allow |
 | 500 | A technical problem during OAuth processing, such as a network error downloading JWKS keys |
 
-A 500 error is shown below, and developers can view this type of request by following the <Link href='/posts/http-debugging-setup'>HTTP Proxy</Link> tutorial:
+A 500 error is shown below, and developers can view this type of request by following the <a href='http-debugging-setup.mdx'>HTTP Proxy</a> tutorial:
 
 ![500 error](../images/330/500-error.jpg)
 
@@ -363,7 +363,7 @@ API logs include details about OAuth errors, which helps when there is a configu
 }
 ```
 
-Once a JWT is validated, its generated subject claim, most commonly a UUID, is also written to logs. This can potentially help to track users in benign ways, for technical support purposes. This requires care, and is discussed further in the <Link href='/posts/effective-api-logging'>Effective API Logging</Link> post.
+Once a JWT is validated, its generated subject claim, most commonly a UUID, is also written to logs. This can potentially help to track users in benign ways, for technical support purposes. This requires care, and is discussed further in the <a href='effective-api-logging.mdx'>Effective API Logging</a> post.
 
 ### Where Are We?
 
@@ -371,5 +371,5 @@ We have implemented .NET API Security in a requirements first manner, to enable 
 
 ### Next
 
-- Next I provide a <Link href='/posts/net-core-api-coding-model'>.NET API Code Details</Link>.
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- Next I provide a <a href='net-core-api-coding-model.mdx'>.NET API Code Details</a>.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.

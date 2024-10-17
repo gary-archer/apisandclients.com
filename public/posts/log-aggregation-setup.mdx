@@ -1,6 +1,6 @@
 # Elasticsearch Log Aggregation Setup
 
-Previously we ran some <Link href='/posts/api-automated-tests'>API Automated Tests</Link>, and next we will deploy a local Docker-based log aggregation system. This enables logs to flow from APIs during development.
+Previously we ran some <a href='api-automated-tests.mdx'>API Automated Tests</a>, and next we will deploy a local Docker-based log aggregation system. This enables logs to flow from APIs during development.
 
 ### API Logging Output
 
@@ -58,7 +58,7 @@ Next run the following script to download a development SSL certificate for this
 ./deployment/docker-local/downloadcerts.sh
 ```
 
-Then follow instructions to configure <Link href='/posts/developer-ssl-setup'>Browser SSL Trust</Link> for the following root certificate, so that we can run the Kibana UI later:
+Then follow instructions to configure <a href='developer-ssl-setup.mdx'>Browser SSL Trust</a> for the following root certificate, so that we can run the Kibana UI later:
 
 ```markdown
 ./deployment/docker-local/certs/authsamples-dev.ca.crt
@@ -166,8 +166,8 @@ I sometimes use log aggregation when developing this blog’s secured components
 
 | Client | Behaviour |
 | ------ | --------- |
-| API | The <Link href='/posts/api-architecture-node'>Final API</Link> post explains how to run a local API setup |
-| SPA | The <Link href='/posts/how-to-run-the-react-js-spa'>Final SPA</Link> post explains how to point to a local API |
+| API | The <a href='api-architecture-node.mdx'>Final API</a> post explains how to run a local API setup |
+| SPA | The <a href='how-to-run-the-react-js-spa.mdx'>Final SPA</a> post explains how to point to a local API |
 
 To run these components, ensure that you have added the following entries to the hosts file on your local computer. In this configuration, the SPA calls a backend for frontend using cookies, and an access token request is forwarded to the local API:
 
@@ -395,5 +395,5 @@ We have deployed the Elastic Stack on a local development computer, and the setu
 
 ### Next
 
-- Next we will run some API <Link href='/posts/api-technical-support-analysis'>Technical Support Analysis</Link> queries
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>
+- Next we will run some API <a href='api-technical-support-analysis.mdx'>Technical Support Analysis</a> queries
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>

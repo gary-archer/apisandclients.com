@@ -48,6 +48,12 @@ if [ $? -ne 0 ]; then
 fi
 
 #
+# Delete files I do not want to deploy to the web host
+#
+rm dist/posts/*.mdx
+rm dist/index.html
+
+#
 # Delete any existing files in the S3 bucket
 #
 aws s3 rm "s3://$BUCKET_NAME" --recursive

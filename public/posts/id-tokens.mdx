@@ -1,6 +1,6 @@
 # ID Tokens
 
-Previously I explained some <Link href='/posts/logout'>Logout</Link> behaviours. I finish the discussion on SPA session management by describing the role of ID tokens, which are designed to be read by clients rather than APIs.
+Previously I explained some <a href='logout.mdx'>Logout</a> behaviours. I finish the discussion on SPA session management by describing the role of ID tokens, which are designed to be read by clients rather than APIs.
 
 ### ID Token Role
 
@@ -14,7 +14,7 @@ This blog’s code samples use AWS Cognito as their default authorization server
 
 ### Receiving ID Tokens
 
-An earlier post explained some <Link href='/posts/basicspa-oauthworkflow'>Initial OAuth Messages</Link>. Clients receive an authorization code in a front channel browser response, then send in a back channel HTTPS POST to the token endpoint of the authorization server, to swap the code for tokens.
+An earlier post explained some <a href='basicspa-oauthworkflow.mdx'>Initial OAuth Messages</a>. Clients receive an authorization code in a front channel browser response, then send in a back channel HTTPS POST to the token endpoint of the authorization server, to swap the code for tokens.
 
 In 2021 it is recommended to avoid receiving ID tokens in browser responses, and receive all tokens on the back channel, in the authorization code grant response. You ensure this when you run an authorization code flow with *response_type=code*.
 
@@ -49,5 +49,5 @@ I summarised a few points about ID tokens, which provide verifiable proof of the
 
 ### Next
 
-- I explain this blog's <Link href='/posts/improved-spa-code-sample-overview'>Updated SPA and API Code Sample</Link>.
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- I explain this blog's <a href='improved-spa-code-sample-overview.mdx'>Updated SPA and API Code Sample</a>.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.

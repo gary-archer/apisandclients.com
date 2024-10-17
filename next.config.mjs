@@ -14,6 +14,15 @@ const nextConfig = {
     images: {
         unoptimized: true,
     },
+    redirects: async () => {
+        return [
+            {
+                source: '/',
+                destination: '/posts/home',
+                permanent: true,
+            },
+        ];
+    },
 };
 
 const mdxConfig = {

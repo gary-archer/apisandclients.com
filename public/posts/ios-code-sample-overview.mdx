@@ -1,6 +1,6 @@
 # iOS Code Sample – Overview
 
-Previously we covered <Link href='/posts/android-coding-key-points'>Android Code Details</Link> for our initial mobile app. Next we will provide the same OAuth secured app for iOS, using Xcode and SwiftUI, with AppAuth libraries and a modern coding style. The app connects to <Link href='/posts/cloud-hosting'>HTTPS endpoints hosted in AWS</Link>, so that you only need to run the mobile app's code to get a fully integrated solution.
+Previously we covered <a href='android-coding-key-points.mdx'>Android Code Details</a> for our initial mobile app. Next we will provide the same OAuth secured app for iOS, using Xcode and SwiftUI, with AppAuth libraries and a modern coding style. The app connects to <a href='cloud-hosting.mdx'>HTTPS endpoints hosted in AWS</a>, so that you only need to run the mobile app's code to get a fully integrated solution.
 
 ### Features
 
@@ -21,7 +21,7 @@ The code for the mobile app can be downloaded from [here](https://github.com/gar
 
 ### Basic Mobile User Interface
 
-The Mobile UI will provide the same <Link href='/posts/api-journey-client-side'>API Client Journey</Link> as for earlier Web UIs, with a list view as the home page:
+The Mobile UI will provide the same <a href='api-journey-client-side.mdx'>API Client Journey</a> as for earlier Web UIs, with a list view as the home page:
 
 <div className='smallimage'>
     <img src='../images/540/home-view.jpg?v=20240713' alt='home view' />
@@ -128,7 +128,7 @@ The session buttons help to ensure that navigation is reliable within the app as
 
 ### Logout
 
-The sample also implements <Link href='/posts/logout'>Open ID Connect RP-Initiated Logout</Link>, to remove the authorization server’s session cookie. In a real-world app a logout capability enables you to test data access for different users with different settings or permissions. One annoyance is that the ASWebAuthenticationSession indicates *Sign In* during the logout redirect, rather then *Sign Out*:
+The sample also implements <a href='logout.mdx'>Open ID Connect RP-Initiated Logout</a>, to remove the authorization server’s session cookie. In a real-world app a logout capability enables you to test data access for different users with different settings or permissions. One annoyance is that the ASWebAuthenticationSession indicates *Sign In* during the logout redirect, rather then *Sign Out*:
 
 <div className='smallimage'>
     <img src='../images/540/aswebauthenticationsession-start.jpg?v=20240914' alt='logout prompt' />
@@ -215,5 +215,5 @@ We have described the desired functionality, and have described how to overcome 
 
 ### Next
 
-- Next we will cover <Link href='/posts/how-to-run-the-ios-code-sample'>How to Run the iOS Code Sample</Link>
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>
+- Next we will cover <a href='how-to-run-the-ios-code-sample.mdx'>How to Run the iOS Code Sample</a>
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>

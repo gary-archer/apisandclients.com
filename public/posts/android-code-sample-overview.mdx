@@ -1,6 +1,6 @@
 # Android Code Sample – Overview
 
-Previously we covered our <Link href='/posts/ios-https-debugging'>iOS HTTPS Debugging Setup</Link> and next we will describe the behaviour of our main Android code sample, which is a *Single Activity App* coded in Kotlin. The app connects to <Link href='/posts/cloud-hosting'>HTTPS endpoints hosted in AWS</Link>, so that you only need to run the mobile app's code to get a fully integrated solution.
+Previously we covered our <a href='ios-https-debugging.mdx'>iOS HTTPS Debugging Setup</a> and next we will describe the behaviour of our main Android code sample, which is a *Single Activity App* coded in Kotlin. The app connects to <a href='cloud-hosting.mdx'>HTTPS endpoints hosted in AWS</a>, so that you only need to run the mobile app's code to get a fully integrated solution.
 
 ### Features
 
@@ -10,7 +10,7 @@ The following table summarises the main features of the code sample, some of whi
 | ------- | ----------- |
 | AppAuth Integration | We will implement the essential OpenID Connect behaviour by integrating the standard libraries |
 | Claimed HTTPS Schemes | The login result is returned to the app over HTTPS URLs, which is the most secure option according to security guidance |
-| Secure Token Storage | Tokens are stored on the device after login, and not accessible by other apps, so that users don’t need to authenticate on every app restart |
+| Secure Token Storage | Tokens are stored on the device after login, and not accessible by other apps, so that users don't need to authenticate on every app restart |
 | Deep Linking | Our app also supports HTTPS App Links, so that users can bookmark locations within the app |
 
 ### Code Download
@@ -21,7 +21,7 @@ The code for our mobile app can be downloaded from [here](https://github.com/gar
 
 ### Basic Mobile User Interface
 
-Our Mobile UI will provide the same <Link href='/posts/api-journey-client-side'>API Client Journey</Link> as earlier Web UIs, with a list view as the home page:
+Our Mobile UI will provide the same <a href='api-journey-client-side.mdx'>API Client Journey</a> as earlier Web UIs, with a list view as the home page:
 
 <div className='smallimage'>
     <img src='../images/500/home-view.jpg?v=20240912' alt='home view' />
@@ -120,7 +120,7 @@ Our session buttons help to ensure that built in *Back Stack Navigation* is reli
 
 ### Logout
 
-The sample also implements <Link href='/posts/logout'>Open ID Connect RP-Initiated Logout</Link>, to remove the authorization server’s session cookie. In a real-world app a logout capability enables you to test data access for different users with different settings or permissions.
+The sample also implements <a href='logout.mdx'>Open ID Connect RP-Initiated Logout</a>, to remove the authorization server’s session cookie. In a real-world app a logout capability enables you to test data access for different users with different settings or permissions.
 
 ### Deep Linking
 
@@ -199,5 +199,5 @@ We have described the desired functionality, and have described how to overcome 
 
 ### Next
 
-- Next we will cover <Link href='/posts/basicandroidapp-execution'>How to Run the Android Code Sample</Link>
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>
+- Next we will cover <a href='basicandroidapp-execution.mdx'>How to Run the Android Code Sample</a>
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>

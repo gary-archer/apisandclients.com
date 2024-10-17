@@ -1,10 +1,10 @@
 # Web Content Delivery
 
-Previously we finalized the <Link href='/posts/managed-authorization-server-setup'>Managed Authorization Server Setup</Link>, using AWS Cognito. In this post we will apply finishing touches to the <Link href='/posts/web-technology-setup'>Modern Web Technology Setup</Link>, to complete the web architecture by deploying static content to a content delivery network.
+Previously we finalized the <a href='managed-authorization-server-setup.mdx'>Managed Authorization Server Setup</a>, using AWS Cognito. In this post we will apply finishing touches to the <a href='web-technology-setup.mdx'>Modern Web Technology Setup</a>, to complete the web architecture by deploying static content to a content delivery network.
 
 ### Global Web Performance
 
-In this post we will meet performance requirements discussed earlier in <Link href='/posts/web-architecture-goals'>Web Architecture Goals</Link>. AWS CloudFront is a content delivery network that provides optimized web hosting:
+In this post we will meet performance requirements discussed earlier in <a href='web-architecture-goals.mdx'>Web Architecture Goals</a>. AWS CloudFront is a content delivery network that provides optimized web hosting:
 
 ![cdn](../images/610/cdn.jpg)
 
@@ -24,7 +24,7 @@ This post covers the details for the first domain, and the steps for other domai
 
 ### Automated Deployment
 
-Details on how to run the final SPA locally were covered in <Link href='/posts/how-to-run-the-react-js-spa'>this earlier post</Link>. CloudFront deployment is then managed via the following commands, though this only works if you have access to my AWS account:
+Details on how to run the final SPA locally were covered in <a href='how-to-run-the-react-js-spa.mdx'>this earlier post</a>. CloudFront deployment is then managed via the following commands, though this only works if you have access to my AWS account:
 
 ```bash
 git clone https://github.com/gary-archer/oauth.websample.final
@@ -331,5 +331,5 @@ We have implemented our SPA’s global deployment, to achieve good global perfor
 
 ### Next
 
-- Next we will provide an overview of our <Link href='/posts/serverless-api-overview'>Serverless API</Link>
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>
+- Next we will provide an overview of our <a href='serverless-api-overview.mdx'>Serverless API</a>
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>

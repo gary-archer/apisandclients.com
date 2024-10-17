@@ -81,17 +81,24 @@ expressApp.use('/', express.static(physicalRoot));
  * Tell Express how to handle requests for HTML files, where a .html extension is not specified
  */
 expressApp.get('*', (request, response) => {
-    
+
     if (response.locals.type === 'page') {
 
-        const path = request.originalUrl.toLowerCase();
-        if (fs.existsSync(`${physicalRoot}/${path}.html`)) {
+        const requestPath = request.path.toLowerCase();
+        if (requestPath === '/favicon.ico') {
 
-            response.sendFile(`${path}.html`, {root: physicalRoot});
+            // Serve the root level favico.ico file
+            response.sendFile('favicon.ico', {root: physicalRoot});
+
+        } else if (fs.existsSync(`${physicalRoot}${requestPath}.html`)) {
+
+            // Serve HTML files within the posts folder
+            response.sendFile(`${requestPath}.html`, {root: physicalRoot});
 
         } else {
 
-            response.redirect('/');
+            // For other paths, redirect to the home path
+            response.redirect('/posts/home');
         }
     }
 });

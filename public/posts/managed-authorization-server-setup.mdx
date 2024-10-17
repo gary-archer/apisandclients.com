@@ -1,6 +1,6 @@
 # Cloud Authorization Server Setup
 
-Previously we explained our <Link href='/posts/cloud-domain-setup'>Cloud Domain Setup</Link> and next we will describe the more advanced configuration of AWS Cognito as a managed authorization server.
+Previously we explained our <a href='cloud-domain-setup.mdx'>Cloud Domain Setup</a> and next we will describe the more advanced configuration of AWS Cognito as a managed authorization server.
 
 ### Create the Authorization Server
 
@@ -8,7 +8,7 @@ In this blog I only use the standards-based authorization server role. In AWS te
 
 ![user pool](../images/600/user-pool.jpg)
 
-The basic configuration was described in the earlier post on <Link href='/posts/oauth-infrastructure-setup'>OAuth Infrastructure Setup</Link>. This included creating a user schema with custom fields used for authorization in APIs.
+The basic configuration was described in the earlier post on <a href='oauth-infrastructure-setup.mdx'>OAuth Infrastructure Setup</a>. This included creating a user schema with custom fields used for authorization in APIs.
 
 ### Create a Custom Domain
 
@@ -87,7 +87,7 @@ The *claimsToSuppress* section is used to remove personal data from ID tokens, s
 
 The *claimsToAddOrOverride* section is used to customise access tokens. Claims are issued based on the client's scope so that different custom claims can be issued to different clients.
 
-These claims provide convenient fields for APIs and produce a more complete access token. In many cases this helps to lock down the access token and reduce its privileges. This blog’s use of claims is further explained in the blog post on <Link href='/posts/api-authorization-design'>API Authorization Behavior</Link>.
+These claims provide convenient fields for APIs and produce a more complete access token. In many cases this helps to lock down the access token and reduce its privileges. This blog’s use of claims is further explained in the blog post on <a href='api-authorization-design.mdx'>API Authorization Behavior</a>.
 
 ### Where Are We?
 
@@ -95,5 +95,5 @@ We have completed the configuration of a low maintenance cloud authorization ser
 
 ### Next
 
-- Next we will explain this blog's <Link href='/posts/cdn-static-content-delivery'>Web Content Delivery</Link>
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>
+- Next we will explain this blog's <a href='cdn-static-content-delivery.mdx'>Web Content Delivery</a>
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>

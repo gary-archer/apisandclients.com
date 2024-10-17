@@ -1,6 +1,6 @@
 # Updated SPA and API – Overview
 
-Previously I summarised the use of <Link href='/posts/id-tokens'>ID Tokens</Link> in applications. Next I explain how to complete the initial SPA and API code sample, to add the main frontend session behaviours and to add claims-based authorization to the API.
+Previously I summarised the use of <a href='id-tokens.mdx'>ID Tokens</a> in applications. Next I explain how to complete the initial SPA and API code sample, to add the main frontend session behaviours and to add claims-based authorization to the API.
 
 ### New Features
 
@@ -23,9 +23,9 @@ I show the updated components and endpoints below, which include the use of an A
 
 ### SPAs in 2021
 
-This sample uses the traditional SPA solution, with OpenID Connect implemented solely in JavaScript. In 2021 the best practice is to upgrade to a <Link href='/posts/spa-back-end-for-front-end'>Backend for Frontend</Link> approach.
+This sample uses the traditional SPA solution, with OpenID Connect implemented solely in JavaScript. In 2021 the best practice is to upgrade to a <a href='spa-back-end-for-front-end.mdx'>Backend for Frontend</a> approach.
 
-The traditional SPA flow remains useful to represent a pure SPA architecture and to learn about OAuth techniques. This blog’s <Link href='/posts/final-spa-overview'>Final SPA</Link> provides a BFF based solution, but requires a more complex flow.
+The traditional SPA flow remains useful to represent a pure SPA architecture and to learn about OAuth techniques. This blog’s <a href='final-spa-overview.mdx'>Final SPA</a> provides a BFF based solution, but requires a more complex flow.
 
 ### Code Download
 
@@ -106,7 +106,7 @@ First run the build script to prepare the SPA and API, which primarily runs *npm
 
 ### Configure SSL Browser Trust
 
-The build script also downloads OpenSSL generated certificates from a [Development Certificates](https://github.com/gary-archer/oauth.developmentcertificates) repository to a subdirectory of the API. The API and web static content hosting uses SSL so you must ensure that your browser trusts the root certificate at the below location, as explained in the <Link href='/posts/developer-ssl-setup#trust-a-root-certificate-in-browsers'>SSL Trust Configuration</Link> post.
+The build script also downloads OpenSSL generated certificates from a [Development Certificates](https://github.com/gary-archer/oauth.developmentcertificates) repository to a subdirectory of the API. The API and web static content hosting uses SSL so you must ensure that your browser trusts the root certificate at the below location, as explained in the <a href='developer-ssl-setup.mdx'>SSL Trust Configuration</a> post.
 
 ```markdown
 api/certs/authsamples-dev.ca.crt
@@ -148,11 +148,11 @@ After a login the SPA receives the following access token. This now contains an 
 
 ![token scopes and claims](../images/170/token-scopes-and-claims.jpg)
 
-For details on how the authorization server issues these scopes and claims see the <Link href='/posts/managed-authorization-server-setup'>Cloud Authorization Server Setup</Link> blog post.
+For details on how the authorization server issues these scopes and claims see the <a href='managed-authorization-server-setup.mdx'>Cloud Authorization Server Setup</a> blog post.
 
 ### API Claims Based Authorization
 
-The API’s OAuth processing reads the token claims and also looks up extra values that it needs to implement its authorization. I provide further details on my design choices in the <Link href='/posts/api-authorization-design'>API Authorization Behaviour</Link> blog post.
+The API’s OAuth processing reads the token claims and also looks up extra values that it needs to implement its authorization. I provide further details on my design choices in the <a href='api-authorization-design.mdx'>API Authorization Behaviour</a> blog post.
 
 ![extensible claims](../images/170/extensible-claims.jpg)
 
@@ -246,7 +246,7 @@ The response includes a new access token, so that the SPA can continue to call A
 
 ![renewal response](../images/170/renewal-response.jpg?v=20240813)
 
-Although the SPA's code implements renewal flows correctly, both of them are unsatisfactory. I explain the security and usability issues in the <Link href='/posts/user-sessions-and-token-renewal'>Iframe Access Token Renewal</Link> post.
+Although the SPA's code implements renewal flows correctly, both of them are unsatisfactory. I explain the security and usability issues in the <a href='user-sessions-and-token-renewal.mdx'>Iframe Access Token Renewal</a> post.
 
 ### Logout
 
@@ -260,9 +260,9 @@ A boolean flag is also stored in session storage after logout. Other tabs use th
 
 ### Where Are We?
 
-I have added missing features to the SPA and API behaviour, to improve SPA session management and to enable the API to authorize requests correctly. Overall security and token renewal still have some issues, which I resolve later, in the <Link href='/posts/final-spa-overview'>Final SPA</Link>.
+I have added missing features to the SPA and API behaviour, to improve SPA session management and to enable the API to authorize requests correctly. Overall security and token renewal still have some issues, which I resolve later, in the <a href='final-spa-overview.mdx'>Final SPA</a>.
 
 ### Next
 
-- I explain some <Link href='/posts/updated-spa-coding-key-points'>Updated SPA Code Details</Link>.
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- I explain some <a href='updated-spa-coding-key-points.mdx'>Updated SPA Code Details</a>.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.

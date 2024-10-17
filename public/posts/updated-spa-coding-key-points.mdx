@@ -1,6 +1,6 @@
 # Updated SPA – Code Details
 
-In the previous post I described the behaviour of the <Link href='/posts/improved-spa-code-sample-overview'>Updated SPA and API Code Sample</Link>. Next I summarise some changes to the SPA code, with a particular focus on <Link href='/posts/user-sessions-and-token-renewal'>Iframe-Based Access Token Renewal</Link> and its difficulties.
+In the previous post I described the behaviour of the <a href='improved-spa-code-sample-overview.mdx'>Updated SPA and API Code Sample</a>. Next I summarise some changes to the SPA code, with a particular focus on <a href='user-sessions-and-token-renewal.mdx'>Iframe-Based Access Token Renewal</a> and its difficulties.
 
 ### SPA OAuth Configuration Changes
 
@@ -227,7 +227,7 @@ When you implement the traditional SPA flow using only JavaScript code, you typi
 - You must then manage page reloads and multi-tab browsing, and token refresh becomes considerably more difficult.
 - You then become aware that, even with very careful code, your SPA still has security and reliability issues.
 
-Eventually, you come to realise that to solve the security, usability and reliability conditions, you need a backend component that assists the SPA with its security and also serves the SPA to ensure the best usability and reliability. You can realise such a solution with a correctly designed <Link href="/posts/spa-back-end-for-front-end">Backend for Frontend</Link> as I show later in this blog. An important part of this design is error responses that put the SPA in control.
+Eventually, you come to realise that to solve the security, usability and reliability conditions, you need a backend component that assists the SPA with its security and also serves the SPA to ensure the best usability and reliability. You can realise such a solution with a correctly designed <a href='spa-back-end-for-front-end.mdx'>Backend for Frontend</a> as I show later in this blog. An important part of this design is error responses that put the SPA in control.
 
 ### SPA Calls API to get User Info
 
@@ -290,7 +290,7 @@ public async startLogout(): Promise<void> {
 
 ### SPA Multi Tab Logout
 
-The sample also supports multi-tab logout, described in the earlier <Link href='/posts/logout'>Logout</Link> post. Rather than attempting to use single-logout solutions that send the SSO cookie from iframes, the SPA simply watches an *isLoggedOut* boolean in local storage, using the [Browser Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API).
+The sample also supports multi-tab logout, described in the earlier <a href='logout.mdx'>Logout</a> post. Rather than attempting to use single-logout solutions that send the SSO cookie from iframes, the SPA simply watches an *isLoggedOut* boolean in local storage, using the [Browser Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API).
 
 If a user runs multiple tabs and signs out on one of them, the following code then run in all other tabs, each of which simply removes its tokens and redirects the user to the logged out view.
 
@@ -311,5 +311,5 @@ I explained the code to complete the traditional SPA flow, with in-memory storag
 
 ### Next
 
-- Next I provide some <Link href='/posts/updated-api-coding-key-points'>Updated API Code Details</Link>.
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- Next I provide some <a href='updated-api-coding-key-points.mdx'>Updated API Code Details</a>.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.

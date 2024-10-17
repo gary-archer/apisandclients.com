@@ -1,6 +1,6 @@
 # OAuth Infrastructure Setup
 
-The previous post explained <Link href='/posts/jwt-access-token-validation'>JWT Access Token Validation</Link> for developers. Next, I show how to get started with your OAuth infrastructure, including the main security component, the authorization server.
+The previous post explained <a href='jwt-access-token-validation.mdx'>JWT Access Token Validation</a> for developers. Next, I show how to get started with your OAuth infrastructure, including the main security component, the authorization server.
 
 ### Step 1: Define Base URLs
 
@@ -12,7 +12,7 @@ When working with OAuth, I recommend designing URLs for a development computer, 
 | *https://api.authsamples-dev.com* | A base URL for APIs |
 | *https://login.authsamples.com* | The Authorization Server |
 
-For this blog, I purchased a <Link href='/posts/cloud-domain-setup'>cloud domain</Link> called *authsamples.com* and used various subdomains for different purposes. When you run this blog's code samples, you use a mix of components, some of which run on your local computer and some of which run in the cloud.
+For this blog, I purchased a <a href='cloud-domain-setup.mdx'>cloud domain</a> called *authsamples.com* and used various subdomains for different purposes. When you run this blog's code samples, you use a mix of components, some of which run on your local computer and some of which run in the cloud.
 
 The ones that run locally use a domain called *authsamples-dev.com*. This is a fictional domain that is an alias to your local loopback address of *http://127.0.0.1*. You configure subdomain aliases in your local computer's *hosts file*, at one of these locations:
 
@@ -44,7 +44,7 @@ Either provides a convenient option when getting started with OAuth. This blog s
 
 ### Step 3: Create the User Accounts Schema
 
-You configure the authorization server to store user accounts that contain <Link href='/posts/user-data'>user identity core attributes</Link>. The authorization server can include user attributes as claims in access tokens issued to clients. Clients then call APIs, which authorize requests using access token claims. For this blog I created account records with custom user attributes of *manager_id* and *role*.
+You configure the authorization server to store user accounts that contain <a href='user-data.mdx'>user identity core attributes</a>. The authorization server can include user attributes as claims in access tokens issued to clients. Clients then call APIs, which authorize requests using access token claims. For this blog I created account records with custom user attributes of *manager_id* and *role*.
 
 ![custom claims](../images/80/custom-claims.jpg)
 
@@ -179,9 +179,9 @@ If your initial choice of authorization server does not meet your requirements y
 
 ### Where Are We?
 
-I explained a thought process for an initial setup, to get started with OAuth development, while giving you time to learn and keep your options open. In a later post I provide further details on the <Link href='/posts/managed-authorization-server-setup'>Cloud Authorization Server Setup</Link>.
+I explained a thought process for an initial setup, to get started with OAuth development, while giving you time to learn and keep your options open. In a later post I provide further details on the <a href='managed-authorization-server-setup.mdx'>Cloud Authorization Server Setup</a>.
 
 ### Next
 
-- Next I explain this blog’s <Link href='/posts/web-technology-setup'>JavaScript Technology Setup</Link>.
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- Next I explain this blog’s <a href='web-technology-setup.mdx'>JavaScript Technology Setup</a>.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.

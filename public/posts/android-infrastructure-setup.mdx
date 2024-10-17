@@ -1,10 +1,10 @@
 # Android Code Sample – Infrastructure
 
-Previously we described <Link href='/posts/basicandroidapp-execution'>How to Run the Android Code Sample</Link>, and next we will focus further on the infrastructure used by our OAuth solution.
+Previously we described <a href='basicandroidapp-execution.mdx'>How to Run the Android Code Sample</a>, and next we will focus further on the infrastructure used by our OAuth solution.
 
 ### AWS CloudFront Domains
 
-Our Android sample uses 2 online domains, which were configured as part of our <Link href='/posts/cloud-domain-setup'>Cloud Domain Setup</Link>:
+Our Android sample uses 2 online domains, which were configured as part of our <a href='cloud-domain-setup.mdx'>Cloud Domain Setup</a>:
 
 | Domain | Usage |
 | ------ | ----- |
@@ -17,7 +17,7 @@ Our web pages are first uploaded to an AWS S3 bucket:
 
 ![s3 bucket](../images/520/s3-bucket.jpg?v=20240912)
 
-They are then included in one of this blog’s <Link href='/posts/cdn-static-content-delivery'>CloudFront Distributions</Link>, so that the pages are served over an HTTPS URL:
+They are then included in one of this blog’s <a href='cdn-static-content-delivery.mdx'>CloudFront Distributions</a>, so that the pages are served over an HTTPS URL:
 
 ![cloudfront distro](../images/520/cloudfront-distro.jpg?v=20240912)
 
@@ -105,7 +105,7 @@ com.authsamples.finalmobileapp:
 
 ### Deep Linking Registration Failures
 
-Deep linking registration can fail, and one way to reproduce this is to configure the mobile device to connect to the internet via an <Link href='/posts/android-https-debugging'>HTTP Proxy</Link>. The system’s *Intent Filter Verifier* will not trust the HTTP proxy’s man in the middle certificate, and the result is that the app installs successfully but the claimed HTTPS scheme is not correctly configured:
+Deep linking registration can fail, and one way to reproduce this is to configure the mobile device to connect to the internet via an <a href='android-https-debugging.mdx'>HTTP Proxy</a>. The system’s *Intent Filter Verifier* will not trust the HTTP proxy’s man in the middle certificate, and the result is that the app installs successfully but the claimed HTTPS scheme is not correctly configured:
 
 ![verification failure](../images/520/verification-failure.jpg?v=20240912)
 
@@ -216,5 +216,5 @@ We have explained some infrastructure plumbing needed for our Android code sampl
 
 ### Next
 
-- Next I provide some <Link href='/posts/android-coding-key-points'>Android Code Details</Link>
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>
+- Next I provide some <a href='android-coding-key-points.mdx'>Android Code Details</a>
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>

@@ -1,10 +1,10 @@
 # SPA and API - OAuth Messages
 
-In our last post I explained <Link href='/posts/basicspa-execution'>How to Run the Basic SPA Sample</Link>. This post takes a closer look at HTTP messages used by our SPA and API. I use these messages to provide a summary of the mainstream OAuth behaviours. Yet the main focus is the end-to-end flow within the distributed architecture, including practical behaviours like reliability.
+In our last post I explained <a href='basicspa-execution.mdx'>How to Run the Basic SPA Sample</a>. This post takes a closer look at HTTP messages used by our SPA and API. I use these messages to provide a summary of the mainstream OAuth behaviours. Yet the main focus is the end-to-end flow within the distributed architecture, including practical behaviours like reliability.
 
 ### Development Domains
 
-This blog provides an <Link href='/posts/oauth-infrastructure-setup'>OAuth Infrastructure Setup</Link> where you use the following logical domains on a development computer. This best enables early thinking about the deployment of each component.
+This blog provides an <a href='oauth-infrastructure-setup.mdx'>OAuth Infrastructure Setup</a> where you use the following logical domains on a development computer. This best enables early thinking about the deployment of each component.
 
 | Component	| Base URL |
 | --------- | -------- |
@@ -18,9 +18,9 @@ In this blog I use a cloud parent domain of *authsamples.com* for components tha
 
 Most of the time I trace HTTP/S messages using an HTTP development proxy rather than browser tools. This allows me to view traffic from both the SPA and API together. See the below post if you are new to this type of tool:
 
-- <Link href='/posts/http-debugging-setup'>HTTP Proxy Setup</Link>
+- <a href='http-debugging-setup.mdx'>HTTP Proxy Setup</a>
 
-The first code sample runs on HTTP URLs and technical restrictions force us to use a domain name of *localhost* for the SPA. To use more architecturally meaningful URLs, this post's messages use the <Link href='posts/improved-spa-code-sample-overview'>second code sample</Link>.
+The first code sample runs on HTTP URLs and technical restrictions force us to use a domain name of *localhost* for the SPA. To use more architecturally meaningful URLs, this post's messages use the <a href='improved-spa-code-sample-overview.mdx'>second code sample</a>.
 
 ### Step 1. SPA Downloads its Configuration
 
@@ -70,7 +70,7 @@ There are a couple of issues with the way cookies are set:
 
 - I like to configure the authorization server to use *session cookies* that automatically expire when the user closes all browser windows. When the SSO cookie is persistent, as for AWS Cognito, the user is only signed out of the app qwhen the user closes the browser. When the app restarts, the user performs a *Single Sign On (SSO)* and is automatically signed in. This is not the behaviour I want.
 
-- Identity systems issue cookies that are usually always third-party from the app's viewpoint. To work in the best ways for applications, they should use the *SameSite=none* cookie property. This instructs browsers to send the cookie when the app redirects to the authorization server. I say more about the impact in the <Link href='/posts/user-sessions-and-token-renewal'>Iframe-Based Token Renewal</Link> blog post.
+- Identity systems issue cookies that are usually always third-party from the app's viewpoint. To work in the best ways for applications, they should use the *SameSite=none* cookie property. This instructs browsers to send the cookie when the app redirects to the authorization server. I say more about the impact in the <a href='user-sessions-and-token-renewal.mdx'>Iframe-Based Token Renewal</a> blog post.
 
 ### Step 6. SPA Receives an Authorization Response
 
@@ -276,5 +276,5 @@ The code sample shows how an organization can integrate an SPA and API with its 
 
 ### Next
 
-- I explain some <Link href='/posts/basicspa-codingkeypoints'>SPA Code Details</Link> for the first code sample.
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- I explain some <a href='basicspa-codingkeypoints.mdx'>SPA Code Details</a> for the first code sample.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.

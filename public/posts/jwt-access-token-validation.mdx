@@ -1,6 +1,6 @@
 # JWT Access Token Validation
 
-The previous post provided some <Link href='/posts/basicapi-codingkeypoints'>API Code Details</Link> for the initial code sample. Next I explain the most mainstream way in which APIs validate JWT access tokens. These techniques are covered in many other OAuth resources. This post summarises a few security best practices, but focuses primarily on a productive development setup when working with JWTs.
+The previous post provided some <a href='basicapi-codingkeypoints.mdx'>API Code Details</a> for the initial code sample. Next I explain the most mainstream way in which APIs validate JWT access tokens. These techniques are covered in many other OAuth resources. This post summarises a few security best practices, but focuses primarily on a productive development setup when working with JWTs.
 
 ### Common Requirements
 
@@ -28,7 +28,7 @@ This blog provides APIs developed in the following languages and in each case a 
 | .NET | [jose-jwt](https://github.com/dvsekhvalnov/jose-jwt) |
 | Java | [jose4j](https://bitbucket.org/b_c/jose4j/wiki/Home) |
 
-JOSE libraries support a number of OAuth-related security specifications. The specification documents can be read by developers to strengthen their OAuth knowledge. JOSE libraries are also useful for <Link href='/posts/api-automated-tests'>issuing mock access tokens</Link> in API tests.
+JOSE libraries support a number of OAuth-related security specifications. The specification documents can be read by developers to strengthen their OAuth knowledge. JOSE libraries are also useful for <a href='api-automated-tests.mdx'>issuing mock access tokens</a> in API tests.
 
 ![jose specs](../images/70/jose-specs.jpg?v=20240826)
 
@@ -193,7 +193,7 @@ APIs therefore cope seamlessly with token signing key renewal. When you use OAut
 
 ### API Authorization
 
-After JWT access token validation completes, the API trusts claims in the JWT payload and uses them in its business authorization. I say more about the use of claims in this blog’s <Link href='/posts/api-authorization-design'>Authorization Behaviour</Link> post.
+After JWT access token validation completes, the API trusts claims in the JWT payload and uses them in its business authorization. I say more about the use of claims in this blog's <a href='api-authorization-design.mdx'>Authorization Behaviour</a> post.
 
 ### Where Are We?
 
@@ -201,5 +201,5 @@ I explained how developers can validate JWTs in APIs, with very little code. Nex
 
 ### Next
 
-- I explain this blog's <Link href='/posts/oauth-infrastructure-setup'>OAuth Infrastructure Setup</Link>
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- I explain this blog's <a href='oauth-infrastructure-setup.mdx'>OAuth Infrastructure Setup</a>.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.

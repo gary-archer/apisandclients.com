@@ -1,6 +1,6 @@
 # Node.js API – Code Details
 
-In our last post we started describing an advanced code sample that implemented our <Link href='/posts/api-architecture-node'>API Architecture in Node.js</Link>. We will now drill into some final implementation details.
+In our last post we started describing an advanced code sample that implemented our <a href='api-architecture-node.mdx'>API Architecture in Node.js</a>. We will now drill into some final implementation details.
 
 ### Code Structure
 
@@ -205,7 +205,7 @@ public static registerDependencies(container: Container): void {
 
 ### Logging Implementation
 
-API logging is also implemented via plumbing code, and the end goal is to enable <Link href='/posts/api-technical-support-analysis'>platform wide technical support queries by people</Link>.
+API logging is also implemented via plumbing code, and the end goal is to enable <a href='api-technical-support-analysis.mdx'>platform wide technical support queries by people</a>.
 
 <div className='smallimage'>
     <img src='../images/310/logging-classes.jpg' alt='logging classes' />
@@ -260,13 +260,13 @@ export class CompanyRepository {
 }
 ```
 
-Logging classes write to a log file and, if the <Link href='/posts/log-aggregation-setup'>Log Aggregation Setup</Link> is followed, logs will automatically flow to a local Elasticsearch instance. Developers can then query API activity on their local computer:
+Logging classes write to a log file and, if the <a href='log-aggregation-setup.mdx'>Log Aggregation Setup</a> is followed, logs will automatically flow to a local Elasticsearch instance. Developers can then query API activity on their local computer:
 
 ![log queries](../images/310/log-queries.jpg)
 
 ### Error Handling Implementation
 
-The API implements this blog’s <Link href='/posts/error-handling-and-supportability'>Error Handling and Supportability</Link> design. By default all errors escape to a global exception handler, whose role is to log errors and return an error response to the caller:
+The API implements this blog’s <a href='error-handling-and-supportability.mdx'>Error Handling and Supportability</a> design. By default all errors escape to a global exception handler, whose role is to log errors and return an error response to the caller:
 
 ```typescript
 public handleException(exception: any, request: Request, response: Response, next: NextFunction): void {
@@ -372,5 +372,5 @@ We have implemented our non functional requirements in Node.js without any block
 
 ### Next
 
-- Next we will implement our <Link href='/posts/net-core-code-sample-overview'>API Architecture in .NET</Link>
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>
+- Next we will implement our <a href='net-core-code-sample-overview.mdx'>API Architecture in .NET</a>
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>

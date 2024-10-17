@@ -1,6 +1,6 @@
 # SSL Trust Configuration
 
-Previously I explained how to use an <Link href='/posts/http-debugging-setup'>HTTP Proxy</Link> to trace OAuth-related requests. Next, I explain how to enable HTTPS connections for development. Future code samples use SSL for all backend connections. I use *SSL* as the colloquial term, to represent [transport level security (TLS) v1.3](https://en.wikipedia.org/wiki/Transport_Layer_Security#TLS_1.3).
+Previously I explained how to use an <a href='http-debugging-setup.mdx'>HTTP Proxy</a> to trace OAuth-related requests. Next, I explain how to enable HTTPS connections for development. Future code samples use SSL for all backend connections. I use *SSL* as the colloquial term, to represent [transport level security (TLS) v1.3](https://en.wikipedia.org/wiki/Transport_Layer_Security#TLS_1.3).
 
 ### Productive OAuth Development
 
@@ -8,7 +8,7 @@ When using OAuth, security components may require you to run an SSL setup on you
 
 ### SSL for Cloud Environments
 
-Later in this blog I create a <Link href="/posts/cloud-domain-setup">Cloud Domain Setup</Link> for a deployed domain of *authsamples.com*, which runs in AWS. I then use [AWS Certificate Manager](https://aws.amazon.com/certificate-manager/) to create AWS issued certificates for these subdomains, that are trusted by clients that call the SSL endpoints.
+Later in this blog I create a <a href="cloud-domain-setup.mdx">Cloud Domain Setup</a> for a deployed domain of *authsamples.com*, which runs in AWS. I then use [AWS Certificate Manager](https://aws.amazon.com/certificate-manager/) to create AWS issued certificates for these subdomains, that are trusted by clients that call the SSL endpoints.
 
 ![managed certificates](../images/110/managed-certificates.jpg?v=20240728)
 
@@ -243,11 +243,11 @@ export NODE_EXTRA_CA_CERTS=~/trusted-ca-certs.crt
 
 ### Trusting a Root Certificate in .NET APIs
 
-This blog's <Link href='/posts/net-core-code-sample-overview/'>OAuth Secured .NET API</Link> uses certificate trust inherited from the operating system SSL trust store.
+This blog's <a href='net-core-code-sample-overview.mdx'>OAuth Secured .NET API</a> uses certificate trust inherited from the operating system SSL trust store.
 
 ### Trusting a Root Certificate in Java APIs
 
-This blog's <Link href='/posts/java-spring-boot-api-overview'>OAuth Secured Java API</Link> uses certificate trust from the Java trust store. For example, on Ubuntu Linux this is at the following location when running Java 21:
+This blog's <a href='java-spring-boot-api-overview.mdx'>OAuth Secured Java API</a> uses certificate trust from the Java trust store. For example, on Ubuntu Linux this is at the following location when running Java 21:
 
 ```markdown
 /usr/lib/jvm/zulu-21-amd64/lib/security/cacerts
@@ -263,7 +263,7 @@ sudo "$JAVA_HOME/bin/keytool" -delete -alias mitmroot -cacerts -storepass change
 
 ### Trusting a Root Certificate in Electron Apps
 
-For this blog's <Link href='/posts/desktop-apps-overview'>OAuth Secured Desktop Apps</Link> there are two processes, which determine certificate trust with different rules:
+For this blog's <a href='desktop-apps-overview.mdx'>OAuth Secured Desktop Apps</a> there are two processes, which determine certificate trust with different rules:
 
 | Area | Trust Behaviour |
 | ---- | --------------- |
@@ -290,8 +290,8 @@ openssl s_client -CAfile ~/trusted-ca-certs.crt -connect api.authsamples-dev.com
 
 Mobile SSL trust has its own complexities, which are covered in the later posts on mobile setup:
 
-- <Link href='/posts/android-https-debugging'>Android HTTPS Debugging</Link>
-- <Link href='/posts/ios-https-debugging'>iOS HTTPS Debugging</Link>
+- <a href='android-https-debugging.mdx'>Android HTTPS Debugging</a>
+- <a href='ios-https-debugging.mdx'>iOS HTTPS Debugging</a>
 
 ### Where Are We?
 
@@ -299,5 +299,5 @@ I explained how to upgrade the development setup so that you can use real-world 
 
 ### Next
 
-- I provide some design articles, starting with <Link href='/posts/user-data'>User Data Management</Link>.
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- I provide some design articles, starting with <a href='user-data.mdx'>User Data Management</a>.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.

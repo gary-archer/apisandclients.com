@@ -1,17 +1,17 @@
 # Updated API – Code Details
 
-The previous post I explained some <Link href='/posts/updated-spa-coding-key-points'>SPA Code Details</Link> for the second code sample. Next I summarise the main API code changes.
+The previous post I explained some <a href='updated-spa-coding-key-points.mdx'>SPA Code Details</a> for the second code sample. Next I summarise the main API code changes.
 
 ### API Authorization Implementation
 
-In the first sample’s <Link href='/posts/basicapi-codingkeypoints'>API Code Details</Link> we explained that OAuth processing consists of the following two main code areas:
+In the first sample’s <a href='basicapi-codingkeypoints.mdx'>API Code Details</a> we explained that OAuth processing consists of the following two main code areas:
 
 | Responsibility | Description |
 | -------------- | ----------- |
 | Authenticate Requests | Verify incoming access tokens and return a 401 error response for invalid tokens. |
 | Set up Authorization | Read claims needed for authorization, then pass them through to the API’s business logic. |
 
-The updated API implements <Link href='/posts/jwt-access-token-validation'>JWT Access Token Validation</Link> in the same way as the first code sample, but now also implements this blog's <Link href='/posts/api-authorization-design'>API Authorization Behaviour</Link>. This starts with enforcing its required scope:
+The updated API implements <a href='jwt-access-token-validation.mdx'>JWT Access Token Validation</a> in the same way as the first code sample, but now also implements this blog's <a href='api-authorization-design.mdx'>API Authorization Behaviour</a>. This starts with enforcing its required scope:
 
 ```typescript
 const scopes = ClaimsReader.getClaim(claims['scope'] as string, 'scope');
@@ -199,5 +199,5 @@ The key goal on the data side of the second code sample is a setup that can prod
 
 ### Next
 
-- I port the second code sample to another provider, in the <Link href='/posts/azure-active-directory-setup'>Microsoft Entra ID SPA and API Setup</Link>.
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- I port the second code sample to another provider, in the <a href='azure-active-directory-setup.mdx'>Microsoft Entra ID SPA and API Setup</a>.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.

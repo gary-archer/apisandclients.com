@@ -1,10 +1,10 @@
 import {MDXProvider} from '@mdx-js/react';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import Link from 'next/link';
 import {useRouter} from 'next/router'
 import {useEffect, useRef, useState} from 'react';
 import {addCopyToClipboardButtons} from '../utilities/codeProcessor';
+import {updateMdxLinks} from '../utilities/linkProcessor';
 import {PostViewProps} from './postViewProps';
 import {NavBar} from './navBar';
 
@@ -83,6 +83,9 @@ export function PostView(props: PostViewProps): JSX.Element {
         // Render copy buttons for prism code snippets
         addCopyToClipboardButtons(rootRef);
 
+        // Remove the .mdx suffix from <a> tags
+        updateMdxLinks(rootRef);
+
         // Restore the previous scroll position
         restoreScrollPos();
     }
@@ -124,13 +127,13 @@ export function PostView(props: PostViewProps): JSX.Element {
             </Head>
             <header>
                 <h2>
-                    <Link href='/'>{siteTitle}</Link>
+                    <a href='home.mdx'>{siteTitle}</a>
                 </h2>
                 <p className='subHeadingText'>Designs and Code Samples</p>
             </header>
             <main>
                 <article className='article'>
-                    <MDXProvider components={{Link, h3: subheadingLink}}>
+                    <MDXProvider components={{h3: subheadingLink}}>
                         <MdxContent />
                     </MDXProvider>
                     {showNavBar && <NavBar />}

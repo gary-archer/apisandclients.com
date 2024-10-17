@@ -1,6 +1,6 @@
 # Iframe-Based Access Token Renewal
 
-In the previous post I summarised this blog’s <Link href='/posts/federated-logins'>User Authentication Behaviour</Link>. Next I explain iframe-based access token renewal for SPAs. This flow is now problematic, due to recent browser restrictions.
+In the previous post I summarised this blog’s <a href='federated-logins.mdx'>User Authentication Behaviour</a>. Next I explain iframe-based access token renewal for SPAs. This flow is now problematic, due to recent browser restrictions.
 
 ### Traditional SPA Token Renewal
 
@@ -78,11 +78,11 @@ Note that an SPA can use PKCE to protect its authorization code grant requests. 
 
 ### Second Code Sample
 
-The <Link href='/posts/updated-spa-coding-key-points'>Updated SPA – Code Details</Link> explains some code complexities if you attempt to implement iframe-based access token renewal with in-memory storage. Even with careful code there are security, reliability and usability issues due to cookie issues.
+The <a href='updated-spa-coding-key-points.mdx'>Updated SPA – Code Details</a> explains some code complexities if you attempt to implement iframe-based access token renewal with in-memory storage. Even with careful code there are security, reliability and usability issues due to cookie issues.
 
 ### Backend for Frontend
 
-In 2021 the preferred option is to use a Backend for Frontend approach. This provides the best protection against the JavaScript threats described in the [OAuth for Browser Based Apps](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps#name-the-threat-of-malicious-jav) document. The SPA can then perform token renewal in the most secure way, with good reliability. This blog’s <Link href='/posts/final-spa-overview'>Final SPA</Link> uses an API-driven BFF to achieve the best all-round solution.
+In 2021 the preferred option is to use a Backend for Frontend approach. This provides the best protection against the JavaScript threats described in the [OAuth for Browser Based Apps](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps#name-the-threat-of-malicious-jav) document. The SPA can then perform token renewal in the most secure way, with good reliability. This blog's <a href='final-spa-overview.mdx'>Final SPA</a> uses an API-driven BFF to achieve the best all-round solution.
 
 ### Where Are We?
  
@@ -90,5 +90,5 @@ I briefly described how the traditional SPA token renewal flow works and why you
 
 ### Next
 
-- I summarise <Link href='/posts/logout'>Logout</Link> behaviours as part of your SPA's session management.
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- I summarise <a href='logout.mdx'>Logout</a> behaviours as part of your SPA's session management.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.

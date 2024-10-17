@@ -1,6 +1,6 @@
 # API Authorization Behaviour
 
-In <Link href='/posts/user-data'>User Data Management</Link> I explained how any moderately complex real-world system typically stores *core user attributes* separately to *volatile business user attributes*. You also need to deal with both types of data when you authorize requests in your API code.
+In <a href='user-data.mdx'>User Data Management</a> I explained how any moderately complex real-world system typically stores *core user attributes* separately to *volatile business user attributes*. You also need to deal with both types of data when you authorize requests in your API code.
 
 In this post I suggest how to use access tokens for authorization in APIs. I summarise a few OAuth mechanisms, which you can read more about in many other OAuth resources. This post's main focus is manageability when you implement API authorization.
 
@@ -26,7 +26,7 @@ The OAuth 2.0 authorization framework enables you to protect business data using
 
 ### Step 1: Token Validation
 
-The <Link href='/posts/jwt-access-token-validation'>JWT Access Token Validation</Link> post described how an API verifies the JWT’s digital signature. If the token is not valid you return a 401 error such as the below payload. Think of token validation as an entry level check to authenticate the request to the API. The API then trusts the access token’s payload.
+The <a href='jwt-access-token-validation.mdx'>JWT Access Token Validation</a> post described how an API verifies the JWT’s digital signature. If the token is not valid you return a 401 error such as the below payload. Think of token validation as an entry level check to authenticate the request to the API. The API then trusts the access token’s payload.
 
 ```json
 {
@@ -70,7 +70,7 @@ An API should require its own identity to be present in the audience (aud) claim
 
 ### Step 3: Claims
 
-Claims enable the deeper OAuth authorization behaviour. For each scope that the authorization server issues to access tokens, it also issues a set of claims. The <Link href='/posts/managed-authorization-server-setup'>Cloud Authorization Server Setup</Link> blog post explains how this works for this blog’s default authorization server. 
+Claims enable the deeper OAuth authorization behaviour. For each scope that the authorization server issues to access tokens, it also issues a set of claims. The <a href='managed-authorization-server-setup.mdx'>Cloud Authorization Server Setup</a> blog post explains how this works for this blog’s default authorization server. 
 
 You can issue different claims to access tokens per user, and they can contain any data you need, so claims are much more flexible than scopes. In more advanced use cases, APIs cannot decide how to authorize solely from a user ID in an access token. Instead, OAuth enables you to design solutions where the authorization server provides APIs with runtime claims from trusted third-party systems.
 
@@ -202,5 +202,5 @@ I explained some standard OAuth security behaviours and some manageability conce
 
 ### Next
 
-- I summarise this blog’s <Link href='/posts/federated-logins'>User Authentication Behaviour</Link>.
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- I summarise this blog’s <a href='federated-logins.mdx'>User Authentication Behaviour</a>.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.

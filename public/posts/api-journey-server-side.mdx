@@ -1,10 +1,10 @@
 # API Journey – Server Side
 
-Previously I summarised this blog’s <Link href='/posts/api-platform-design'>API Platform Overview</Link> to express some essential high-level ingredients. Next I summarise some end-to-end technical behaviors for OAuth-secured APIs, which I implemnt in this blog’s final API code samples, in multiple technology stacks:
+Previously I summarised this blog’s <a href='api-platform-design.mdx'>API Platform Overview</a> to express some essential high-level ingredients. Next I summarise some end-to-end technical behaviors for OAuth-secured APIs, which I implemnt in this blog’s final API code samples, in multiple technology stacks:
 
-- <Link href='/posts/api-architecture-node/'>Final Node.js API</Link>
-- <Link href='/posts/net-core-code-sample-overview'>Final .NET API</Link>
-- <Link href='/posts/java-spring-boot-api-overview'>Final Java API</Link>
+- <a href='api-architecture-node.mdx'>Final Node.js API</a>
+- <a href='net-core-code-sample-overview.mdx'>Final .NET API</a>
+- <a href='java-spring-boot-api-overview.mdx'>Final Java API</a>
 
 ### Configuration
 
@@ -129,7 +129,7 @@ I implement portable API security without depending on API frameworks in particu
 
 ### APIs Use Extensible Claims
 
-APIs must collect values for their business authorization. This code often requires more data than just the token claims, to enforce fine-grained business permissions. There are various ways in which you could manage this requirement. In this blog I show how to extend OAuth middleware to build a useful claims object. You can read more about the approach in the <Link href='/posts/api-authorization-design'>API Authorization Behaviour</Link> blog post.
+APIs must collect values for their business authorization. This code often requires more data than just the token claims, to enforce fine-grained business permissions. There are various ways in which you could manage this requirement. In this blog I show how to extend OAuth middleware to build a useful claims object. You can read more about the approach in the <a href='api-authorization-design.mdx'>API Authorization Behaviour</a> blog post.
 
 ```typescript
 export class ClaimsPrincipal {
@@ -185,7 +185,7 @@ The authorization logic could be written in various other ways. The claims princ
 
 ### Testable OAuth Implementation
 
-You should test OAuth API security frequently as part of a secure API development lifecycle. This blog’s final APIs use tests that <Link href='/posts/api-automated-tests'>mock the authorization server</Link>. This technique enables you to easily control access tokens when you write integration tests on a development computer. I use the same JOSE library for both API access token validation and test code that produces JWTs.
+You should test OAuth API security frequently as part of a secure API development lifecycle. This blog’s final APIs use tests that <a href='api-automated-tests.mdx'>mock the authorization server</a>. This technique enables you to easily control access tokens when you write integration tests on a development computer. I use the same JOSE library for both API access token validation and test code that produces JWTs.
 
 ```typescript
 describe('OAuth API Tests', () => {
@@ -316,7 +316,7 @@ When there is a server error I write a log entry that includes a unique *Error I
 }
 ```
 
-The logs enable <Link href='/posts/api-technical-support-analysis'>people-focused technical support queries</Link> to measure errors or slowness. For example, you can produce a breakdown of errors by type and frequency for a time period. You can then iron out any reliability issues as part of your quality processes.
+The logs enable <a href='api-technical-support-analysis.mdx'>people-focused technical support queries</a> to measure errors or slowness. For example, you can produce a breakdown of errors by type and frequency for a time period. You can then iron out any reliability issues as part of your quality processes.
 
 ### API Responsibilities are Separated
 
@@ -338,5 +338,5 @@ I summarised a non-functional journey for APIs, where OAuth does not create the 
 
 ### Next
 
-- Next I take an equivalent look at the <Link href='/posts/api-journey-client-side'>API Journey – Client Side</Link>.
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- Next I take an equivalent look at the <a href='api-journey-client-side.mdx'>API Journey – Client Side</a>.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.

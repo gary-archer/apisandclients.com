@@ -14,16 +14,18 @@ The content for my blog at https://apisandclients.com.
 
 ## Blog Technology
 
-The blog is primarily written using markdown and has minimal JavaScript logic:
+The blog is primarily written using MDX markdown and has minimal JavaScript logic.\
+I have some particular requirements to render in these four modes:
 
-- The folder layout and processing of markdown is explained in [NEXT.js Tutorials](https://nextjs.org/learn-pages-router/basics/data-fetching/blog-data).
-- I then updated to [MDX](https://nextjs.org/docs/pages/building-your-application/configuring/mdx) to enable client-side navigation via `Link` elements.
-- The static content is then distributed globally using a [content delivery network](https://apisandclients.com/posts/cdn-static-content-delivery)
+- MDX files should render in their [GitHub repository](https://github.com/gary-archer/apisandclients.com/tree/master/public/posts).
+- MDX content renders from the NEXT.js development host.
+- MDX content built to HTML renders from the Express web host
+- MDX content built to HTML renders from the AWS Cloudfront CDN
 
-The following plugins are used to extend built-in markdown behaviours:
+I also use the following NEXT.js plugins:
 
 | Plugin | Usage |
 | ------ | ----- |
 | remark-gfm-no-autolink | Render GitHub tables as HTML tables |
 | remark-prism | Syntax highlighting for code snippets |
-| rehype-slug | Add ids to h3 subheadings to enable rendering them as links |
+| rehype-slug | Add ids to h3 subheadings aso that they render as links |

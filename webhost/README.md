@@ -23,7 +23,21 @@ function handler(event) {
     const requestUri = request.uri.toLowerCase();
 
     const isPageRequest = !requestUri.match(/^.*(\.jpg|\.ico|\.js|\.json)$/);
-    if (isPageRequest && requestUri.startsWith('/posts/')) {
+    if (isPageRequest) {
+
+        if (!requestUri.startsWith('/posts/')) {
+
+            return {
+                statusCode: 301,
+                statusDescription: 'Moved Permanently',
+                headers: {
+                    'location': {
+                        value: '/posts/home',
+                    },
+                },
+            };
+        }
+
         request.uri = `${requestUri}.html`;
     }
 

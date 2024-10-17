@@ -1,6 +1,6 @@
 # Serverless API Deployment
 
-Previously we provided a <Link href='/posts/serverless-api-overview'>Serverless API Overview</Link> and explained how to run its operations locally. Next we will explain how this API is deployed to the AWS cloud, to run as lambda functions.
+Previously we provided a <a href='serverless-api-overview.mdx'>Serverless API Overview</a> and explained how to run its operations locally. Next we will explain how this API is deployed to the AWS cloud, to run as lambda functions.
 
 ### Serverless Deployment Stack
 
@@ -8,7 +8,7 @@ Our Cloud API is implemented using the [Serverless Framework](https://github.com
 
 ![serverless stack](../images/630/serverless-stack.jpg)
 
-The Serverless API will provide data to SPA, mobile and desktop clients. Although the final <Link href='/posts/final-spa-overview'>Single Page Application</Link> uses secure cookies, the API will only need to deal with JWT access tokens, for all types of clients.
+The Serverless API will provide data to SPA, mobile and desktop clients. Although the final <a href='final-spa-overview.mdx'>Single Page Application</a> uses secure cookies, the API will only need to deal with JWT access tokens, for all types of clients.
 
 ### Cloud Base URLs
 
@@ -25,7 +25,7 @@ Next the Serverless API will be deployed to the following AWS API Gateway URL:
 In earlier posts we ensured that prerequisites were in place, and these are needed in order for the below API deployment to work:
 
 - Install [Node.js](https://nodejs.org/en/download/) for your Operating System
-- Create an AWS upload account according to the <Link href='/posts/cloud-domain-setup'>Cloud Domain Setup</Link>
+- Create an AWS upload account according to the <a href='cloud-domain-setup.mdx'>Cloud Domain Setup</a>
 - Install and configure the [AWS Command Line Interface](https://aws.amazon.com/cli/)
 
 ### Deployment Overview
@@ -137,7 +137,7 @@ The size of each lambda is around 1MB, including dependencies for JWT libraries 
 
 ### Configure the API Subdomain
 
-The main hosting domain of *authsamples.com* was created in the earlier <Link href='/posts/cloud-domain-setup'>Cloud Domain Setup</Link>. An API custom domain must also be pre-created in the AWS API Gateway. This points to the wildcard certificate generated earlier, and is linked to the deployment stage under *API Mappings*:
+The main hosting domain of *authsamples.com* was created in the earlier <a href='cloud-domain-setup.mdx'>Cloud Domain Setup</a>. An API custom domain must also be pre-created in the AWS API Gateway. This points to the wildcard certificate generated earlier, and is linked to the deployment stage under *API Mappings*:
 
 ![api subdomain](../images/630/api-subdomain.jpg)
 
@@ -213,7 +213,7 @@ In CloudWatch, log groups have been added for each of the lambdas, and log reten
 
 ![log groups](../images/630/log-groups.jpg)
 
-Log entries can be viewed in the AWS console, but CloudWatch is only used for immediate logging. In a real company setup, logs should be aggregated to a more powerful log analysis system with <Link href='/posts/api-technical-support-analysis'>good querying capabilities</Link>.
+Log entries can be viewed in the AWS console, but CloudWatch is only used for immediate logging. In a real company setup, logs should be aggregated to a more powerful log analysis system with <a href='api-technical-support-analysis.mdx'>good querying capabilities</a>.
 
 ![log entry](../images/630/log-entry.jpg)
 
@@ -239,5 +239,5 @@ We have ported our earlier Node.js API to run with low cost and zero maintenance
 
 ### Next
 
-- Next we will explain some <Link href='/posts/serverless-api-coding-model'>Serverless API Code Details</Link>
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>
+- Next we will explain some <a href='serverless-api-coding-model.mdx'>Serverless API Code Details</a>
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>

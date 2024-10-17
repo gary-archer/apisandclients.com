@@ -1,6 +1,6 @@
 # Final SPA – Code Details
 
-Previously I explained <Link href='/posts/how-to-run-the-react-js-spa'>How to Run the Final SPA</Link>, which uses cookies to transport short-lived access tokens to APIs. Next I describe the main changes to the SPA's code, with a particular focus on API requests. See also the <Link href='/posts/api-journey-client-side'>Client Side API Journey</Link> for a summary of the requirements being met.
+Previously I explained <a href='how-to-run-the-react-js-spa.mdx'>How to Run the Final SPA</a>, which uses cookies to transport short-lived access tokens to APIs. Next I describe the main changes to the SPA's code, with a particular focus on API requests. See also the <a href='api-journey-client-side.mdx'>Client Side API Journey</a> for a summary of the requirements being met.
 
 ### Previous Samples
 
@@ -8,8 +8,8 @@ I provided two earlier plain TypeScript SPA and API code samples:
 
 | Solution | Description |
 | -------- | ----------- |
-| <Link href='/posts/basicspa-codingkeypoints'>Code Sample 1</Link> | Authorization code flow with PKCE, calling APIs with access tokens and handling 401 responses. |
-| <Link href='/posts/updated-spa-coding-key-points'>Code Sample 2</Link> | Added in-memory token storage, silent token renewal and logout, to complete the SPA's session management. |
+| <a href='basicspa-codingkeypoints.mdx'>Code Sample 1</a> | Authorization code flow with PKCE, calling APIs with access tokens and handling 401 responses. |
+| <a href='updated-spa-coding-key-points.mdx'>Code Sample 2</a> | Added in-memory token storage, silent token renewal and logout, to complete the SPA's session management. |
 
 These earlier SPAs used access tokens in the browser, which is no longer recommended. Therefore, the final SPA instead uses utility API components that issue cookies, so that API credentials are unavailable to JavaScript code.
 
@@ -538,7 +538,7 @@ public async execute(action: () => Promise<void>): Promise<void> {
 
 The final SPA deals reliably with some tricky areas, in the lower-level plumbing classes. Some of these could be turned into a shared library, which would reduce code. In a real organization the goal would be to grow the web code base by adding new view and view model classes. An early focus on security, development setups, deployment and reliability helps to enable this.
 
-There is one remaining post for this blog's final SPA. It is part of the cloud theme and covers <Link href='/posts/cdn-static-content-delivery'>Web Content Delivery</Link> using a cloud platform. The SPA's static content gets uploaded to a content delivery network which deploys it to ~400 global locations for globally equal performance. The SPA's deployment is also portable and runs the same anywhere, including a development computer.
+There is one remaining post for this blog's final SPA. It is part of the cloud theme and covers <a href='cdn-static-content-delivery.mdx'>Web Content Delivery</a> using a cloud platform. The SPA's static content gets uploaded to a content delivery network which deploys it to ~400 global locations for globally equal performance. The SPA's deployment is also portable and runs the same anywhere, including a development computer.
 
 ### Where Are We?
 
@@ -546,5 +546,5 @@ I security hardened this blog's final SPA, by using token handler API components
 
 ### Next
 
-- I begin this blog's second theme with an <Link href='/posts/api-platform-design'>API Platform Overview</Link>.
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- I begin this blog's second theme with an <a href='api-platform-design.mdx'>API Platform Overview</a>.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.

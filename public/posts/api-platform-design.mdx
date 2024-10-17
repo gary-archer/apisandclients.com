@@ -1,6 +1,6 @@
 # API Platform Overview
 
-Previously I completed this blog’s SPA theme with some <Link href='/posts/reactjs-codingkeypoints'>Final SPA Code Details</Link>. Next, I summarise what I consider to be the most essential technical behaviours for a platform of many APIs in an OAuth architecture.
+Previously I completed this blog’s SPA theme with some <a href='reactjs-codingkeypoints.mdx'>Final SPA Code Details</a>. Next, I summarise what I consider to be the most essential technical behaviours for a platform of many APIs in an OAuth architecture.
 
 ### API Technical Goals
 
@@ -30,8 +30,8 @@ The API flows in this blog serve web and mobile clients and consist of the follo
 
 Each API should perform the following steps to securely handle incoming requests. You can then expose any API endpoint to the internet, to maximise business value:
 
-- <Link href='/posts/jwt-access-token-validation'>JWT Access Token Validation</Link>
-- <Link href='/posts/api-authorization-design'>Claims Based Authorization</Link>
+- <a href='jwt-access-token-validation.mdx'>JWT Access Token Validation</a>
+- <a href='api-authorization-design.mdx'>Claims Based Authorization</a>
 
 The API security architecture is scalable if you can add more clients and APIs without adding overall complexity. In OAuth, you need to scale your use of *scopes and claims* and avoid manageability problems.
 
@@ -51,23 +51,21 @@ This is the key security component, and you should choose one that provides the 
 
 Since OAuth is a distributed architecture, you need solid approaches to logging, error handling and technical support. You then have confidence that the system runs reliably. Therefore this blog takes particular care over the following areas, using third-party components that provide the best visibility:
 
-- <Link href='/posts/effective-api-logging'>Effective API Logging</Link>
-- <Link href='/posts/error-handling-and-supportability'>Error Handling and Supportability</Link>
-- <Link href='/posts/api-technical-support-analysis'>Technical Support Analysis</Link>
+- <a href='effective-api-logging.mdx'>Effective API Logging</a>
+- <a href='error-handling-and-supportability.mdx'>Error Handling and Supportability</a>
+- <a href='api-technical-support-analysis.mdx'>Technical Support Analysis</a>
 
 ### Final APIs
 
 I provide 3 final REST APIs whose code is almost identical. Each API uses both *core identity user attributes* and *volatile business user attributes*, so that each API could evolve its use of claims in future. The APIs also implement the above observability behaviours.
 
-- <Link href='/posts/api-architecture-node'>Node.js API</Link>
-- <Link href='/posts/net-core-code-sample-overview'>.NET API</Link>
-- <Link href='/posts/java-spring-boot-api-overview'>Java API</Link>
-
-
+- <a href='api-architecture-node.mdx'>Node.js API</a>
+- <a href='net-core-code-sample-overview.mdx'>.NET API</a>
+- <a href='java-spring-boot-api-overview.mdx'>Java API</a>
 
 ### Cloud Hosting
 
-This blog uses portable design patterns that work for any type of deployment. I use <Link href='/posts/cloud-hosting'>Serverless Hosting</Link> for some deployed API components, to minimise my personal hosting costs. Yet the final APIs are cloud native and can run in platforms like Kubernetes, where you can use best-of-breed supporting components for APIs.
+This blog uses portable design patterns that work for any type of deployment. I use <a href='cloud-hosting.mdx'>Serverless Hosting</a> for some deployed API components, to minimise my personal hosting costs. Yet the final APIs are cloud native and can run in platforms like Kubernetes, where you can use best-of-breed supporting components for APIs.
 
 In all cases though, I use different hosting for the web and API sides of the architecture. The web side of the architecture is only static content and is deployed to many global locations by a low cost content delivery network. The API side of the architecture is more intricate so I prefer to run it wherever the API supporting components provide the best capabilities.
 
@@ -77,5 +75,5 @@ I have summarised some foundations to aim for when designing a modern API platfo
 
 ### Next
 
-- I describe an <Link href='/posts/api-journey-server-side'>API Journey – Server Side</Link>.
-- For a list of all blog posts see the <Link href='/posts/index'>Index Page</Link>.
+- I describe an <a href='api-journey-server-side.mdx'>API Journey – Server Side</a>.
+- For a list of all blog posts see the <a href='index.mdx'>Index Page</a>.
