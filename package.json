@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start": "next dev",
-    "buildRelease": "next build"
+    "buildRelease": "next build && rm dist/posts/*.mdx"
   },
   "devDependencies": {
     "@mdx-js/loader": "^3.0.1",

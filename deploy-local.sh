@@ -46,12 +46,6 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Delete files I do not want to deploy to the web host
-#
-rm dist/posts/*.mdx
-rm dist/index.html
-
-#
 # Run Express in a child terminal
 #
 if [ "$PLATFORM" == 'MACOS' ]; then
@@ -72,7 +66,7 @@ fi
 # Wait for the blog static content to become available
 #
 echo 'Waiting for Web Host to become available ...'
-while [ "$(curl -k -s -o /dev/null -w ''%{http_code}'' "$WEB_ORIGIN/posts/home")" != '200' ]; do
+while [ "$(curl -k -s -o /dev/null -w ''%{http_code}'' "$WEB_ORIGIN")" != '200' ]; do
   sleep 2
 done
 

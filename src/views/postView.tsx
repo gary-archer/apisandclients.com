@@ -24,11 +24,16 @@ export function PostView(props: PostViewProps): JSX.Element {
     }, [props.filename]);
 
     /*
-     * Set initial state and subscribe to events
+     * Run startup logic
      */
     async function startup() {
+
         setShowNavBar(false);
         router.events.on('routeChangeStart', storeScrollPos);
+
+        if (location.pathname === '/') {
+            location.href += 'posts/home';
+        }
     }
 
     /*
