@@ -33,7 +33,7 @@ function getTargetUrl(rawRequestPath) {
 
     const requestPath = rawRequestPath.replace(/\/+$/, '');
     if (!requestPath) {
-        return "${targetHost}/posts/home";
+        return `${targetHost}/posts/home`;
     }
 
     return `${targetHost}${requestPath}.mdx`;
