@@ -56,15 +56,20 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Upload all files
+# These days I only host the blog in my GitHub repos
 #
-aws s3 cp dist "s3://$BUCKET_NAME" --recursive
+DEPLOY_BLOG='false'
+if [ "$DEPLOY_BLOG" == 'true' ]; then
+  aws s3 cp dist "s3://$BUCKET_NAME" --recursive
+else 
+  aws s3 cp historical/robots.txt "s3://$BUCKET_NAME"
+fi
 if [ $? -ne 0 ]; then
   exit 1
 fi
 
 #
-# Push content to all CloudFront locations
+# Invalidate the CloudFront distribution
 #
 DISTRIBUTION_ID='E1YM2UP28R4CHP'
 aws cloudfront create-invalidation --distribution-id=$DISTRIBUTION_ID --paths '/*'
