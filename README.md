@@ -1,6 +1,6 @@
-# APIs and Clients
+# OAuth Developer Blog
 
-The content for my blog at https://apisandclients.com.
+A technical blog with a focus on productive and reliable OAuth development setups.
 
 ## Running the Blog
 
