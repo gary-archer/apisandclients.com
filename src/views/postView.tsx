@@ -122,7 +122,7 @@ export function PostView(props: PostViewProps): JSX.Element {
     /*
      * Render the page
      */
-    const siteTitle = 'APIs and Clients End-to-End';
+    const siteTitle = 'OAuth Development Setups';
     return (
         <div ref={rootRef} className='container'>
             <Head>
